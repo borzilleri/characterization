@@ -1,0 +1,38 @@
+body {
+  font-family           : helvetica, verdana, arial, sans-serif;
+  font-size             : 10pt;
+  color                 : black;
+  background-color      : white;
+  margin                : 0px;
+  padding               : 0px;
+}
+
+#Header {
+  border-bottom         : 1px dotted black;
+  margin                : .5em;
+}
+
+#Footer {
+  text-align            : center;
+  font-size             : x-small;
+  color                 : #777;
+}
+
+ul.inline {
+  padding               : 0;
+  margin                : 10px;
+}
+
+ul.inline li {
+  display               : inline;
+  list-style-type       : none;
+  border-left           : 1px solid black;
+  
+  padding               : 0 .5em;
+  margin                : 0;
+  
+}
+
+ul.inline li.firstListItem {
+  border-left           : none;
+}

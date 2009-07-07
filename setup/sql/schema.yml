@@ -1,0 +1,73 @@
+options:
+  collate: utf8_unicode_ci
+  charset: utf8
+
+Race:
+  columns:
+    id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+      unsigned: 1
+    name: string(50)
+
+Archetype:
+  columns:
+    id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+      unsigned: 1
+    name: string(50)
+    
+Player:
+  columns:
+    id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+      unsigned: 1
+    name: string(50)
+    level: integer
+    health_max: integer
+    health_cur: integer
+    surges_max: integer
+    surges_cur: integer
+    surge_value: integer
+    strength: integer
+    dexterity: integer
+    constitution: integer
+    intelligence: integer
+    wisdom: integer
+    charisma: integer
+    race_id:
+      type: integer(8)
+      unsigned: 1
+    archetype_id:
+      type: integer(8)
+      unsigned: 1
+  relations:
+    Race:
+      foreignAlias: Characters
+    Archetype:
+      foreignAlias: Characters
+
+Power:
+  columns:
+    id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+      unsigned: 1
+    name: string(255)
+    level: integer
+    useType: 
+      type: enum
+      values: ['at-will','encounter','daily']
+    used: boolean
+    player_id:
+      type: integer
+      unsigned: 1
+  relations:
+    Player:
+      foreignAlias: Powers

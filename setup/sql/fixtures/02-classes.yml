@@ -1,0 +1,35 @@
+Archetype:
+  Avenger:
+    name: Avenger
+  Cleric:
+    name: Cleric
+  Barbarian:
+    name: Barbarian
+  Bard:
+    name: Bard
+  Druid:
+    name: Druid
+  Fighter:
+    name: Fighter
+  Invoker:
+    name: Invoker
+  Monk:
+    name: Monk
+  Paladin:
+    name: Paladin
+  Ranger:
+    name: Ranger
+  Rogue:
+    name: Rogue
+  Shaman:
+    name: Shaman
+  Sorcerer:
+    name: Sorcerer
+  Warden:
+    name: Warden
+  Warlock:
+    name: Warlock
+  Warlord:
+    name: Warlord
+  Wizard:
+    name: Wizard

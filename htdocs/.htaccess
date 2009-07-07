@@ -1,0 +1,26 @@
+##
+# $Id: .htaccess 188 2009-05-28 16:04:31Z jborzilleri $
+##
+
+# Turn off Apache's Multiviews, because it mucks up mod_rewrite
+Options -Multiviews
+
+# Enable mod_rewrite
+RewriteEngine On
+
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+
+RewriteRule ^new$ playerEdit.html?action=add
+RewriteRule ^save$ playerEditProcess.php?action=save
+
+# Products
+#RewriteRule ^product/save*.$ productEditProcess.php?action=save
+#RewriteRule ^product/delete*.$ productEditProcess.php?action=delete
+#RewriteRule ^product/([0-9]+)/delete.*$ productEdit.html?action=delete&id=$1
+#RewriteRule ^product/([0-9]+)/edit*.$ productEdit.html?action=edit&id=$1
+#RewriteRule ^product/add*.$ productEdit.html?action=add
+
+# Base Rule for product pages.
+#RewriteCond %{SCRIPT_FILENAME} !\.(html|php)$
+#RewriteRule ^product.*$ product.html
