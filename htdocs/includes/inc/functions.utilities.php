@@ -53,4 +53,21 @@ function localeDateTime($date) {
         return strftime('%x %X', $time);
 }
 
+function generateDSN() {
+  global $config;
+  $dsn = $config['db']['engine'].'://';
+  
+  if( !empty($config['db']['username']) ) {
+    $dsn .= $config['db']['username'];
+    
+    if( !empty($config['db']['password']) ) {
+      $dsn .= ":{$config['db']['password']}";
+    }
+    $dsn .= '@';
+  }
+  
+  $dsn .= "{$config['db']['host']}/{$config['db']['database']}";
+  return $dsn;
+}
+
 ?>

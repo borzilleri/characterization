@@ -33,3 +33,4 @@ class Race extends BaseRace {
       return $field;
   }
 }
+?>

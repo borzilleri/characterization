@@ -7,6 +7,9 @@
  * 
  * @property integer $id
  * @property string $name
+ * @property integer $health_first
+ * @property integer $health_level
+ * @property integer $surges
  * @property Doctrine_Collection $Characters
  * 
  * @package    ##PACKAGE##
@@ -29,6 +32,15 @@ abstract class BaseArchetype extends Doctrine_Record
         $this->hasColumn('name', 'string', 50, array(
              'type' => 'string',
              'length' => '50',
+             ));
+        $this->hasColumn('health_first', 'integer', null, array(
+             'type' => 'integer',
+             ));
+        $this->hasColumn('health_level', 'integer', null, array(
+             'type' => 'integer',
+             ));
+        $this->hasColumn('surges', 'integer', null, array(
+             'type' => 'integer',
              ));
 
         $this->option('collate', 'utf8_unicode_ci');

@@ -34,3 +34,4 @@ class Archetype extends BaseArchetype
   }
 
 }
+?>

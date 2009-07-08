@@ -13,6 +13,8 @@ RewriteCond %{SCRIPT_FILENAME} !-d
 
 RewriteRule ^new$ playerEdit.html?action=add
 RewriteRule ^save$ playerEditProcess.php?action=save
+RewriteRule ^([0-9]+)/edit$ playerEdit.html?action=edit&id=$1
+RewriteRule ^([0-9]+)/?$ player.html?id=$1
 
 # Products
 #RewriteRule ^product/save*.$ productEditProcess.php?action=save

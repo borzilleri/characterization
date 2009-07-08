@@ -19,6 +19,9 @@ Archetype:
       autoincrement: true
       unsigned: 1
     name: string(50)
+    health_first: integer
+    health_level: integer
+    surges: integer
     
 Player:
   columns:

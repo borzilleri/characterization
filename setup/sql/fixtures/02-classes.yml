@@ -1,35 +1,86 @@
 Archetype:
   Avenger:
     name: Avenger
+    health_first: 14
+    health_level: 6
+    surges: 7
   Cleric:
     name: Cleric
+    health_first: 12
+    health_level: 5
+    surges: 7
   Barbarian:
     name: Barbarian
+    health_first: 15
+    health_level: 6
+    surges: 8
   Bard:
     name: Bard
+    health_first: 12
+    health_level: 5
+    surges: 7
   Druid:
     name: Druid
+    health_first: 12
+    health_level: 5
+    surges: 7
   Fighter:
     name: Fighter
+    health_first: 15
+    health_level: 6
+    surges: 9
   Invoker:
     name: Invoker
+    health_first: 10
+    health_level: 4
+    surges: 6
   Monk:
     name: Monk
+    health_first: 12
+    health_level: 5
+    surges: 6
   Paladin:
     name: Paladin
+    health_first: 15
+    health_level: 6
+    surges: 9
   Ranger:
     name: Ranger
+    health_first: 12
+    health_level: 5
+    surges: 6
   Rogue:
     name: Rogue
+    health_first: 12
+    health_level: 5
+    surges: 6
   Shaman:
     name: Shaman
+    health_first: 12
+    health_level: 5
+    surges: 7
   Sorcerer:
     name: Sorcerer
+    health_first: 12
+    health_level: 5
+    surges: 6
   Warden:
     name: Warden
+    health_first: 17
+    health_level: 7
+    surges: 9
   Warlock:
     name: Warlock
+    health_first: 12
+    health_level: 5
+    surges: 6
   Warlord:
     name: Warlord
+    health_first: 12
+    health_level: 5
+    surges: 7
   Wizard:
     name: Wizard
+    health_first: 10
+    health_level: 4
+    surges: 6
