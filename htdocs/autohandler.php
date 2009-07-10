@@ -4,9 +4,9 @@
  *
  */
 $stime = microtime(true);
-include(dirname(__FILE__).'/includes/inc/master.php');
-include(dirname(__FILE__).'/includes/inc/globals.master.php');
-include(dirname(__FILE__).'/includes/inc/session.php');
+include(dirname(__FILE__).'/../includes/inc/master.php');
+include(dirname(__FILE__).'/../includes/inc/globals.master.php');
+include(dirname(__FILE__).'/../includes/inc/session.php');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -15,20 +15,20 @@ include(dirname(__FILE__).'/includes/inc/session.php');
  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" type="text/css" media="screen"
-   href="<?=MEDIA_URL;?>/includes/css/default.css" />
+   href="<?=MEDIA_URL;?>/css/default.css" />
   <script type="text/javascript" charset="utf-8"
-   src="<?=MEDIA_URL;?>/includes/javascript/jquery/jquery-1.3.2.min.js">
+   src="<?=MEDIA_URL;?>/javascript/jquery/jquery-1.3.2.min.js">
   </script>
   <script type="text/javascript" charset="utf-8"
-   src="<?=MEDIA_URL;?>/includes/javascript/jquery/jquery-ui-1.7.1.custom.min.js">
+   src="<?=MEDIA_URL;?>/javascript/jquery/jquery-ui-1.7.1.custom.min.js">
   </script>
   <script type="text/javascript" charset="utf-8"
-   src="<?= MEDIA_URL ?>/includes/javascript/jquery/jquery.overlabel.js">
+   src="<?= MEDIA_URL ?>/javascript/jquery/jquery.overlabel.js">
   </script>
 
 <? foreach($css_include as $css): // Page-specific CSS files ?>
   <link rel="stylesheet" type="text/css" media="screen"
-   href="<?=SITE_URL;?>/includes/css/<?=$css;?>" />
+   href="<?=SITE_URL;?>/css/<?=$css;?>" />
 <? endforeach; ?>
 
   <script type="text/javascript" charset="utf-8">
@@ -66,7 +66,7 @@ $(document).ready(function() {
   </script>
 <? foreach($js_include as $js): // Page-specific JS files ?>
   <script type="text/javascript" charset="utf-8"
-   src="<?=SITE_URL;?>/includes/javascript/<?=$js;?>"></script>
+   src="<?=SITE_URL;?>/javascript/<?=$js;?>"></script>
 <? endforeach; ?>
 
   <title><?=_('Characterization - 4e Characater Manager');?></title>

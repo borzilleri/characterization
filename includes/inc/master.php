@@ -14,7 +14,7 @@ $manager->setAttribute(Doctrine::ATTR_VALIDATE, Doctrine::VALIDATE_ALL);
 $manager->setAttribute(Doctrine::ATTR_EXPORT, Doctrine::EXPORT_ALL);
 $manager->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);
 $manager->setAttribute(Doctrine::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
-Doctrine::loadModels(dirname(__FILE__).'/models');
+Doctrine::loadModels(dirname(__FILE__).'/../models');
 $dsn = generateDSN();
 $conn = Doctrine_Manager::connection($dsn);
 
