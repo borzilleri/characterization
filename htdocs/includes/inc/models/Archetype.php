@@ -26,7 +26,11 @@ class Archetype extends BaseArchetype
       $classes = $q->execute();
       
       foreach($classes as $c) {
-        $field .= '<option value="'.$c->id.'">'.$c->name.'</option>';
+        $field .= '<option value="'.$c->id.'"';
+        if( $selected == $c->id ) {
+          $field .= ' selected="selected"';
+        }
+        $field .= '>'.$c->name.'</option>';
       }
       
       $field .= "</select>";

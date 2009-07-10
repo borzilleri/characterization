@@ -15,16 +15,18 @@ $GLOBALS['config'] = array();
  * Database configuration
  */
 $config['db'] = array();
-$config['db']['engine'] = 'mysql';
+$config['db']['engine'] = 'sqlite';
+$config['db']['username'] = '';
+$config['db']['password'] = '';
 
-/**
- * For SQLite Databases, 'host' should be the directory path and 
- * 'database' should be the actual db file name
- */
-$config['db']['mysql']['host'] = 'localhost';
-$config['db']['mysql']['database'] = 'characterization';
-$config['db']['mysql']['username'] = '';
-$config['db']['mysql']['password'] = '';
+// SQLite: Directory path
+// MySQL: Hostname
+$config['db']['host'] = '';
+
+// SQLite: Database file name
+// MySQL: Database name
+$config['db']['database'] = '';
+
 
 $config['dev'] = array();
 $config['dev']['debug'] = true;

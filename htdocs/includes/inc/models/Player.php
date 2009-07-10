@@ -162,9 +162,14 @@ class Player extends BasePlayer
      * @todo If we do this, send a notice to alert the player to check their
      * surge value?
      */
-    if( empty($this->surge_value) ||
-        $this->surge_value < floor($this->health_max/4) ) {
-      $this->surge_value = floor($this->health_max/4);
+    $surge_v_calc = floor($this->health_max/4);
+    if( empty($_POST['character_surge_value']) || 
+        1 > $_POST['character_surge_value'] || 
+        $surge_v_calc > $_POST['character_surge_value'] ) {
+      $this->surge_value = $surge_v_calc;   
+    }
+    else {
+      $this->surge_value = $_POST['character_surge_value'];
     }
     
     return !$error;

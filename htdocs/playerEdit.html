@@ -1,72 +1,89 @@
 <?php
 include('autohandler.php');
 
+if( 'edit' == $action && !empty($_REQUEST['id']) ) {
+  $char = Doctrine::getTable('Player')->findOneById($_REQUEST['id']);
+}
+else {
+  $char = new Player;
+}
 ?>
 
 <form method="POST" action="<?=SITE_URL;?>/save">
- <div><label for="character_name">Character Name:</label>
+ <div>
+  <? if($char->exists()): ?>
+  <input type="hidden" name="id" value="<?=$char->id;?>" />
+  <? endif; ?>
+  <label for="character_name">Character Name:</label>
   <input type="text" id="character_name" name="character_name" 
-   size="20" maxlength="255" />
+   size="20" maxlength="255" value="<?=$char->name;?>" />
  </div>
  
  <div>
   <label for="character_race">Race:</label>
-  <?=Race::generateSelect('character_race', 'character_race');?>
+  <?=Race::generateSelect('character_race', 'character_race', $char->race_id);?>
  </div>
  
  <div>
   <label for="character_class">Class:</label>
-  <?=Archetype::generateSelect('character_class', 'character_class');?>
+  <?=Archetype::generateSelect('character_class', 'character_class', $char->archetype_id);?>
  </div>
  
  <div>
   <label for="character_level">Level:</label>
   <input type="text" id="character_level" name="character_level"
-   size="3" maxlength="2" />
+   size="3" maxlength="2" value="<?=$char->level;?>" />
  </div>
  
  <div>
   <label for="character_str">STR:</label>
   <input type="text" id="character_str" name="character_str"
-   size="3" maxlength="2" />
+   size="3" maxlength="2" value="<?=$char->strength;?>" />
  </div>
  <div>
   <label for="character_dex">DEX:</label>
   <input type="text" id="character_dex" name="character_dex"
-   size="3" maxlength="2" />
+   size="3" maxlength="2" value="<?=$char->dexterity;?>" />
  </div>
  <div>
   <label for="character_con">CON:</label>
   <input type="text" id="character_con" name="character_con"
-   size="3" maxlength="2" />
+   size="3" maxlength="2" value="<?=$char->constitution;?>" />
  </div>
  <div>
   <label for="character_int">INT</label>
   <input type="text" id="character_int" name="character_int"
-   size="3" maxlength="2" />
+   size="3" maxlength="2" value="<?=$char->intelligence;?>" />
  </div>
  <div>
   <label for="character_wis">WIS:</label>
   <input type="text" id="character_wis" name="character_wis"
-   size="3" maxlength="2" />
+   size="3" maxlength="2" value="<?=$char->wisdom;?>" />
  </div>
  <div>
   <label for="character_cha">CHA:</label>
   <input type="text" id="character_cha" name="character_cha"
-   size="3" maxlength="2" />
+   size="3" maxlength="2" value="<?=$char->charisma;?>" />
  </div>
 
  <div>
   <label for="character_health">Health:</label>
   <input type="text" id="character_health" name="character_health"
-   size="4" maxlength="3" />
+   size="4" maxlength="3" value="<?=$char->health_max;?>" />
  </div>
  
  <div>
   <label for="character_surges">Surges/Day:</label>
   <input type="text" id="character_surges" name="character_surges"
-   size="3" maxlength="2" />
+   size="3" maxlength="2" value="<?=$char->surges_max;?>" />
  </div>
+
+ <div>
+  <label for="character_surge_value">Surge Value:</label>
+  <input type="text" id="character_surge_value" name="character_surge_value"
+   size="4" maxlength="3" value="<?=$char->surge_value;?>" />
+ </div>
+
  
  <div>
   <input type="submit" name="Submit" />

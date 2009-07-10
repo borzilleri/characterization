@@ -25,7 +25,11 @@ class Race extends BaseRace {
       $races = $q->execute();
       
       foreach($races as $r) {
-        $field .= '<option value="'.$r->id.'">'.$r->name.'</option>';
+        $field .= '<option value="'.$r->id.'"';
+        if( $selected == $r->id ) {
+          $field .= ' selected="selected"';
+        }
+        $field .= '>'.$r->name.'</option>';
       }
       
       $field .= "</select>";
