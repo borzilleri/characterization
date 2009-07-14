@@ -1,5 +1,6 @@
 <?php
 $css_include = array('powerBox.css');
+$js_include = array('playerProcess.js');
 include('autohandler.php');
 
 $id = @$_REQUEST['id'];
@@ -8,6 +9,10 @@ if( !$char || !$char->exists() ) {
   loadPage('/');
 }
 ?>
+
+<script type="text/javascript" charset="utf-8">
+  var CHAR_ID = <?=$char->id;?>;
+</script>
 
 <h1><?=$char->name;?>
 <h3><?=$char->Race->name;?> <?=$char->Archetype->name;?> <?=$char->level;?></h3>
@@ -55,16 +60,20 @@ if( !$char || !$char->exists() ) {
  </div>
 </form>
 
-<div>
+<div id="health">
  Health:
- <span class="<?=$char->isBloodied()?'bloodied':'';?>"><?=$char->health_cur;?></span>
+ <span class="<?=$char->isBloodied()?'bloodied':'';?>">
+  <?=$char->health_cur;?></span>
   &nbsp;/&nbsp;<?=$char->health_max;?>
   <?=$char->health_tmp?" ({$char->health_tmp})":'';?>
 </div>
-<div>
+
+<div id="surges">
  Surges:
- <?=$char->surges_cur;?>
- &nbsp;/&nbsp;<?=$char->surges_max;?> (<?=$char->surge_value;?>)
+ <span id="surges_cur"><?=$char->surges_cur;?></span>
+ &nbsp;/&nbsp;<?=$char->surges_max;?>
+ (<?=$char->surge_value;?>)
+ <a id="surgePlus" href="#">+</a>&nbsp;/&nbsp;<a id="surgeMinus" href="#">-</a>
 </div>
 
 <hr />
@@ -81,27 +90,31 @@ if( !$char || !$char->exists() ) {
 <hr />
 
 <? foreach($char->Powers as $power): ?>
-<div class="power">
-  <div class="titleBar <?=$power->useTypeClass();?>">
-    <span class="powerTitle"><?=$power->name;?></span>
+<div class="power" id="power<?=$power->id;?>">
+  <div id="<?=$power->id;?>" class="titleBar <?=$power->useTypeClass();?>">
+    <span class="powerTitle"><?=$power->name;?>
+      (<?=$power->level;?>)</span>
     <span class="powerLevel">
-      <?=$char->Archetype->name;?> <?=$power->level;?></span>
+      <?=$char->Archetype->name;?> <?=$power->level;?>
+    </span>
   </div>
-  <div class="row0">
-    <div>
-      <span class="usage"><?=ucfirst($power->useType);?></span>
-      &diams;
-      <span class="keywords">[keywords]</span>
-    </diV>
-    <div>
-      <span class="actionType">[action type]</span>
-      <span class="range"><?=$power->powerRange;?></span>
+  <div class="description <?=$power->used?'usedPower':'';?>">
+    <div class="row0">
+      <div>
+        <span class="usage"><?=ucfirst($power->useType);?></span>
+        &diams;
+        <span class="keywords">[keywords]</span>
+      </diV>
+      <div>
+        <span class="actionType">[action type]</span>
+        <span class="range"><?=$power->powerRange;?></span>
+      </div>
+      <div><span class="target">Target:</span> <?=$power->target;?></div>
+      <div><span class="attack">Attack:</span> <?=$power->attack;?></div>
     </div>
-    <div><span class="target">Target:</span> <?=$power->target;?></div>
-    <div><span class="attack">Attack:</span> <?=$power->attack;?></div>
-  </div>
-  <div class="row1">
-    <div><?=$power->notes;?></div>
+    <div class="row1">
+      <div><?=nl2br($power->notes);?></div>
+    </div>
   </div>
 </div>
 <? endforeach; ?>

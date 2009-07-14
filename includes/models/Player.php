@@ -205,7 +205,7 @@ class Player extends BasePlayer
    * @param string $ability The name of the ability score, eg 'strength'
    * @return int
    */
-  public function getMod($ability) {      
+  public function getMod($ability) {
     return floor($this->getAbilityScore($ability)/2)-5;
   }
   
@@ -249,9 +249,11 @@ class Player extends BasePlayer
    * @return bool
    */
   public function shortRest() {
-    /**
-     * @todo Refresh Encounter Powers
-     */
+    foreach( $this->Powers as $p ) {
+      if( $p->useType == 'encounter' ) {
+        $p->refresh();
+      }
+    }
     return true;
   }
   
@@ -267,10 +269,21 @@ class Player extends BasePlayer
     $this->health_cur = $this->health_max;
     $this->surges_cur = $this->surges_max;
     
-    /**
-     * @todo Refresh Encounter Powers
-     * @todo Refresh Daily Powers
-     */
+    // Refresh Encounter & Daily Powers
+    foreach( $this->Powers as $p ) {
+      $p->refresh();
+    }
+    
+    return true;
+  }
+
+  public function addSurge() {
+    $this->surges_cur = min($this->surges_cur+1,$this->surges_max);
+    return true;
+  }
+  
+  public function subtractSurge() {
+    $this->surges_cur = max($this->surges_cur-1,0);
     return true;
   }
   

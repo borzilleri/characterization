@@ -64,5 +64,30 @@ class Power extends BasePower
         return $this->useType;
     }
   }
+  
+  public function refresh() {
+    $this->used = false;
+  }
+  
+  private function usePower() {
+    if( 'at-will' != $this->useType ) {
+      $this->used = true;
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  
+  public function togglePower() {
+    if( 'at-will' == $this->useType ) {
+      $this->used = false;
+      return false;
+    }
+    else {
+      $this->used = !$this->used;
+      return true;
+    }
+  }
 }
 ?>
