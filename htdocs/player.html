@@ -71,18 +71,32 @@ $power_list = Doctrine_Query::create()
 </div>
 </form>
 
-<hr />
-
 <div>
- STR: <?=$char->strength;?><br />
- CON: <?=$char->constitution;?><br />
- DEX: <?=$char->dexterity;?><br />
- INT: <?=$char->intelligence;?><br />
- WIS: <?=$char->wisdom;?><br />
- CHA: <?=$char->charisma;?><br />
+  <span class="abilityLabel">Str:</span>
+    <?=$char->strength;?>(<?=$char->getMod('str');?>)
+  <span class="abilityLabel">Con:</span>
+    <?=$char->constitution;?>(<?=$char->getMod('con');?>)
+  <span class="abilityLabel">Dex:</span>
+    <?=$char->dexterity;?>(<?=$char->getMod('dex');?>)
+  <span class="abilityLabel">Int:</span>
+    <?=$char->intelligence;?>(<?=$char->getMod('int');?>)
+  <span class="abilityLabel">Wis:</span>
+    <?=$char->wisdom;?>(<?=$char->getMod('wis');?>)
+  <span class="abilityLabel">Cha:</span>
+    <?=$char->charisma;?>(<?=$char->getMod('cha');?>)
 </div>
 
 <hr />
+
+<form method="POST" action="<?=SITE_URL;?>/update">
+<div id="notesBox">
+  <input type="hidden" name="id" value="<?=$char->id;?>" />
+  <input type="hidden" name="action" value="notes" />
+  <input type="submit" value="Update Notes" />
+  <br />
+  <textarea name="notes"><?=$char->notes;?></textarea>
+</div>
+</form>
 
 <div id="powerList">
 <? foreach($power_list as $power): ?>

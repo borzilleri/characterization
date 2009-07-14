@@ -5,6 +5,7 @@ $char = Doctrine::getTable('Player')->findOneById(@$_POST['id']);
 if( !$char || !$char->exists() ) {
   loadPage("/");
 }
+$success = true;
 
 switch($action) {
   case 'shortRest':
@@ -21,6 +22,9 @@ switch($action) {
     break;
   case 'tempHealth':
     $success = $char->addTempHealth((int)@$_POST['health']);
+    break;
+  case 'notes':
+    $char->notes = trim(@$_POST['notes']);
     break;
 }
 
