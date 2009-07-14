@@ -6,5 +6,5 @@
  * mid-page processing.
  */
 session_start();
-ob_start();
+#ob_start();
 ?>

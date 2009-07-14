@@ -6,7 +6,7 @@
 $stime = microtime(true);
 include(dirname(__FILE__).'/../includes/inc/master.php');
 include(dirname(__FILE__).'/../includes/inc/globals.master.php');
-#include(dirname(__FILE__).'/../includes/inc/session.php');
+include(dirname(__FILE__).'/../includes/inc/session.php');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
