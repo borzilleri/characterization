@@ -4,6 +4,15 @@
  */
 
 /**
+ * Set ATTR_COLL_KEY attributes on tables as needed here.
+ * 
+ * eg:
+ * Doctrine::getTable('TableName')->setAttribute(
+ *    Doctrine::ATTR_COL_KEY,'colName');
+ */
+Doctrine::getTable('Power')->setAttribute(Doctrine::ATTR_COLL_KEY,'id');
+
+/**
  * String constant, base URI for the site.
  */
 define('SITE_URL', 'http://'.$_SERVER['HTTP_HOST']);

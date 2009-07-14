@@ -19,15 +19,6 @@ $dsn = generateDSN();
 $conn = Doctrine_Manager::connection($dsn);
 
 /**
- * Set ATTR_COLL_KEY attributes on tables as needed here.
- * 
- * eg:
- * Doctrine::getTable('TableName')->setAttribute(
- *    Doctrine::ATTR_COL_KEY,'colName');
- */
-Doctrine::getTable('Power')->setAttribute(Doctrine::ATTR_COLL_KEY,'id');
-
-/**
  * Setup autoloading for non-Doctrine classes.
  */
 spl_autoload_register('autoLoad');
