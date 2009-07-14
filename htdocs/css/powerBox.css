@@ -1,5 +1,9 @@
+#powerList {
+	width                 : 625px;
+}
+
 .power {
-	width                 : 325px;
+	width                 : 300px;
 	border                : 1px solid black;
 	margin                : 5px 5px;
 	

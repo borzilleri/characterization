@@ -249,6 +249,8 @@ class Player extends BasePlayer
    * @return bool
    */
   public function shortRest() {
+    $this->health_tmp = 0;
+
     foreach( $this->Powers as $p ) {
       if( $p->useType == 'encounter' ) {
         $p->refresh();
@@ -268,6 +270,7 @@ class Player extends BasePlayer
   public function extendedRest() {
     $this->health_cur = $this->health_max;
     $this->surges_cur = $this->surges_max;
+    $this->health_tmp = 0;
     
     // Refresh Encounter & Daily Powers
     foreach( $this->Powers as $p ) {

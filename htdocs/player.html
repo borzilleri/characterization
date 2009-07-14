@@ -8,73 +8,68 @@ $char = Doctrine::getTable('Player')->findOneById($id);
 if( !$char || !$char->exists() ) {
   loadPage('/');
 }
+
+$power_list = Doctrine_Query::create()
+  ->from('Power p')
+  ->where('p.player_id = ?', $char->id)
+  ->orderBy('p.useType, p.level')
+  ->execute();
 ?>
 
 <script type="text/javascript" charset="utf-8">
   var CHAR_ID = <?=$char->id;?>;
 </script>
 
-<h1><?=$char->name;?>
-<h3><?=$char->Race->name;?> <?=$char->Archetype->name;?> <?=$char->level;?></h3>
-
 <form method="POST" action="<?=SITE_URL;?>/update">
- <div>
+<div id="PlayerTitle">
   <input type="hidden" name="id" value="<?=$char->id;?>" />
-  <input type="hidden" name="action" value="shortRest" />
-  <input type="submit" value="Short Rest" />
- </div>
+  <span id="playerName"><?=$char->name;?></span>
+  &mdash;
+  <span id="playerArchetype">
+    <?=$char->Race->name;?>
+    <?=$char->Archetype->name;?>
+    <?=$char->level;?>
+  </span>
+  <select name="action">
+    <option value="shortRest">Short</option>
+    <option value="extendedRest">Extended</option>
+  </select>
+  <input type="submit" value="Rest" />
+</div>
 </form>
 
 <form method="POST" action="<?=SITE_URL;?>/update">
- <div>
+<div id="health">Health:
   <input type="hidden" name="id" value="<?=$char->id;?>" />
-  <input type="hidden" name="action" value="extendedRest" />
-  <input type="submit" value="Extended Rest" />
- </div>
-</form>
 
-<form method="POST" action="<?=SITE_URL;?>/update">
- <div>
-  <input type="hidden" name="id" value="<?=$char->id;?>" />
-  <input type="hidden" name="action" value="tempHealth" />
-  <input type="submit" value="Add Temporary Health" />
-  <input type="text" name="health" size="3" maxlength="4" value="0" />
- </div>
-</form>
-
-<form method="POST" action="<?=SITE_URL;?>/update">
- <div>
-  <input type="hidden" name="id" value="<?=$char->id;?>" />
-  <input type="hidden" name="action" value="damage" />
-  <input type="submit" value="Take Damage" />
-  <input type="text" name="damage" size="3" maxlength="4" value="0" />
- </div>
-</form>
-
-<form method="POST" action="<?=SITE_URL;?>/update">
- <div>
-  <input type="hidden" name="id" value="<?=$char->id;?>" />
-  <input type="hidden" name="action" value="surge" />
-  <input type="submit" value="Healing Surge" />
-  +<input type="text" name="surge_bonus" size="3" maxlength="4" value="0" /> (extra health)
- </div>
-</form>
-
-<div id="health">
- Health:
- <span class="<?=$char->isBloodied()?'bloodied':'';?>">
-  <?=$char->health_cur;?></span>
+  <span class="<?=$char->isBloodied()?'bloodied':'';?>">
+    <?=$char->health_cur;?>
+  </span>
   &nbsp;/&nbsp;<?=$char->health_max;?>
   <?=$char->health_tmp?" ({$char->health_tmp})":'';?>
+  <input type="text" name="health" size="3" maxlength="4" value="0" />
+  <select name="action">
+    <option value="damage">Damage</option>
+    <option value="tempHealth">Temp. Health</option>
+  </select>
+  <input type="submit" value="Adjust Health" />
 </div>
+</form>
 
-<div id="surges">
- Surges:
- <span id="surges_cur"><?=$char->surges_cur;?></span>
- &nbsp;/&nbsp;<?=$char->surges_max;?>
- (<?=$char->surge_value;?>)
- <a id="surgePlus" href="#">+</a>&nbsp;/&nbsp;<a id="surgeMinus" href="#">-</a>
+<form method="POST" action="<?=SITE_URL;?>/update">
+<div id="surges">Surges:
+  <input type="hidden" name="id" value="<?=$char->id;?>" />
+  <input type="hidden" name="action" value="surge" />
+
+  <span id="surges_cur"><?=$char->surges_cur;?></span>
+  &nbsp;/&nbsp;<?=$char->surges_max;?> (<?=$char->surge_value;?>)
+  <input type="button" id="surgeMinus" value="-" />
+  <input type="button" id="surgePlus" value="+" />
+  
+  <input type="submit" value="Spend Surge" />
+  +<input type="text" name="surge_bonus" size="3" maxlength="4" value="0" />
 </div>
+</form>
 
 <hr />
 
@@ -89,40 +84,42 @@ if( !$char || !$char->exists() ) {
 
 <hr />
 
-<? foreach($char->Powers as $power): ?>
-<div class="power" id="power<?=$power->id;?>">
-  <div id="<?=$power->id;?>" class="titleBar <?=$power->useTypeClass();?>">
-    <span class="powerLevel">
-      <?=$char->Archetype->name;?> <?=$power->level;?>
-    </span>
-    <span class="powerTitle"><?=$power->name;?></span>
-  </div>
-  <div class="description <?=$power->used?'usedPower':'';?>">
-    <div class="row0">
-      <div>
-        <span class="usage"><?=ucfirst($power->useType);?></span>
-        &diams;
-        <span class="keywords">[keywords]</span>
-      </div>
-      <div>
-        <? if( !empty($power->powerRange) ): ?>
-          <span class="range"><?=$power->powerRange;?></span>
-        <? endif; ?>
-        <span class="actionType"><?=$power->actionTypeDisplay();?></span>
-      </div>
-    <? if( !empty($power->target) ): ?>
-      <div><span class="target">Target:</span> <?=$power->target;?></div>
-    <? endif; ?>
-    <? if( !empty($power->attack) ): ?>
-      <div><span class="attack">Attack:</span> <?=$power->attack;?></div>
-    <? endif; ?>
+<div id="powerList">
+<? foreach($power_list as $power): ?>
+  <div class="power" id="power<?=$power->id;?>">
+    <div id="<?=$power->id;?>" class="titleBar <?=$power->useTypeClass();?>">
+      <span class="powerLevel">
+        <?=$char->Archetype->name;?> <?=$power->level;?>
+      </span>
+      <span class="powerTitle"><?=$power->name;?></span>
     </div>
-    <div class="row1">
-      <div><?=nl2br($power->notes);?></div>
+    <div class="description <?=$power->used?'usedPower':'';?>">
+      <div class="row0">
+        <div>
+          <span class="usage"><?=ucfirst($power->useType);?></span>
+          &diams;
+          <span class="keywords">[keywords]</span>
+        </div>
+        <div>
+          <? if( !empty($power->powerRange) ): ?>
+            <span class="range"><?=$power->powerRange;?></span>
+          <? endif; ?>
+          <span class="actionType"><?=$power->actionTypeDisplay();?></span>
+        </div>
+      <? if( !empty($power->target) ): ?>
+        <div><span class="target">Target:</span> <?=$power->target;?></div>
+      <? endif; ?>
+      <? if( !empty($power->attack) ): ?>
+        <div><span class="attack">Attack:</span> <?=$power->attack;?></div>
+      <? endif; ?>
+      </div>
+      <div class="row1">
+        <div><?=nl2br($power->notes);?></div>
+      </div>
     </div>
   </div>
-</div>
 <? endforeach; ?>
-<hr class="clear" />
+</div>
+<div class="clear" />
 
 <?php include('footer.php'); ?>

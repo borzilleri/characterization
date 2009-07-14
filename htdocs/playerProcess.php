@@ -17,7 +17,7 @@ switch($action) {
     $success = $char->useSurge((int)@$_POST['surge_bonus']);
     break;
   case 'damage':
-    $success = $char->takeDamage((int)@$_POST['damage']);
+    $success = $char->takeDamage((int)@$_POST['health']);
     break;
   case 'tempHealth':
     $success = $char->addTempHealth((int)@$_POST['health']);
