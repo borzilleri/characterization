@@ -1,0 +1,73 @@
+<?php
+include('autohandler.php');
+
+$char = Doctrine::getTable('Player')->findOneById($_REQUEST['id']);
+if( !$char || !$char->exists() ) {
+  loadPage('/');
+}
+
+$power = $char->Powers->get(@$_REQUEST['p_id']);
+?>
+
+<form method="POST" action="<?=SITE_URL;?>/<?=$char->id;?>/power/save">
+  <div>
+  <? if( $power->exists() ): ?>
+    <input type="hidden" name="p_id" value="<?=$power->id;?>" />
+  <? endif; ?>
+    <label for="power_name">Name:</label>
+    <input type="text" id="power_name" name="power_name" 
+      size="30" maxlength="255" value="<?=$power->name;?>" />
+  </div>
+  
+  <div>
+    <label for="level">Level:</label>
+    <select name="level" id="level">
+    <? for($i=1;$i<=30;$i++): ?>
+      <option value="<?=$i;?>"
+        <?=$i==$power->level?'selected="selected"':'';?>><?=$i;?></option>
+    <? endfor; ?>
+    </select>
+  </div>
+
+  <div>
+    <label for="use_type">Usage Type:</label>
+    <select name="use_type" id="use_type">
+      <option value="at-will" selected="selected">At-Will</option>
+      <option value="encounter"
+        <?=$power->useType=='encounter'?'selected="selected"':'';?>>
+        Encounter</option>
+      <option value="daily"
+      <?=$power->useType=='daily'?'selected="selected"':'';?>>Daily</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="target">Target:</label>
+    <input type="text" name="target" id="target" size="30" maxlength="255"
+      value="<?=$power->target;?>" />
+  </div>
+  
+  <div>
+    <label for="attack">Attack:</label>
+    <input type="text" name="attack" id="attack" size="30" maxlength="255"
+      value="<?=$power->attack;?>" />
+  </div>
+  
+  <div>
+    <label for="powerRange">Range:</label>
+    <input type="text" name="powerRange" id="powerRange" size="30"
+      maxlength="255" value="<?=$power->powerRange;?>" />
+  </div>
+  
+  <div>
+    <label for="notes">Notes:</label>
+    <textarea id="notes" name="notes" cols="30" 
+      rows="10"><?=$power->notes;?></textarea>
+  </div>
+
+  <div>
+    <input type="submit" value="Submit" />
+  </div>
+</form>
+
+<?php include('footer.php'); ?>

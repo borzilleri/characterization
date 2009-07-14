@@ -1,0 +1,22 @@
+<?php
+include('autohandler.php');
+
+$id = @$_REQUEST['id'];
+$char = Doctrine::getTable('Player')->findOneById($id);
+if( !$char || !$char->exists() ) {
+  loadPage('/');
+}
+?>
+
+<a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new">add power</a>
+
+<ul>
+<? foreach($char->Powers as $p): ?>
+ <li>
+  <?=$p->name;?>
+  <a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit">(edit)</a>
+ </li>
+<? endforeach; ?>
+</ul>
+
+<?php include('footer.php');?>

@@ -1,4 +1,5 @@
 <?php
+$css_include = array('powerBox.css');
 include('autohandler.php');
 
 $id = @$_REQUEST['id'];
@@ -9,6 +10,101 @@ if( !$char || !$char->exists() ) {
 ?>
 
 <h1><?=$char->name;?>
-<h3><?=$char->Race->name;?> <?=$char->Archetype->name;?></h3>
+<h3><?=$char->Race->name;?> <?=$char->Archetype->name;?> <?=$char->level;?></h3>
+
+<form method="POST" action="<?=SITE_URL;?>/update">
+ <div>
+  <input type="hidden" name="id" value="<?=$char->id;?>" />
+  <input type="hidden" name="action" value="shortRest" />
+  <input type="submit" value="Short Rest" />
+ </div>
+</form>
+
+<form method="POST" action="<?=SITE_URL;?>/update">
+ <div>
+  <input type="hidden" name="id" value="<?=$char->id;?>" />
+  <input type="hidden" name="action" value="extendedRest" />
+  <input type="submit" value="Extended Rest" />
+ </div>
+</form>
+
+<form method="POST" action="<?=SITE_URL;?>/update">
+ <div>
+  <input type="hidden" name="id" value="<?=$char->id;?>" />
+  <input type="hidden" name="action" value="tempHealth" />
+  <input type="submit" value="Add Temporary Health" />
+  <input type="text" name="health" size="3" maxlength="4" value="0" />
+ </div>
+</form>
+
+<form method="POST" action="<?=SITE_URL;?>/update">
+ <div>
+  <input type="hidden" name="id" value="<?=$char->id;?>" />
+  <input type="hidden" name="action" value="damage" />
+  <input type="submit" value="Take Damage" />
+  <input type="text" name="damage" size="3" maxlength="4" value="0" />
+ </div>
+</form>
+
+<form method="POST" action="<?=SITE_URL;?>/update">
+ <div>
+  <input type="hidden" name="id" value="<?=$char->id;?>" />
+  <input type="hidden" name="action" value="surge" />
+  <input type="submit" value="Healing Surge" />
+  +<input type="text" name="surge_bonus" size="3" maxlength="4" value="0" /> (extra health)
+ </div>
+</form>
+
+<div>
+ Health:
+ <span class="<?=$char->isBloodied()?'bloodied':'';?>"><?=$char->health_cur;?></span>
+  &nbsp;/&nbsp;<?=$char->health_max;?>
+  <?=$char->health_tmp?" ({$char->health_tmp})":'';?>
+</div>
+<div>
+ Surges:
+ <?=$char->surges_cur;?>
+ &nbsp;/&nbsp;<?=$char->surges_max;?> (<?=$char->surge_value;?>)
+</div>
+
+<hr />
+
+<div>
+ STR: <?=$char->strength;?><br />
+ CON: <?=$char->constitution;?><br />
+ DEX: <?=$char->dexterity;?><br />
+ INT: <?=$char->intelligence;?><br />
+ WIS: <?=$char->wisdom;?><br />
+ CHA: <?=$char->charisma;?><br />
+</div>
+
+<hr />
+
+<? foreach($char->Powers as $power): ?>
+<div class="power">
+  <div class="titleBar <?=$power->useTypeClass();?>">
+    <span class="powerTitle"><?=$power->name;?></span>
+    <span class="powerLevel">
+      <?=$char->Archetype->name;?> <?=$power->level;?></span>
+  </div>
+  <div class="row0">
+    <div>
+      <span class="usage"><?=ucfirst($power->useType);?></span>
+      &diams;
+      <span class="keywords">[keywords]</span>
+    </diV>
+    <div>
+      <span class="actionType">[action type]</span>
+      <span class="range"><?=$power->powerRange;?></span>
+    </div>
+    <div><span class="target">Target:</span> <?=$power->target;?></div>
+    <div><span class="attack">Attack:</span> <?=$power->attack;?></div>
+  </div>
+  <div class="row1">
+    <div><?=$power->notes;?></div>
+  </div>
+</div>
+<? endforeach; ?>
+<hr class="clear" />
 
 <?php include('footer.php'); ?>

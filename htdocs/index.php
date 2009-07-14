@@ -5,6 +5,8 @@ $chars = Doctrine_Query::create()->from('Player p')->execute();
 
 ?>
 
+<a href="<?=SITE_URL;?>/new">add character</a>
+
 <ul>
 <? foreach($chars as $c): ?>
  <li>

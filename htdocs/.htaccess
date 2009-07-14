@@ -13,15 +13,14 @@ RewriteCond %{SCRIPT_FILENAME} !-d
 
 RewriteRule ^new$ playerEdit.html?action=add
 RewriteRule ^save$ playerEditProcess.php?action=save
+RewriteRule ^update$ playerProcess.php
 RewriteRule ^([0-9]+)/edit$ playerEdit.html?action=edit&id=$1
+RewriteRule ^([0-9]+)/power$ power.html?id=$1
+RewriteRule ^([0-9]+)/power/new$ powerEdit.html?action=add&id=$1
+RewriteRule ^([0-9]+)/power/([0-9]+)/edit$ powerEdit.html?action=edit&id=$1&p_id=$2
+RewriteRule ^([0-9]+)/power/save$ powerEditProcess.php?action=save&id=$1
 RewriteRule ^([0-9]+)/?$ player.html?id=$1
 
-# Products
-#RewriteRule ^product/save*.$ productEditProcess.php?action=save
-#RewriteRule ^product/delete*.$ productEditProcess.php?action=delete
-#RewriteRule ^product/([0-9]+)/delete.*$ productEdit.html?action=delete&id=$1
-#RewriteRule ^product/([0-9]+)/edit*.$ productEdit.html?action=edit&id=$1
-#RewriteRule ^product/add*.$ productEdit.html?action=add
 
 # Base Rule for product pages.
 #RewriteCond %{SCRIPT_FILENAME} !\.(html|php)$

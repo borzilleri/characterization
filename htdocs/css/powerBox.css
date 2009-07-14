@@ -1,0 +1,53 @@
+.power {
+	width                 : 325px;
+	border                : 1px solid black;
+	margin                : 5px 5px;
+	
+	float                 : left;
+}
+
+.power div {
+	padding               : 0px 5px;
+}
+
+.titleBar {
+	color                 : #FFF;
+}
+
+.titleBar .powerTitle {
+	font-weight						: bold;
+}
+
+.titleBar .powerLevel {
+	display               : block;
+	float                 : right;
+}
+
+.atwill {
+	background-color      : #528855;
+}
+
+.encounter {
+	background-color      : #7E012A;
+}
+
+.daily {
+	background-color      : #3B3B3C;
+}
+
+.row0 {
+	background-color      : #FFF;
+}
+
+.row1 {
+	background-color      : #D8D7C5;
+}
+
+.usage, .keywords, .actionType, .target, .attack {
+	font-weight           : bold;
+}
+
+.range {
+	float                 : right;
+	display               : block;
+}

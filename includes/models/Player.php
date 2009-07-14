@@ -9,10 +9,11 @@ class Player extends BasePlayer
 {
   
   /**
-   *
+   * @global $msg
    * @return bool
    */
   public function updateFromForm() {
+    global $msg;
     $error = false;
     
     // Race
@@ -25,12 +26,9 @@ class Player extends BasePlayer
       'unknown':$_POST['character_name'];
     
     // Character Level
-    if( empty($_POST['character_level']) ) {
-      // level may not be blank.
-      $error = true;
-    }
-    elseif( 1 > $_POST['character_level'] || 30 < $_POST['character_level'] ) {
-      // Level must be 1-30 inclusive.
+    if( empty($_POST['character_level']) ||
+        1 > $_POST['character_level'] || 30 < $_POST['character_level'] ) {
+      $msg->add('Level must be 1-30 inclusive.', Message::WARNING);
       $error = true;
     }
     else {
@@ -40,12 +38,8 @@ class Player extends BasePlayer
     // Ability Scores
     
     // Strength
-    if( empty($_POST['character_str']) ) {
-      // Error, STR May not be empty.
-      $error = true;
-    }
-    elseif( $_POST['character_str'] < 1 ) {
-      // Error, STR must be positive.
+    if( empty($_POST['character_str']) || $_POST['character_str'] < 1 ) {
+      $msg->add('Strenth must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
@@ -53,12 +47,8 @@ class Player extends BasePlayer
     }
     
     // Dexterity
-    if( empty($_POST['character_dex']) ) {
-      // Error, May not be empty.
-      $error = true;
-    }
-    elseif( $_POST['character_dex'] < 1 ) {
-      // Error, must be positive.
+    if( empty($_POST['character_dex']) || $_POST['character_dex'] < 1 ) {
+      $msg->add('Dexterity must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
@@ -66,12 +56,8 @@ class Player extends BasePlayer
     }
     
     // Constitution
-    if( empty($_POST['character_con']) ) {
-      // Error, May not be empty.
-      $error = true;
-    }
-    elseif( $_POST['character_con'] < 1 ) {
-      // Error, must be positive.
+    if( empty($_POST['character_con']) || $_POST['character_con'] < 1 ) {
+      $msg->add('Constitution must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
@@ -79,12 +65,8 @@ class Player extends BasePlayer
     }
     
     // Intelligence
-    if( empty($_POST['character_int']) ) {
-      // Error, May not be empty.
-      $error = true;
-    }
-    elseif( $_POST['character_int'] < 1 ) {
-      // Error, must be positive.
+    if( empty($_POST['character_int']) || $_POST['character_int'] < 1 ) {
+      $msg->add('Intelligence must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
@@ -92,12 +74,8 @@ class Player extends BasePlayer
     }
     
     // Wisdom
-    if( empty($_POST['character_wis']) ) {
-      // Error, May not be empty.
-      $error = true;
-    }
-    elseif( $_POST['character_wis'] < 1 ) {
-      // Error, must be positive.
+    if( empty($_POST['character_wis']) || $_POST['character_wis'] < 1 ) {
+      $msg->add('Wisdom must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
@@ -105,12 +83,8 @@ class Player extends BasePlayer
     }
     
     // Charisma
-    if( empty($_POST['character_cha']) ) {
-      // Error, May not be empty.
-      $error = true;
-    }
-    elseif( $_POST['character_cha'] < 1 ) {
-      // Error, must be positive.
+    if( empty($_POST['character_cha']) || $_POST['character_cha'] < 1 ) {
+      $msg->add('Charisma must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
@@ -171,6 +145,16 @@ class Player extends BasePlayer
     else {
       $this->surge_value = $_POST['character_surge_value'];
     }
+
+    // Current Health
+    if( !$this->exists() ) {
+      $this->health_cur = $this->health_max;
+    }
+
+    // Current Surges
+    if( !$this->exists() ) {
+      $this->surges_cur = $this->surges_max;
+    }
     
     return !$error;
   }
@@ -183,6 +167,27 @@ class Player extends BasePlayer
    */
   public function isBloodied() {
     return $this->health_cur <= floor($this->health_max/2);
+  }
+  
+  /**
+   * Determines if the character is currently dead
+   *
+   * Death is determined by:
+   * 1) health_cur is equal to -1*floor(health_max/2)
+   *    ie - the character's bloodied value as a negative number.
+   * 2) 3 failed death saving throws
+   *
+   * @return bool 
+   */
+  public function isDead() {
+    if( $this->health_cur <= floor($this->health_max/2)*-1 ) {
+      return true;
+    }
+    /**
+     * @todo Add checks for death saving throws
+     */
+    
+    return false;
   }
   
   /**
@@ -235,6 +240,160 @@ class Player extends BasePlayer
         break;
     }
   }
+  
+  /**
+   * Perform a short rest action.
+   *
+   * A short rest action refreshes (makes active/unused) all encounter powers.
+   * 
+   * @return bool
+   */
+  public function shortRest() {
+    /**
+     * @todo Refresh Encounter Powers
+     */
+    return true;
+  }
+  
+  /**
+   * Perform an extended rest action.
+   * 
+   * An extended rest returns health to maximum, surges per day to maximum, 
+   * as well as refreshes (makes active/unused) all encounter and daily powers.
+   *
+   * @return bool
+   */
+  public function extendedRest() {
+    $this->health_cur = $this->health_max;
+    $this->surges_cur = $this->surges_max;
+    
+    /**
+     * @todo Refresh Encounter Powers
+     * @todo Refresh Daily Powers
+     */
+    return true;
+  }
+  
+  /**
+   * Attempt to use a healing surge.
+   *
+   * This method attempts to use a healing surge on the character. If the 
+   * character has zero healing surges left, or is at max health, nothing will
+   * happen and a notice will be sent. The exception is if the character is
+   * under 1 health, at which point they are set to 1 health.
+   * 
+   * @global $msg
+   * @param int $extra Extra health to be added along with the surge value.
+   * @return bool
+   */
+  public function useSurge($extra = 0) {
+    global $msg;
+    $error = false;
+
+    if( 1 > $this->surges_cur ) {
+      if( $this->health_cur < 1 ) {
+        $this->health_cur = 1;
+        $msg->add("You have no healing surges remaining, health set to 1.",
+          Message::NOTICE);
+      }
+      else {
+        $msg->add("You do not have a healing surge to spend", Message::NOTICE);
+        $error = true;
+      }
+    }
+    elseif( $this->health_cur >= $this->health_max ) {
+      $msg->add("You are at maximum health.");
+      $error = true;
+    }
+    else {
+      $this->surges_cur = $this->surges_cur - 1;
+      $this->healDamage($this->surge_value+(int)$extra);
+    }
+    
+    return !$error;
+  }
+  
+  /**
+   * Heals an amount of health.
+   *
+   * @param int health
+   * @return bool
+   */
+  private function healDamage($health) {
+    $error = false;
+
+    if( 1 > $health ) {
+      $error = true;
+    }
+    else {
+      $this->health_cur = min(
+        $this->health_max,($this->health_cur+(int)$health));
+    }
+    return !$error;
+  }
+  
+  /**
+   * Take an amount of damage.
+   *
+   * @global $msg
+   * @return bool
+   */
+  public function takeDamage($damage) {
+    global $msg;
+    $error = false;
+    $damage_left = (int)$damage;
+    
+    if( $this->isDead() ) {
+      $msg->add("Unable to take damage. You are dead.", Message::NOTICE);
+      $error = true;
+    }
+    else {
+      if( 0 > $damage ) {
+        $this->healDamage($damage*-1);
+      }
+      elseif( $this->health_tmp >= $damage_left ) {
+        // If we have more temporary hp than damage taken,
+        // Just remove the temp hp.
+        $this->health_tmp = $this->health_tmp - $damage_left;
+      }
+      else {
+        // Otherwise, subtract our temp hp from the damage, set it to zero
+        // And remove the rest of the damage from our current health.
+        $damage_left = $damage_left - $this->health_tmp;
+        $this->health_tmp = 0;
+        
+        $this->health_cur = $this->health_cur - $damage_left;
+      }
+    }
+    
+    return !$error;
+  }
+  
+  /**
+   * @global $msg
+   * @param int $health Temporary HP to add.
+   * @return bool
+   */
+  public function addTempHealth($health) {
+    global $msg;
+    $error = false;
+    
+    if( 0 > $health ) {
+      $msg->add("May not add negative temporary health.", Message::WARNING);
+      $error = true;
+    }
+    elseif( $this->health_tmp > $health ) {
+      $msg->add("Unable to add temporary health. Larger source already exists.", 
+        Message::NOTICE);
+      $error = true;
+    }
+    else {
+      $this->health_tmp = $health;
+    }
+    return true;
+  }
+  
+
 }
 
 ?>

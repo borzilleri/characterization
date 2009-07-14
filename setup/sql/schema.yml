@@ -34,6 +34,9 @@ Player:
     level: integer
     health_max: integer
     health_cur: integer
+    health_tmp:
+      type: integer
+      default: 0
     surges_max: integer
     surges_cur: integer
     surge_value: integer
@@ -49,6 +52,7 @@ Player:
     archetype_id:
       type: integer(8)
       unsigned: 1
+    notes: clob
   relations:
     Race:
       foreignAlias: Characters
@@ -67,6 +71,10 @@ Power:
     useType: 
       type: enum
       values: ['at-will','encounter','daily']
+    target: string(255)
+    powerRange: string(255)
+    attack: string(255)
+    notes: clob
     used: boolean
     player_id:
       type: integer
@@ -74,3 +82,12 @@ Power:
   relations:
     Player:
       foreignAlias: Powers
+
+Keyword:
+  columns:
+    id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+      unsigned: 1
+    name: string(255)

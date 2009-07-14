@@ -36,3 +36,11 @@ ul.inline li {
 ul.inline li.firstListItem {
   border-left           : none;
 }
+
+.bloodied {
+  color                 : #F00;
+}
+
+hr.clear {
+	clear                 : both;
+}

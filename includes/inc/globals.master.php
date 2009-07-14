@@ -18,7 +18,7 @@ define('MEDIA_URL', SITE_URL);
  * @global object $GLOBALS['messenger']
  * @name $messenger
  */
-#$GLOBALS['messenger'] = new Message();
+$GLOBALS['msg'] = new Message();
 
 /**
  * Javascript include array.
