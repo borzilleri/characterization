@@ -71,8 +71,11 @@ Power:
     useType: 
       type: enum
       values: ['at-will','encounter','daily']
-    target: string(255)
+    action:
+      type: enum
+      values: ['standard','move','minor','free','reaction','interrupt','none']
     powerRange: string(255)
+    target: string(255)
     attack: string(255)
     notes: clob
     used: boolean

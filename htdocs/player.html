@@ -92,8 +92,7 @@ if( !$char || !$char->exists() ) {
 <? foreach($char->Powers as $power): ?>
 <div class="power" id="power<?=$power->id;?>">
   <div id="<?=$power->id;?>" class="titleBar <?=$power->useTypeClass();?>">
-    <span class="powerTitle"><?=$power->name;?>
-      (<?=$power->level;?>)</span>
+    <span class="powerTitle"><?=$power->name;?></span>
     <span class="powerLevel">
       <?=$char->Archetype->name;?> <?=$power->level;?>
     </span>
@@ -104,13 +103,19 @@ if( !$char || !$char->exists() ) {
         <span class="usage"><?=ucfirst($power->useType);?></span>
         &diams;
         <span class="keywords">[keywords]</span>
-      </diV>
-      <div>
-        <span class="actionType">[action type]</span>
-        <span class="range"><?=$power->powerRange;?></span>
       </div>
+      <div>
+        <span class="actionType"><?=$power->actionTypeDisplay();?></span>
+      <? if( !empty($power->range) ): ?>
+        <span class="range"><?=$power->powerRange;?></span>
+      <? endif; ?>
+      </div>
+    <? if( !empty($power->target) ): ?>
       <div><span class="target">Target:</span> <?=$power->target;?></div>
+    <? endif; ?>
+    <? if( !empty($power->attack) ): ?>
       <div><span class="attack">Attack:</span> <?=$power->attack;?></div>
+    <? endif; ?>
     </div>
     <div class="row1">
       <div><?=nl2br($power->notes);?></div>

@@ -47,12 +47,38 @@ class Power extends BasePower
       $this->useType = $_POST['use_type'];
     }
     
+    if( empty($_POST['actionType']) || 
+        !$this->isValidActionType($_POST['action']) ) {
+      $msg->add('Invalid action type.', Message::WARNING);
+      $error = true;
+    }
+    else {
+      $this->action = $_POST['actionType'];
+    }
+    
     $this->target = trim(@$_POST['target']);
     $this->attack = trim(@$_POST['attack']);
     $this->powerRange = trim(@$_POST['powerRange']);
     $this->notes = trim(@$_POST['notes']);
     
     return !$error;    
+  }
+  
+  private function isValidActionType($action) {
+    switch($this->action) {
+      case 'standard':
+      case 'move':
+      case 'minor':
+      case 'free':
+      case 'interrupt':
+      case 'reaction':
+      case 'none':
+        return true;
+        break;
+      default:
+        return false;
+        break;
+    }
   }
   
   public function useTypeClass() {
@@ -87,6 +113,33 @@ class Power extends BasePower
     else {
       $this->used = !$this->used;
       return true;
+    }
+  }
+  
+  public function actionTypeDisplay() {
+    switch($this->action) {
+      case 'move':
+        return 'Move Action';
+        break;
+      case 'minor':
+        return 'Minor Action';
+        break;
+      case 'free':
+        return 'Free Action';
+        break;
+      case 'interrupt':
+        return 'Immediate Interrupt';
+        break;
+      case 'reaction':
+        return 'Immediate Reaction';
+        break;
+      case 'none':
+        return 'No Action';
+        break;
+      case 'standard':
+      default:
+        return "Standard Action";
+        break;
     }
   }
 }

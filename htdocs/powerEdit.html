@@ -42,6 +42,27 @@ $power = $char->Powers->get(@$_REQUEST['p_id']);
   </div>
 
   <div>
+    <label for="actionType">Action:</label>
+    <select name="actionType" id="actionType">
+      <option value="standard" selected="selected">Standard</option>
+      <option value="move"
+        <?=$power->action=='move'?'selected="selected"':'';?>>Move</option>
+      <option value="minor"
+        <?=$power->action=='minor'?'selected="selected"':'';?>>Minor</option>
+      <option value="free"
+        <?=$power->action=='free'?'selected="selected"':'';?>>Free</option>
+      <option value="interrupt"
+        <?=$power->action=='interrupt'?'selected="selected"':'';?>>
+        Immediate Interrupt</option>
+      <option value="reaction"
+        <?=$power->action=='reaction'?'selected="selected"':'';?>>
+        Immediate Reaction</option>
+      <option value="none" 
+        <?=$power->action=='none'?'selected="selected"':'';?>>No Action</option>
+    </select>
+  </div>
+
+  <div>
     <label for="target">Target:</label>
     <input type="text" name="target" id="target" size="30" maxlength="255"
       value="<?=$power->target;?>" />
