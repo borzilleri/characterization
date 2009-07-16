@@ -1,0 +1,11 @@
+#notesBox {
+	float                 : right;
+}
+#notesBox textarea {
+	width                 : 300px;
+	height                : 300px;
+	margin                : 5px;
+}
+.abilityLabel {
+	font-weight           : bold;
+}

@@ -1,7 +1,8 @@
 var PLAYER_PROCESS = SITE_URL+"/ajax/playerProcess.php";
 
-function usePower(id) {
-	var powerID = '#power'+id+' .description';
+function usePower(divID) {
+	var id = divID.substring(1);
+	var powerIDstring = '#powerBox'+id+' .description';
 	
 	$.post(SITE_URL+"/ajax/playerProcess.php",
 		{
@@ -11,7 +12,7 @@ function usePower(id) {
 		},
 		function(data) {
 			if( data ) {
-				$(powerID).toggle();
+				$(powerIDstring).toggle();
 			}
 		}
 	);

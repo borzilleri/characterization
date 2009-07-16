@@ -1,5 +1,5 @@
 <?php
-$css_include = array('powerBox.css');
+$css_include = array('statBlock.css', 'powerBox.css');
 $js_include = array('playerProcess.js');
 include('autohandler.php');
 
@@ -20,7 +20,7 @@ $power_list = Doctrine_Query::create()
   var CHAR_ID = <?=$char->id;?>;
 </script>
 
-<form method="POST" action="<?=SITE_URL;?>/update">
+<form method="post" action="<?=SITE_URL;?>/update">
 <div id="PlayerTitle">
   <input type="hidden" name="id" value="<?=$char->id;?>" />
   <span id="playerName"><?=$char->name;?></span>
@@ -38,7 +38,7 @@ $power_list = Doctrine_Query::create()
 </div>
 </form>
 
-<form method="POST" action="<?=SITE_URL;?>/update">
+<form method="post" action="<?=SITE_URL;?>/update">
 <div id="health">Health:
   <input type="hidden" name="id" value="<?=$char->id;?>" />
 
@@ -56,7 +56,7 @@ $power_list = Doctrine_Query::create()
 </div>
 </form>
 
-<form method="POST" action="<?=SITE_URL;?>/update">
+<form method="post" action="<?=SITE_URL;?>/update">
 <div id="surges">Surges:
   <input type="hidden" name="id" value="<?=$char->id;?>" />
   <input type="hidden" name="action" value="surge" />
@@ -88,20 +88,21 @@ $power_list = Doctrine_Query::create()
 
 <hr />
 
-<form method="POST" action="<?=SITE_URL;?>/update">
+<form method="post" action="<?=SITE_URL;?>/update">
 <div id="notesBox">
   <input type="hidden" name="id" value="<?=$char->id;?>" />
   <input type="hidden" name="action" value="notes" />
   <input type="submit" value="Update Notes" />
   <br />
-  <textarea name="notes"><?=$char->notes;?></textarea>
+  <textarea name="notes" rows="30" cols="42"><?=$char->notes;?></textarea>
 </div>
 </form>
 
 <div id="powerList">
 <? foreach($power_list as $power): ?>
-  <div class="power" id="power<?=$power->id;?>">
-    <div id="<?=$power->id;?>" class="titleBar <?=$power->useTypeClass();?>">
+  <div class="power" id="powerBox<?=$power->id;?>">
+    <div id="p<?=$power->id;?>" class="titleBar
+      <?=$power->useTypeClass();?>">
       <span class="powerLevel">
         <?=$char->Archetype->name;?> <?=$power->level;?>
       </span>

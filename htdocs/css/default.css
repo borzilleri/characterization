@@ -1,10 +1,15 @@
 body {
+	font-size	            : 100%;
+	line-height           : 1.1em;
   font-family           : helvetica, verdana, arial, sans-serif;
-  font-size             : 10pt;
   color                 : black;
   background-color      : white;
   margin                : 0px;
   padding               : 0px;
+}
+
+body div, input, textarea, select {
+	font-size             : .875em; /* .875em * 16px = 12px */
 }
 
 #Header {
@@ -14,7 +19,6 @@ body {
 
 #Footer {
   text-align            : center;
-  font-size             : x-small;
   color                 : #777;
 	border-top            : 1px dotted black;
 	margin                : .5em;
@@ -48,5 +52,4 @@ ul.inline li.firstListItem {
 }
 
 #PlayerTitle #playerName {
-	font-size             : large;
 }
