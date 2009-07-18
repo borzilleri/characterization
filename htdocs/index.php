@@ -1,19 +1,15 @@
 <?php
 include('autohandler.php');
 
-$chars = Doctrine_Query::create()->from('Player p')->execute();
-
+$char_list = Doctrine_Query::create()->from('Player p')->execute();
 ?>
 
-<a href="<?=SITE_URL;?>/new">add character</a>
-
 <ul>
-<? foreach($chars as $c): ?>
- <li>
-  <a href="<?=SITE_URL;?>/<?=$c->id;?>";?><?=$c->name;?></a> 
-  (<?=$c->Race->name;?> <?=$c->Archetype->name;?> <?=$c->level;?>)
- </li>
-<? endforeach; ?>
-<ul>
+  <? foreach($char_list as $c): ?>
+  <li><a href="<?=SITE_URL;?>/<?=$c->id;?>";?><?=$c->name;?></a> 
+    (<?=$c->Race->name;?> <?=$c->Archetype->name;?> <?=$c->level;?>)
+  </li>
+  <? endforeach; ?>
+</ul>
 
 <?php include('footer.php'); ?>

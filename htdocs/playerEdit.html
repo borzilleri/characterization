@@ -1,13 +1,28 @@
 <?php
 include('autohandler.php');
 
-if( 'edit' == $action && !empty($_REQUEST['id']) ) {
-  $char = Doctrine::getTable('Player')->findOneById($_REQUEST['id']);
-}
-else {
+if( 'add' == $action ) {
   $char = new Player;
 }
 ?>
+
+<? if( 'delete' == $action ): ?>
+
+<form method="post" action="<?=SITE_URL;?>/delete">
+  <div>
+    <p>Confirm Deletion of:</p>
+    <p><?=$char->name;?>, 
+      <?=$char->Race->name;?>
+      <?=$char->Archetype->name;?> <?=$char->level;?></p>
+  </div>
+  
+  <div>
+    <input type="hidden" name="id" value="<?=$char->id;?>" />
+    <input type="submit" value="Delete" />
+  </div>
+</form>
+
+<? else: ?>
 
 <form method="POST" action="<?=SITE_URL;?>/save">
  <div>
@@ -88,6 +103,6 @@ else {
  <div>
   <input type="submit" name="Submit" />
 </form>
-
+<? endif; ?>
 
 <?php include('footer.php'); ?>

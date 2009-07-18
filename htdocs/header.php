@@ -4,14 +4,25 @@
  */
 ?>
 <div id="Header">
-  <ul class="inline">
-    <li class="firstListItem"><a href="<?=SITE_URL;?>">home</a></li>
-  <? if(!empty($_REQUEST['id'])): ?>
-    <li><a href="<?=SITE_URL;?>/<?=$_REQUEST['id'];?>">view</a></li>
-    <li><a href="<?=SITE_URL;?>/<?=$_REQUEST['id'];?>/edit">edit</a></li>
-    <li><a href="<?=SITE_URL;?>/<?=$_REQUEST['id'];?>/power">powers</a></li>
-  <? endif; ?>
-  </ul>
+  <div id="MenuBar">
+    <ul id="MainMenu">
+      <li class="top"><a href="<?=SITE_URL;?>">character list</a></li>
+      <li class="item"><a href="<?=SITE_URL;?>/new">new character</a></li>
+      <li class="item"><a href="<?=SITE_URL;?>/import">import character</a></li>
+    </ul>
+    <? if($char): ?>
+    <ul id="PlayerMenu">
+      <li class="top"
+        ><a href="<?=SITE_URL;?>/<?=$char->id;?>">view</a></li>
+      <li class="item"
+        ><a href="<?=SITE_URL;?>/<?=$char->id;?>/edit">edit</a></li>
+      <li class="item"
+        ><a href="<?=SITE_URL;?>/<?=$char->id?>/power">powers</a></li>
+      <li class="item"
+        ><a href="<?=SITE_URL;?>/<?=$char->id;?>/delete">delete</a></li>
+    </ul>
+    <? endif; ?>
+  </div>
 </div>
 
 <div id="Content">

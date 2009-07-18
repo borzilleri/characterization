@@ -13,7 +13,11 @@ RewriteCond %{SCRIPT_FILENAME} !-d
 
 RewriteRule ^new$ playerEdit.html?action=add
 RewriteRule ^save$ playerEditProcess.php?action=save
+RewriteRule ^delete$ playerEditProcess.php?action=delete
 RewriteRule ^update$ playerProcess.php
+RewriteRule ^import$ import.html
+RewriteRule ^upload$ importProcess.php?action=upload
+RewriteRule ^([0-9]+)/delete$ playerEdit.html?action=delete&id=$1
 RewriteRule ^([0-9]+)/edit$ playerEdit.html?action=edit&id=$1
 RewriteRule ^([0-9]+)/power$ power.html?id=$1
 RewriteRule ^([0-9]+)/power/new$ powerEdit.html?action=add&id=$1

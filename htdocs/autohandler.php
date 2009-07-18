@@ -8,6 +8,13 @@ include(dirname(__FILE__).'/../includes/inc/master.php');
 include(dirname(__FILE__).'/../includes/inc/globals.master.php');
 include(dirname(__FILE__).'/../includes/inc/session.php');
 
+if( !empty($_REQUEST['id']) ) {
+  $char = Doctrine::getTable('Player')->findOneById(@$_REQUEST['id']);
+}
+else {
+  $char = null;
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

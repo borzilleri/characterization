@@ -9,20 +9,62 @@ body {
 }
 
 body div, input, textarea, select {
-	font-size             : .875em; /* .875em * 16px = 12px */
+	font-size             : 1em;
 }
 
 #Header {
-  border-bottom         : 1px dotted black;
-  margin                : .5em;
+	/* height should be the same as the line-height for the menu */
+	height                : 1.8em;
+	background-color      : #CCDDEE;
+	border-bottom         : 1px dotted #445566;
+}
+
+#Content {
+	padding               : 10px;
 }
 
 #Footer {
+	font-size             : .625em;
   text-align            : center;
   color                 : #777;
 	border-top            : 1px dotted black;
 	margin                : .5em;
 }
+
+#MenuBar {
+	position              : absolute;
+}
+#MenuBar ul {	
+	background-color      : #CCDDEE;
+	line-height           : 1.5em;
+	float                 : left;
+	width                 : 10em;
+	border-left           : 1px solid #CCDDEE;
+	margin                : 0 9px;
+	padding               : 0px;
+	list-style            : none;
+}
+#MenuBar ul li {
+	padding               : 0 2px;
+}
+#MenuBar ul .item {
+	padding               : 1px 5px;
+	display               : none;
+}
+#MenuBar ul:hover .item {
+	border-bottom         : 1px solid #CCDDEE;
+	display               : block;
+}
+#MenuBar ul .item:hover,
+#MenUBar ul .top:hover {
+	background-color      : #DDEEFF;
+	border-bottom         : 1px solid #445566;
+}
+#MenuBar ul:hover {
+	border-left           : 1px solid #445566;
+	border-bottom         : 1px solid #445566;
+}
+
 
 ul.inline {
   padding               : 0;
