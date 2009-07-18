@@ -18,6 +18,12 @@ switch($action) {
     $char->addSurge();
     $success = $char->surges_cur;
     break;
+  case 'addActionPoint':
+    $success = $char->addActionPoint();
+    break;
+  case 'subtractActionPoint':
+    $success = $char->subtractActionPoint();
+    break;
   case 'togglePower':
     $p = $char->Powers->get($_POST['p_id']);
     // If we can't find our power, invalid op, just die.

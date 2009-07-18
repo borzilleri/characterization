@@ -69,6 +69,12 @@ $power_list = Doctrine_Query::create()
 </div>
 </form>
 
+<div id="apoints">Action Points:
+  <span id="action_points"><?=$char->action_points;?></span>
+  <input type="button" id="apMinus" value="-" />
+  <input type="button" id="apPlus" value="+" />
+</div>
+
 <div>
   <span class="abilityLabel">Str:</span>
     <?=$char->strength;?>(<?=$char->getMod('str');?>)

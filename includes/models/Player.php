@@ -409,6 +409,25 @@ class Player extends BasePlayer
     return true;
   }
   
+  /**
+   * Add an Action Point
+   *
+   * @return integer
+   */
+   public function addActionPoint() {
+     $this->action_points = $this->action_points+1;
+     return $this->action_points;
+   }
+   
+   /**
+    * Subtract an Action Point
+    * 
+    * @return integer
+    */
+  public function subtractActionPoint() {
+    $this->action_points = max(0, $this->action_points-1);
+    return $this->action_points;
+  }
 
 }
 

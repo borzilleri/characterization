@@ -32,6 +32,9 @@ Player:
       unsigned: 1
     name: string(50)
     level: integer
+    action_points:
+        type: integer
+        default: 0
     health_max: integer
     health_cur: integer
     health_tmp:
