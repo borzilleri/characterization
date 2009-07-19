@@ -7,6 +7,23 @@
  */
 class Power extends BasePower
 {
+	const POWER_ATWILL = '1_atwill';
+	const POWER_ENCOUNTER = '2_encounter';
+	const POWER_DAILY = '3_daily';
+  public static $use_type_strings = array(
+    '1_atwill' => 'atwill',
+    '2_encounter' => 'encounter',
+    '3_daily' => 'daily'
+  );
+  public static $use_type_strings_rev = array(
+    'atwill' => '1_atwill',
+    'encounter' => '2_encounter',
+    'daily' => '3_daily'
+  );
+
+	public function preDelete() {
+		$this->PowerKeywords->delete();
+	}
 
   /**
    *
@@ -37,28 +54,63 @@ class Power extends BasePower
     }
     
     // UseType
-    if( empty($_POST['use_type']) || ('at-will' != $_POST['use_type'] &&
-        'encounter' != $_POST['use_type'] && 'daily' != $_POST['use_type']) ) {
+    if( empty($_POST['use_type']) || 
+        !$this->isValidUseType($_POST['use_type']) ) {
       $msg->add('Usage Type must be "at-will", "encounter", or "daily."',
         Message::WARNING);
       $error = true;
     }
     else {
-      $this->useType = $_POST['use_type'];
+      $this->use_type = $_POST['use_type'];
     }
     
-    if( empty($_POST['actionType']) || 
-        !$this->isValidActionType($_POST['action']) ) {
+    // Action Type
+    if( empty($_POST['action_type']) || 
+        !$this->isValidActionType($_POST['action_type']) ) {
       $msg->add('Invalid action type.', Message::WARNING);
       $error = true;
     }
     else {
-      $this->action = $_POST['actionType'];
+      $this->action = $_POST['action_type'];
+    }
+    
+    // Attack Stat
+    if( empty($_POST['attack_ability']) || 
+        !$this->isValidAttackStat($_POST['attack_ability']) ) {
+      $msg->add('Invalid Attack Stat', Message::WARNING);
+      $error = true;
+    }
+    else {
+      $this->attack_ability = $_POST['attack_ability'];
+    }
+    
+    // Attack Defense
+    if( empty($_POST['defense']) ||
+        !$this->isValidDefense($_POST['defense']) ) {
+      $msg->add('Invalid Defense', Message::WARNING);
+      $error = true;  
+    }
+    else {
+      $this->defense = $_POST['defense'];
+    }
+    
+    // Sustain Action
+    if( empty($_POST['sustain_action']) ||
+        !$this->isValidSustainAction($_POST['sustain_action']) ) {
+      $msg->add('Invalid Sustain Action', Message::WARNING);
+      $error = true;
+    }
+    else {
+      $this->sustain_action = $_POST['sustain_action'];
+      $this->sustain = trim(@$_POST['sustain']);
     }
     
     $this->target = trim(@$_POST['target']);
-    $this->attack = trim(@$_POST['attack']);
-    $this->powerRange = trim(@$_POST['powerRange']);
+    $this->attack_bonus = trim(@$_POST['attack_bonus']);
+    $this->power_range = trim(@$_POST['power_range']);
+    $this->hit = trim(@$_POST['hit']);
+    $this->miss = trim(@$_POST['miss']);
+    $this->effect = trim(@$_POST['effect']);
     $this->notes = trim(@$_POST['notes']);
     
     return !$error;    
@@ -80,23 +132,87 @@ class Power extends BasePower
         break;
     }
   }
-  
-  public function useTypeClass() {
-    switch($this->useType) {
-      case 'at-will':
-        return 'atwill';
+  private function isValidAttackStat($stat) {
+    switch($stat) {
+      case 'Str':
+      case 'Con':
+      case 'Dex':
+      case 'Int':
+      case 'Wis':
+      case 'Cha':
+      case 'none':
+        return true;
         break;
       default:
-        return $this->useType;
+        return true;
+        break;
+    }
+  }
+  private function isValidDefense($def) {
+    switch($def) {
+      case 'AC':
+      case 'Fort':
+      case 'Ref':
+      case 'Will':
+        return true;
+        break;
+      default:
+        return false;
+        break;
+    }
+  }
+  private function isValidSustainAction($action) {
+    switch($action) {
+      case 'standard':
+      case 'move':
+      case 'minor':
+      case 'free':
+      case 'none':
+        return true;
+        break;
+      default:
+        return false;
+        break;
     }
   }
   
+  public function isValidUseType($type) {
+		switch($type) {
+			case self::POWER_ATWILL:
+			case self::POWER_ENCOUNTER:
+			case self::POWER_DAILY:
+				return true;
+				break;
+			default:
+				return false;
+				break;
+		}
+  }
+  public function isUseType($type) {
+    return $type == $this->use_type;
+  }
+
+	public function getDisplayUseType() {
+		switch($this->use_type) {
+			case self::POWER_ENCOUNTER:
+				return 'Encounter';
+				break;
+			case self::POWER_DAILY:
+				return 'Daily';
+				break;
+			case self::POWER_ATWILL:
+			default:
+				return 'At-Will';
+				break;
+		}
+	}
+	  
   public function refresh() {
     $this->used = false;
   }
   
   private function usePower() {
-    if( 'at-will' != $this->useType ) {
+    if( self::POWER_ATWILL != $this->use_type ) {
       $this->used = true;
       return true;
     }
@@ -106,7 +222,7 @@ class Power extends BasePower
   }
   
   public function togglePower() {
-    if( 'at-will' == $this->useType ) {
+    if( self::POWER_ATWILL == $this->use_type ) {
       $this->used = false;
       return false;
     }

@@ -1,8 +1,6 @@
 <?php
 include('autohandler.php');
 
-$id = @$_REQUEST['id'];
-$char = Doctrine::getTable('Player')->findOneById($id);
 if( !$char || !$char->exists() ) {
   loadPage('/');
 }

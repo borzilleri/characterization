@@ -71,15 +71,34 @@ Power:
       unsigned: 1
     name: string(255)
     level: integer
-    useType: 
+    use_type: 
       type: enum
-      values: ['at-will','encounter','daily']
+      # This is to fix sorting by use_type
+      values: ['1_atwill','2_encounter','3_daily']
+      default: 1_atwill
     action:
       type: enum
       values: ['standard','move','minor','free','reaction','interrupt','none']
-    powerRange: string(255)
+      default: standard
+    power_range: string(255)
     target: string(255)
-    attack: string(255)
+    attack_ability:
+      type: enum
+      values: ['Str','Dex','Con','Int','Wis','Cha','none']
+      default: none
+    attack_bonus: integer
+    defense:
+      type: enum
+      values: ['AC','Fort','Ref','Will']
+      default: AC
+    hit: clob
+    miss: clob
+    effect: clob
+    sustain_action:
+      type: enum
+      values: ['Standard','Move','Minor','Free','none']
+      default: none
+    sustain: clob
     notes: clob
     used: boolean
     player_id:
@@ -88,6 +107,10 @@ Power:
   relations:
     Player:
       foreignAlias: Powers
+    Keywords:
+      foreignAlias: Powers
+      class: Keyword
+      refClass: PowerKeyword
 
 Keyword:
   columns:
@@ -97,3 +120,22 @@ Keyword:
       autoincrement: true
       unsigned: 1
     name: string(255)
+
+PowerKeyword:
+  columns:
+    id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+      unsigned: 1
+    power_id:
+      type: integer(8)
+      unsigned: 1
+    keyword_id:
+      type: integer(8)
+      unsigned: 1
+  relations:
+    Power:
+      foreignAlias: PowerKeywords
+    Keyword:
+      foreignAlias: PowerKeywords

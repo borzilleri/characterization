@@ -27,15 +27,15 @@
 	float                 : right;
 }
 
-.atwill {
+.At-Will {
 	background-color      : #528855;
 }
 
-.encounter {
+.Encounter {
 	background-color      : #7E012A;
 }
 
-.daily {
+.Daily {
 	background-color      : #3B3B3C;
 }
 
@@ -48,6 +48,10 @@
 }
 
 .usage, .keywords, .actionType, .target, .attack {
+	font-weight           : bold;
+}
+
+.power label {
 	font-weight           : bold;
 }
 

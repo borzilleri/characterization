@@ -7,7 +7,11 @@
  */
 class Player extends BasePlayer
 {
-  
+
+  public function preDelete() {
+		$this->Powers->delete();
+	}
+
   /**
    * @global $msg
    * @return bool
@@ -252,7 +256,7 @@ class Player extends BasePlayer
     $this->health_tmp = 0;
 
     foreach( $this->Powers as $p ) {
-      if( $p->useType == 'encounter' ) {
+      if( Power::POWER_ENCOUNTER == $p->use_type ) {
         $p->refresh();
       }
     }

@@ -26,7 +26,6 @@ switch($action) {
     }
     break;
   case 'delete':
-    $char->Powers->delete();
     $char->delete();
     loadPage("/");
     break;

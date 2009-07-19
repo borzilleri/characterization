@@ -1,0 +1,82 @@
+# Note: For ease of creating character YML files for import, we're going to
+# number the keywords in this file. When defining powers in your character 
+# (or potentially in future fixture files), use the PowerKeyword object
+# and use the numbers here to reference keywords. These numbers SHOULD
+# correspond to their IDs in the database.
+
+Keyword:
+  # Power Sources
+  1:
+    name: Arcane
+  2:
+    name: Divine
+  3:
+    name: Martial
+  4:
+    name: Primal
+  
+  # Accessories
+  5:
+    name: Implement
+  6:
+    name: Weapon
+  
+  # Damage Types
+  7:
+    name: Acid
+  8:
+    name: Cold
+  9:
+    name: Fire
+  10:
+    name: Force
+  11:
+    name: Lightning
+  12:
+    name: necrotic
+  13:
+    name: Poison
+  14:
+    name: Psychic
+  15:
+    name: Radiant
+  16:
+    name: Thunder
+  
+  # Effect Types
+  17:
+    name: Beast
+  18:
+    name: 'Beast Form'
+  19:
+    name: Charm
+  20:
+    name: Conjuration
+  21:
+    name: Fear
+  22:
+    name: Healing
+  23:
+    name: Illusion
+  24:
+    name: Invigorating
+  26:
+    name: Polymorph
+  27:
+    name: Rage
+  28:
+    name: Rattling
+  29:
+    name: Reliable
+  30:
+    name: Sleep
+  31:
+    name: Spirit
+  32:
+    name: Stance
+  33:
+    name: Summoning
+  34:
+    name: Teleportation
+  35:
+    name: Zone

@@ -32,18 +32,20 @@ $power = $char->Powers->get(@$_REQUEST['p_id']);
   <div>
     <label for="use_type">Usage Type:</label>
     <select name="use_type" id="use_type">
-      <option value="at-will" selected="selected">At-Will</option>
-      <option value="encounter"
-        <?=$power->useType=='encounter'?'selected="selected"':'';?>>
-        Encounter</option>
-      <option value="daily"
-      <?=$power->useType=='daily'?'selected="selected"':'';?>>Daily</option>
+      <option value="<?=Power::POWER_ATWILL;?>"
+        selected="selected">At-Will</option>
+      <option value="<?=Power::POWER_ENCOUNTER;?>"
+        <?=$power->isUseType(Power::POWER_ENCOUNTER)?'selected="selected"':'';?>
+        >Encounter</option>
+      <option value="<?=POWER::POWER_DAILY;?>"
+        <?=$power->isUseType(Power::POWER_DAILY)?'selected="selected"':'';?>
+        >Daily</option>
     </select>
   </div>
 
   <div>
-    <label for="actionType">Action:</label>
-    <select name="actionType" id="actionType">
+    <label for="action_type">Action:</label>
+    <select name="action_type" id="action_type">
       <option value="standard" selected="selected">Standard</option>
       <option value="move"
         <?=$power->action=='move'?'selected="selected"':'';?>>Move</option>
@@ -69,17 +71,92 @@ $power = $char->Powers->get(@$_REQUEST['p_id']);
   </div>
   
   <div>
-    <label for="attack">Attack:</label>
-    <input type="text" name="attack" id="attack" size="30" maxlength="255"
-      value="<?=$power->attack;?>" />
+    <label>Attack:</label>
+    <select name="attack_ability">
+      <option value="none">none</option>
+      <option value="Str"
+        <?='Str'==$power->attack_ability?'selected="selected"':'';?>
+        >Strength</option>
+      <option value="Con"
+        <?='Con'==$power->attack_ability?'selected="selected"':'';?>
+        >Constitution</option>
+      <option value="Dex"
+        <?='Dex'==$power->attack_ability?'selected="selected"':'';?>
+        >Dexterity</option>
+      <option value="Int"
+        <?='Int'==$power->attack_ability?'selected="selected"':'';?>
+        >Intelligence</option>
+      <option value="Wis"
+        <?='Wis'==$power->attack_ability?'selected="selected"':'';?>
+        >Wisdom</option>
+      <option value="Cha"
+        <?='Cha'==$power->attack_ability?'selected="selected"':'';?>
+        >Charisma</option>
+    </select>
+    vs.
+    <select name="defense">
+      <option value="AC">Armor Class</option>
+      <option value="Fort"
+        <?='Fort'==$power->defense?'selected="selected"':'';?>
+        >Fortitude</option>
+      <option value="Ref"
+        <?='Ref'==$power->defense?'selected="selected"':'';?>
+        >Reflex</option>
+      <option value="Will"
+        <?='Will'==$power->defense?'selected="selected"':'';?>
+        >Willpower</option>
+    </select>
+  </div>
+  <div>
+    <label for="attack_bonus">Attack Bonus:</label>
+    <input type="text" name="attack_bonus" id="attack_bonus" 
+      size="30" maxlength="255" value="<?=$power->attack_bonus;?>" />
   </div>
   
   <div>
-    <label for="powerRange">Range:</label>
-    <input type="text" name="powerRange" id="powerRange" size="30"
-      maxlength="255" value="<?=$power->powerRange;?>" />
+    <label for="power_range">Range:</label>
+    <input type="text" name="power_range" id="power_range" size="30"
+      maxlength="255" value="<?=$power->power_range;?>" />
   </div>
   
+  <div>
+    <label for="hit">Hit:</label>
+    <textarea id="hit" name="hit" cols="30" rows="5"
+      ><?=$power->hit;?></textarea>
+  </div>
+  <div>
+    <label for="miss">Miss:</label>
+    <textarea id="miss" name="miss" cols="30" rows="5"
+      ><?=$power->miss;?></textarea>
+  </div>
+  <div>
+    <label for="effect">Effect:</label>
+    <textarea id="effect" name="effect" cols="30" rows="5"
+      ><?=$power->effect;?></textarea>
+  </div>
+  <div>
+    <label for="sustain_action">Sustain:</label>
+    <select id="sustain_action" name="sustain_action">
+      <option value="none">none</option>
+      <option value="Standard"
+        <?='Standard'==$power->sustain_action?'selected="selected"':'';?>
+        >Standard Action</option>
+      <option value="Move"
+        <?='Move'==$power->sustain_action?'selected="selected"':'';?>
+        >Move Action</option>
+      <option value="Minor"
+        <?='Minor'==$power->sustain_action?'selected="selected"':'';?>
+        >Minor Action</option>
+      <option value="Free"
+        <?='Free'==$power->sustain_action?'selected="selected"':'';?>
+        >Free Action</option>
+    </select>
+  </div>
+  <div>
+    <label for="sustain">Sustain Effect:</label>
+    <textarea id="sustain" name="sustain" cols="30" rows="5"
+      ><?=$power->sustain;?></textarea>
+  </div>
   <div>
     <label for="notes">Notes:</label>
     <textarea id="notes" name="notes" cols="30" 
