@@ -16,22 +16,17 @@ $kw_list = Doctrine_Query::create()
   ->execute();
 ?>
 
-<form method="POST" action="<?=SITE_URL;?>/<?=$char->id;?>/power/save">
-<div>
-  <? if( $power->exists() ): ?>
-  <input type="hidden" name="p_id" value="<?=$power->id;?>" />
-  <? endif; ?>
-</div>
-<div id="LeftColumn">
+<form method="post" action="<?=SITE_URL;?>/<?=$char->id;?>/power/save">
+<div class="formColumn leftColumn">
   <div class="formRow">
     <label for="power_name">Name:</label>
-    <input type="text" id="power_name" name="power_name"
-      size="20" maxlength="255" value="<?=$power->name;?>" />
+    <div class="field"><input type="text" id="power_name" name="power_name"
+      class="text" size="20" maxlength="255" value="<?=$power->name;?>" /></div>
   </div>
       
   <div class="formRow">
     <label for="use_type">Usage:</label>
-    <select name="use_type" id="use_type">
+    <div class="field"><select name="use_type" id="use_type">
       <option value="<?=Power::POWER_ATWILL;?>" 
         selected="selected">At-Will</option>
       <option value="<?=Power::POWER_ENCOUNTER;?>"
@@ -40,12 +35,12 @@ $kw_list = Doctrine_Query::create()
       <option value="<?=POWER::POWER_DAILY;?>"
         <?=$power->isUseType(Power::POWER_DAILY)?
         'selected="selected"':'';?>>Daily</option>
-    </select>
+    </select></div>
   </div>
 
   <div class="formRow">
     <label for="action_type">Action Type:</label>
-    <select name="action_type" id="action_type">
+    <div class="field"><select name="action_type" id="action_type">
       <option value="standard" selected="selected">Standard</option>
       <option value="move"
         <?=$power->action=='move'?'selected="selected"':'';?>
@@ -65,48 +60,57 @@ $kw_list = Doctrine_Query::create()
       <option value="none" 
         <?=$power->action=='none'?'selected="selected"':'';?>
         >No Action</option>
-    </select>
+    </select></div>
   </div>
 
   <div class="formRow">
     <label for="target">Target:</label>
-    <input type="text" name="target" id="target" 
-      size="20" maxlength="255" value="<?=$power->target;?>" />
+    <div class="field">
+      <input type="text" name="target" id="target" class="text"
+        size="20" maxlength="255" value="<?=$power->target;?>" />
+    </div>
   </div>
 
   <div class="formRow">
     <label for="power_range">Range:</label>
-    <input type="text" name="power_range" id="power_range" 
-      size="20" maxlength="255" value="<?=$power->power_range;?>" />
+    <div class="field">
+      <input type="text" name="power_range" id="power_range" class="text"
+        size="20" maxlength="255" value="<?=$power->power_range;?>" />
+    </div>
   </div>
 
   <div class="formRow">
     <label for="attack_ability">Attack:</label>
-    <input type="text" name="attack_bonus" id="attack_bonus" 
-      size="3" maxlength="255" value="<?=$power->attack_bonus;?>" />
-    <select name="attack_ability" id="attack_ability">
-      <option value="none">none</option>
-      <option value="Str"
-        <?='Str'==$power->attack_ability?'selected="selected"':'';?>
-        >Strength</option>
-      <option value="Con"
-        <?='Con'==$power->attack_ability?'selected="selected"':'';?>
-        >Constitution</option>
-      <option value="Dex"
-        <?='Dex'==$power->attack_ability?'selected="selected"':'';?>
-        >Dexterity</option>
-      <option value="Int"
-        <?='Int'==$power->attack_ability?'selected="selected"':'';?>
-        >Intelligence</option>
-      <option value="Wis"
-        <?='Wis'==$power->attack_ability?'selected="selected"':'';?>
-        >Wisdom</option>
-      <option value="Cha"
-        <?='Cha'==$power->attack_ability?'selected="selected"':'';?>
-        >Charisma</option>
-    </select>
-    <label for="defense">vs.</label>
-    <select name="defense" id="defense">
+    <div class="field">
+      <select name="attack_ability" id="attack_ability">
+        <option value="none">none</option>
+        <option value="Str"
+          <?='Str'==$power->attack_ability?'selected="selected"':'';?>
+          >Strength</option>
+        <option value="Con"
+          <?='Con'==$power->attack_ability?'selected="selected"':'';?>
+          >Constitution</option>
+        <option value="Dex"
+          <?='Dex'==$power->attack_ability?'selected="selected"':'';?>
+          >Dexterity</option>
+        <option value="Int"
+          <?='Int'==$power->attack_ability?'selected="selected"':'';?>
+          >Intelligence</option>
+        <option value="Wis"
+          <?='Wis'==$power->attack_ability?'selected="selected"':'';?>
+          >Wisdom</option>
+        <option value="Cha"
+          <?='Cha'==$power->attack_ability?'selected="selected"':'';?>
+          >Charisma</option>
+      </select>
+      +<input type="text" name="attack_bonus" id="attack_bonus" class="number"
+        size="3" maxlength="255" value="<?=$power->attack_bonus;?>" />
+    </div>
+  </div> 
+  
+  <div class="formRow">
+    <label for="defense">vs. Defense:</label>
+    <div class="field"><select name="defense" id="defense">
       <option value="AC">Armor Class</option>
       <option value="Fort"
         <?='Fort'==$power->defense?'selected="selected"':'';?>
@@ -117,24 +121,53 @@ $kw_list = Doctrine_Query::create()
       <option value="Will"
         <?='Will'==$power->defense?'selected="selected"':'';?>
         >Willpower</option>
-    </select>
+    </select></div>
+  </div>
+</div><!-- end div.leftColumn -->
+
+<div class="formColumn rightColumn">
+  <div class="formRow">
+    <label for="level">Level:</label>
+    <div class="field"><select name="level" id="level">
+    <? for($i=1;$i<=30;$i++): ?>
+      <option value="<?=$i;?>"
+        <?=$i==$power->level?'selected="selected"':'';?>><?=$i;?></option>
+    <? endfor; ?>
+    </select></div>
   </div>
   
   <div class="formRow">
+    <label for="keywords">Keywords:</label>
+    <div class="field">
+      <select name="keywords[]" id="keywords" multiple="multiple">
+        <? foreach($kw_list as $kw): ?>
+        <option value="<?=$kw->id;?>"
+          <?=$power->Keywords->contains($kw->id)?'selected="selected"':'';?>
+          ><?=$kw->name;?></option>
+        <? endforeach; ?>
+      </select>
+    </div>
+  </div>
+</div><!-- End div.rightColumn -->
+  
+<div class="clear" />
+
+<div class="formColumn leftColumn">
+  <div class="formRow">
     <label for="hit">Hit:</label>
-    <textarea id="hit" name="hit" cols="25" rows="4"
-      ><?=$power->hit;?></textarea>
+    <div class="field"><textarea id="hit" name="hit" cols="25" rows="4"
+      ><?=$power->hit;?></textarea></div>
   </div>
 
   <div class="formRow">
     <label for="miss">Miss:</label>
-    <textarea id="miss" name="miss" cols="25" rows="4"
-      ><?=$power->miss;?></textarea>
+    <div class="field"><textarea id="miss" name="miss" cols="25" rows="4"
+      ><?=$power->miss;?></textarea></div>
   </div>
 
   <div class="formRow">
     <label for="sustain_action">Sustain:</label>
-    <select id="sustain_action" name="sustain_action">
+    <div class="field"><select id="sustain_action" name="sustain_action">
       <option value="none">none</option>
       <option value="Standard"
         <?='Standard'==$power->sustain_action?'selected="selected"':'';?>
@@ -148,50 +181,34 @@ $kw_list = Doctrine_Query::create()
       <option value="Free"
         <?='Free'==$power->sustain_action?'selected="selected"':'';?>
         >Free Action</option>
-    </select>
-  </div>    
-</div><!-- end div#LeftColumn -->
-
-<div id="RightColumn">
-  <div class="formRow">
-    <label for="level">Level:</label>
-    <select name="level" id="level">
-    <? for($i=1;$i<=30;$i++): ?>
-      <option value="<?=$i;?>"
-        <?=$i==$power->level?'selected="selected"':'';?>><?=$i;?></option>
-    <? endfor; ?>
-    </select>
+    </select></div>
   </div>
-  
-  <div class="formRow">
-    <label for="keywords">Keywords:</label>
-    <select name="keywords[]" id="keywords" multiple="multiple" size="7">
-      <? foreach($kw_list as $kw): ?>
-      <option value="<?=$kw->id;?>"><?=$kw->name;?></option>
-      <? endforeach; ?>
-    </select>
-  </div>
+</div><!-- end div.leftColumn -->
 
+<div class="formColumn rightColumn">
   <div class="formRow">
     <label for="effect">Effect:</label>
-    <textarea id="effect" name="effect" cols="25" rows="4"
-      ><?=$power->effect;?></textarea>
+    <div class="field"><textarea id="effect" name="effect" cols="25" rows="4"
+      ><?=$power->effect;?></textarea></div>
   </div>
   
   <div class="formRow">
     <label for="notes">Notes:</label>
-    <textarea id="notes" name="notes" cols="25" rows="4"
-      ><?=$power->notes;?></textarea>
+    <div class="field"><textarea id="notes" name="notes" cols="25" rows="4"
+      ><?=$power->notes;?></textarea></div>
   </div>
 
   <div class="formRow">
     <label for="sustain">Sustain Effect:</label>
-    <textarea id="sustain" name="sustain" cols="25" rows="2"
-      ><?=$power->sustain;?></textarea>
+    <div class="field"><textarea id="sustain" name="sustain" cols="25" rows="2"
+      ><?=$power->sustain;?></textarea></div>
   </div>
-</div><!-- End div#RightColumn -->
-  
+</div><!-- End div.rightColumn -->
+
 <div id="SubmitButton" class="clear">
+  <? if( $power->exists() ): ?>
+  <input type="hidden" name="p_id" value="<?=$power->id;?>" />
+  <? endif; ?>
   <input type="submit" value="Submit" />
 </div>
 </form>

@@ -1,5 +1,5 @@
 body {
-	font-size	            : 100%;
+	font-size	            : 100%; /* Assume 1em is 16px */
 	line-height           : 1.1em;
   font-family           : helvetica, verdana, arial, sans-serif;
   color                 : black;
@@ -24,11 +24,11 @@ body div, input, textarea, select {
 }
 
 #Footer {
-	font-size             : .625em;
+	font-size             : .625em; /* 10px = 16px * .625em */
   text-align            : center;
   color                 : #777;
 	border-top            : 1px dotted black;
-	margin                : .5em;
+	margin                : 10px;
 }
 
 #MenuBar {
@@ -76,7 +76,7 @@ ul.inline li {
   list-style-type       : none;
   border-left           : 1px solid black;
   
-  padding               : 0 .5em;
+  padding               : 0 8px;
   margin                : 0;
   
 }

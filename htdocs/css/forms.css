@@ -1,18 +1,28 @@
-#LeftColumn {
+.formColumn {
+	width                 : 350px;
+}
+.leftColumn {
+	margin-top            : -5px;
 	float                 : left;
 }
-#RightColumn {
+.rightColumn {
+	margin-left           : 350px;
 }
 
 #SubmitButton {
 	text-align            : center;
+	width                 : 700px;
 }
-#SubmitButton input[type="submit"] {
+input[type="submit"] {
+	font-size             : .875em; /* 14px = 16px * .75em */
 	width                 : 10em;
 }
 
 div.formRow {
+	font-size             : .875em; /* 14px = 16px * .875em */
+	margin                : 5px 0;
 }
+
 
 div.formRow label:first-child {
 	text-align            : right;
@@ -22,12 +32,23 @@ div.formRow label:first-child {
 	float                 : left;
 	display               : block;
 }
-
 div.formRow label {
 	font-weight           : bold;
 	vertical-align        : middle;
 }
+div.field {
+}
 
-div.formRow select[multiple="multiple"] {
-	width                 : 250px;
+
+textarea, select, input[type="text"] {
+	font-family           : Courier, monospaced;
+	font-size             : .75em; /* 12px = 16px * .75em */
+}
+textarea, input.text {
+	width                 : 200px;
+}
+
+select#keywords {
+	width                 : 200px;
+	height                : 125px;
 }
