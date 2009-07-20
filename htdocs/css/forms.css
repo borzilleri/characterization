@@ -1,0 +1,33 @@
+#LeftColumn {
+	float                 : left;
+}
+#RightColumn {
+}
+
+#SubmitButton {
+	text-align            : center;
+}
+#SubmitButton input[type="submit"] {
+	width                 : 10em;
+}
+
+div.formRow {
+}
+
+div.formRow label:first-child {
+	text-align            : right;
+	width                 : 115px;
+	margin-right          : 10px;
+
+	float                 : left;
+	display               : block;
+}
+
+div.formRow label {
+	font-weight           : bold;
+	vertical-align        : middle;
+}
+
+div.formRow select[multiple="multiple"] {
+	width                 : 250px;
+}
