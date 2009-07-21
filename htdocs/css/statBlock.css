@@ -1,6 +1,15 @@
-#PlayerNotes {
+.contentColumn {
+	width                 : 315px;
+	margin                : 0 5px;
+}
+.leftColumn {
+	float                 : left;
+}
+.rightColumn {
+	float                 : left;
+}
+.notesColumn {
 	margin-left           : 655px;
-	width                 : 305px;
 }
 
 #PlayerNotes textarea {
@@ -12,7 +21,42 @@
 	width                : 300px;
 }
 
+#StatBlock {
+	font-size            : .75em;
+	line-height          : 1em;
+}
+div.statRow {
+	margin               : 3px 0;
+}
+div.statRow label.statLabel {
+	font-weight          : bold;
+	text-align           : right;
+	margin               : 0 10px 0 0;
+	width                : 100px;
+	display              : block;
+	float                : left;
+}
+
+div.statRow input[type="text"] {
+	margin               : 0px;
+	padding              : 0px;
+	border               : 1px solid #777;
+}
+div.statRow input[type="submit"] {
+	margin               : 0;
+	padding              : 0;
+}
 
 .abilityLabel {
 	font-weight           : bold;
+}
+
+.Dead {
+	color                 : #333;
+}
+.Unconscious {
+	color                 : #777;
+}
+.Bloodied {
+  color                 : #F00;
 }

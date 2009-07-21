@@ -26,13 +26,7 @@ else {
   <script type="text/javascript" charset="utf-8"
    src="<?=MEDIA_URL;?>/javascript/jquery/jquery-1.3.2.min.js">
   </script>
-  <script type="text/javascript" charset="utf-8"
-   src="<?=MEDIA_URL;?>/javascript/jquery/jquery-ui-1.7.1.custom.min.js">
-  </script>
-  <script type="text/javascript" charset="utf-8"
-   src="<?= MEDIA_URL ?>/javascript/jquery/jquery.overlabel.js">
-  </script>
-
+  
 <? foreach($css_include as $css): // Page-specific CSS files ?>
   <link rel="stylesheet" type="text/css" media="screen"
    href="<?=SITE_URL;?>/css/<?=$css;?>" />

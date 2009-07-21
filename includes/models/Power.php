@@ -292,6 +292,35 @@ class Power extends BasePower
         break;
     }
   }
+  
+  public function getTextDisplay($text, $echo = false) {
+    $out = $this->$text;
+    
+    $out = htmlentities($out);
+    $out = nl2br($out);
+    
+    switch($text) {
+      case 'hit':
+        // Secondary Attack
+        $out = preg_replace('/(secondary attack:)/i','<label>$1</label>',$out);
+        // Secondary Taraget
+        $out = preg_replace('/(secondary target:)/i','<label>$1</label>',$out);
+        // Hit
+        $out = preg_replace('/(hit:)/i', '<label>$1</label>', $out);
+        // Aftereffect
+        $out = preg_replace('/(aftereffect:)/i', '<label>$1</label>', $out);
+        break;
+      case 'notes':
+        // Special
+        $out = preg_replace('/(special:)/i', '<label>$1</label>', $out);
+        break;
+      default:
+        break;
+    }
+    
+    if( $echo ) echo $out;
+    return $out;
+  }
 
 	/**
 	 * Generates the html for a power box and returns it.
@@ -321,7 +350,7 @@ class Power extends BasePower
 		
 		
 		// Statblock Row
-		$box .= '<div class="row'.($i%2).'">'; $i+=1;
+		$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'usage">'; $i+=1;
 		
 		// Usage/Keywords
 		$box .= '<div>';
@@ -344,7 +373,8 @@ class Power extends BasePower
 		$box .= '<div>';
 		// Range
 		if( !empty($this->power_range) ) {
-			$box .= '<span class="range">'.$this->power_range.'</span>';
+			$box .= '<span class="range">'.
+			  $this->getTextDisplay('power_range').'</span>';
 		}
 		// Action Type
 		$box .= '<span class="actionType">'.$this->actionTypeDisplay().'</span>';
@@ -353,14 +383,15 @@ class Power extends BasePower
 		
 		// Target
 		if( !empty($this->target) ) {
-			$box .= '<div><span class="target">Target: </span> '.$this->target.'</div>';
+			$box .= '<div><label>Target: </label><span>'.
+			  $this->getTextDisplay('target').'</span></div>';
 		}
 		
 		// Attack
 		if( 'none' != $this->attack_ability ) {
-			$box .= '<div><span class="attack">Attack: </span>';
+			$box .= '<div><label>Attack: </label><span>';
 			$box .= '+'.$this->attack_bonus.' ('.$this->attack_ability.')';
-			$box .= 'vs. '.$this->defense.'</div>';
+			$box .= ' vs. '.$this->defense.'</span></div>';
 		}
 		
 		// End Statblock Row
@@ -370,41 +401,42 @@ class Power extends BasePower
 		if( !empty($this->hit) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'hit">'; $i+=1;
 			$box .= '<label>Hit: </label>';
-			$box .= '<span>'.nl2br($this->hit).'</span></div>';
+			$box .= '<span>'.$this->getTextDisplay('hit').'</span></div>';
 		}
 
 		// Miss
 		if( !empty($this->miss) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'miss">'; $i+=1;
 			$box .= '<label>Miss: </label>';
-			$box .= '<span>'.nl2br($this->miss).'</span></div>';
+			$box .= '<span>'.$this->getTextDisplay('miss').'</span></div>';
 		}
 		
 		// Effect
 		if( !empty($this->effect) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'effect">'; $i+=1;
 			$box .= '<label>Effect: </label>';
-			$box .= '<span>'.nl2br($this->effect).'</span></div>';
+			$box .= '<span>'.$this->getTextDisplay('effect').'</span></div>';
 		}
 
 		// Sustain
 		if( 'none'!=$this->sustain_action ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'sustain">'; $i+=1;
 			$box .= '<label>Sustain '.$this->sustain_action.': </label>';
-			$box .= '<span>'.nl2br($this->sustain).'</span></div>';
+			$box .= '<span>'.$this->getTextDisplay('sustain').'</span></div>';
 		}
 		
 		// Notes
 		if( !empty($this->notes) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'notes">'; $i+=1;
 			$box .= '<label>Notes: </label>';
-			$box .= '<span>'.nl2br($this->notes).'</span></div>';
+			$box .= '<span>'.$this->getTextDisplay('notes').'</span></div>';
 		}
 		
 		// End Description
 		$box .= '</div><!-- end div.description -->';
 		// End Outer Div
 		$box .= '</div><!-- end div#powerBox'.$this->id.' -->';
+		$box .= "\n\n";
 				
 		if( $echo ) echo $box;
 		return $box;		

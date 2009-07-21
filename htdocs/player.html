@@ -13,106 +13,94 @@ $power_list = Doctrine_Query::create()
   ->orderBy('p.use_type, p.level')
   ->execute();
 ?>
-
 <script type="text/javascript" charset="utf-8">
   var CHAR_ID = <?=$char->id;?>;
 </script>
 
-<form method="post" action="<?=SITE_URL;?>/update">
-<div id="PlayerTitle">
-  <input type="hidden" name="id" value="<?=$char->id;?>" />
-  <span id="playerName"><?=$char->name;?></span>
-  &mdash;
-  <span id="playerArchetype">
-    <?=$char->Race->name;?>
-    <?=$char->Archetype->name;?>
-    <?=$char->level;?>
-  </span>
-  <select name="action">
-    <option value="shortRest">Short</option>
-    <option value="extendedRest">Extended</option>
-  </select>
-  <input type="submit" value="Rest" />
-</div>
-</form>
-
-<form method="post" action="<?=SITE_URL;?>/update">
-<div id="health">Health:
-  <input type="hidden" name="id" value="<?=$char->id;?>" />
-
-  <span class="<?=$char->isBloodied()?'bloodied':'';?>">
-    <?=$char->health_cur;?>
-  </span>
-  &nbsp;/&nbsp;<?=$char->health_max;?>
-  <?=$char->health_tmp?" ({$char->health_tmp})":'';?>
-  <input type="text" name="health" size="3" maxlength="4" value="0" />
-  <select name="action">
-    <option value="damage">Damage</option>
-    <option value="tempHealth">Temp. Health</option>
-  </select>
-  <input type="submit" value="Adjust Health" />
-</div>
-</form>
-
-<form method="post" action="<?=SITE_URL;?>/update">
-<div id="surges">Surges:
-  <input type="hidden" name="id" value="<?=$char->id;?>" />
-  <input type="hidden" name="action" value="surge" />
-
-  <span id="surges_cur"><?=$char->surges_cur;?></span>
-  &nbsp;/&nbsp;<?=$char->surges_max;?> (<?=$char->surge_value;?>)
-  <input type="button" id="surgeMinus" value="-" />
-  <input type="button" id="surgePlus" value="+" />
+<div id="StatBlock">
+  <div class="leftColumn contentColumn">
+    <div class="statRow">
+      <label class="statLabel" for="player_health">Health:</label>
+      <div class="statInfo" id="player_health">
+        <span class="<?=$char->getStatusText();?>" id="health_cur">
+          <?=$char->health_cur;?></span>
+        &nbsp;/&nbsp;
+        <span id="health_max"><?=$char->health_max;?></span>
+        <span id="health_tmp"><?=($char->health_tmp?
+          "({$char->health_tmp})":'');?></span>
+        <span id="health_status" class="<?=$char->getStatusText();?>">
+          <?=($char->getStatusText()?"({$char->getStatusText()})":'');?></span>
+      </div>
+    </div>
+    
+    <div class="statRow">
+      <label class="statLabel" for="player_surges">Surges:</label>
+      <div class="statInfo" id="player_surges">
+        <span id="surges_cur"><?=$char->surges_cur;?></span>
+        &nbsp;/&nbsp;
+        <span id="surges_max"><?=$char->surges_max;?></span>
+        (<span id="surge_value"><?=$char->surge_value;?></span>)
+        <a href="#" id="surgePlus">add</a>&nbsp;/
+        <a href="#" id="surgeMinus">remove</a>        
+      </div>
+    </div>
+    <div class="statRow">
+      <label class="statLabel" for="player_apoints">AP:</label>
+      <div class="statInfo" id="player_apoints">
+        <span id="action_points"><?=$char->action_points;?></span>
+        <a href="#" id="apPlus">add</a>&nbsp;/
+        <a href="#" id="apMinus">remove</a>
+      </div>
+    </div>
+  </div><!-- end div.leftColumn -->
   
-  <input type="submit" value="Spend Surge" />
-  +<input type="text" name="surge_bonus" size="3" maxlength="4" value="0" />
-</div>
-</form>
+  <div class="rightColumn contentColumn">
+    <div class="statRow">
+      <label class="statLabel">Damage:</label>
+      <div class="statInfo">
+        <input type="text" id="damage_value" value="0" size="3" maxlength="3" />
+        <a href="#" id="takeDamage">Damage</a>
+      </div>
+    </div>
+    <div class="statRow">
+      <label class="statLabel">Surges:</label>
+      <div class="statInfo">
+        <input type="text" id="surge_bonus" size="3" maxlength="3" value="0" />
+        <a href="#" id="spendSurge">Use Surge</a>
+      </div>
+    </div>
+    <div class="statRow">
+      <label class="statLabel">Temp Health:</label>
+      <div class="statInfo">
+        <input type="text" id="health" value="0" size="3" maxlength="3" />
+        <a href="#" id="tempHealth">TmpHealth</a>
+      </div>
+    </div>
+  </div><!-- end div.rightColumn -->
+</div><!-- end div#StatBlock -->
 
-<div id="apoints">Action Points:
-  <span id="action_points"><?=$char->action_points;?></span>
-  <input type="button" id="apMinus" value="-" />
-  <input type="button" id="apPlus" value="+" />
-</div>
+<hr class="clear" />
 
-<div>
-  <span class="abilityLabel">Str:</span>
-    <?=$char->strength;?>(<?=$char->getMod('str');?>)
-  <span class="abilityLabel">Con:</span>
-    <?=$char->constitution;?>(<?=$char->getMod('con');?>)
-  <span class="abilityLabel">Dex:</span>
-    <?=$char->dexterity;?>(<?=$char->getMod('dex');?>)
-  <span class="abilityLabel">Int:</span>
-    <?=$char->intelligence;?>(<?=$char->getMod('int');?>)
-  <span class="abilityLabel">Wis:</span>
-    <?=$char->wisdom;?>(<?=$char->getMod('wis');?>)
-  <span class="abilityLabel">Cha:</span>
-    <?=$char->charisma;?>(<?=$char->getMod('cha');?>)
-</div>
-
-<hr />
-
-<div id="powerLeft" class="powerColumn"><? $i = 0; 
+<div id="powerLeft" class="leftColumn contentColumn"><? $i = 0; 
   foreach($power_list as $power): $i = ($i+1)%2;
     if( $i ) echo $power->getPowerBox();
   endforeach; ?>
 </div>
 
-<div id="powerRight" class="powerColumn"><? $i = 1;
+<div id="powerRight" class="rightColumn contentColumn"><? $i = 1;
   foreach($power_list as $power): $i = ($i+1)%2;
     if( $i ) echo $power->getPowerBox();
   endforeach; ?>
 </div>
 
 <form method="post" action="<?=SITE_URL;?>/update">
-  <div id="PlayerNotes">
+  <div id="PlayerNotes" class="notesColumn contentColumn">
     <input type="hidden" name="id" value="<?=$char->id;?>" />
     <input type="hidden" name="action" value="notes" />
     <input type="submit" value="Update Player Notes" /><br />
-    <textarea name="notes" cols="25" rows="5"><?=$char->notes;?></textarea>
+    <textarea name="notes" id="player_notes" 
+      cols="25" rows="5"><?=$char->notes;?></textarea>
   </div>
 </form>
-
-<div class="clear" />
 
 <?php include('footer.php'); ?>

@@ -7,6 +7,9 @@
  */
 class Player extends BasePlayer
 {
+  const STATUS_DEAD = 'Dead';
+  const STATUS_UNCONSCIOUS = 'Unconscious';
+  const STATUS_BLOODIED = 'Bloodied';
 
   public function preDelete() {
 		$this->Powers->delete();
@@ -163,6 +166,9 @@ class Player extends BasePlayer
     return !$error;
   }
   
+  public function getBloodiedValue() {
+    return floor($this->health_max/2);
+  }
   /**
    * Determines if the character is currently bloodied
    * (at or under 1/2 of their maximum health )
@@ -170,7 +176,16 @@ class Player extends BasePlayer
    * @return bool
    */
   public function isBloodied() {
-    return $this->health_cur <= floor($this->health_max/2);
+    return $this->health_cur <= $this->getBloodiedValue();
+  }
+  
+  /**
+   * Determines if the chracter is currently unconscious
+   *
+   */
+  public function isUnconscious() {
+    return ($this->health_cur < 1 
+      && $this->health_cur > -1*$this->getBloodiedValue() );
   }
   
   /**
@@ -184,7 +199,7 @@ class Player extends BasePlayer
    * @return bool 
    */
   public function isDead() {
-    if( $this->health_cur <= floor($this->health_max/2)*-1 ) {
+    if( $this->health_cur <= -1*$this->getBloodiedValue() ) {
       return true;
     }
     /**
@@ -192,6 +207,20 @@ class Player extends BasePlayer
      */
     
     return false;
+  }
+  
+  public function getStatusText() {
+    if( $this->isDead() ) {
+      return self::STATUS_DEAD;
+    }
+    elseif( $this->isUnconscious() ) {
+      return self::STATUS_UNCONSCIOUS;
+    }
+    elseif( $this->isBloodied() ) {
+      return self::STATUS_BLOODIED;
+    }
+    
+    return '';
   }
   
   /**
@@ -245,6 +274,16 @@ class Player extends BasePlayer
     }
   }
   
+  public function doRest($restType = 'short') {
+    if( 'extended' == $restType ) {
+      $this->extendedRest();
+    }
+    else {
+      $this->shortRest();
+    }
+    return true;
+  }
+  
   /**
    * Perform a short rest action.
    *
@@ -262,7 +301,7 @@ class Player extends BasePlayer
     }
     return true;
   }
-  
+    
   /**
    * Perform an extended rest action.
    * 
@@ -275,6 +314,12 @@ class Player extends BasePlayer
     $this->health_cur = $this->health_max;
     $this->surges_cur = $this->surges_max;
     $this->health_tmp = 0;
+    
+    // NOTE: This is implemented using custom-house rules for action points
+    /**
+     * @todo Add a per-player option for default/house ruled action points
+     */
+    $this->action_points = 0;
     
     // Refresh Encounter & Daily Powers
     foreach( $this->Powers as $p ) {
@@ -420,7 +465,7 @@ class Player extends BasePlayer
    */
    public function addActionPoint() {
      $this->action_points = $this->action_points+1;
-     return $this->action_points;
+     return true;
    }
    
    /**
@@ -430,7 +475,7 @@ class Player extends BasePlayer
     */
   public function subtractActionPoint() {
     $this->action_points = max(0, $this->action_points-1);
-    return $this->action_points;
+    return true;
   }
 
 }

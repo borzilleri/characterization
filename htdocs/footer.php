@@ -5,7 +5,7 @@
 $etime = microtime(true);
 ?>
   </div><!-- end div#Content -->
-  <div id="Footer">
+  <div id="Footer" class="clear">
    <div id="CopyrightInfo">
     <span class="copyright">Copyright &copy;</span>
     <span class="copyrightDate">2009 Jonathan Borzilleri</span>
