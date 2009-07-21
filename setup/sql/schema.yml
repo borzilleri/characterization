@@ -86,7 +86,9 @@ Power:
       type: enum
       values: ['Str','Dex','Con','Int','Wis','Cha','none']
       default: none
-    attack_bonus: integer
+    attack_bonus: 
+      type: integer
+      default: 0
     defense:
       type: enum
       values: ['AC','Fort','Ref','Will']

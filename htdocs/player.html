@@ -92,96 +92,27 @@ $power_list = Doctrine_Query::create()
 
 <hr />
 
-<form method="post" action="<?=SITE_URL;?>/update">
-<div id="notesBox">
-  <input type="hidden" name="id" value="<?=$char->id;?>" />
-  <input type="hidden" name="action" value="notes" />
-  <input type="submit" value="Update Notes" />
-  <br />
-  <textarea name="notes" rows="30" cols="42"><?=$char->notes;?></textarea>
+<div id="powerLeft" class="powerColumn"><? $i = 0; 
+  foreach($power_list as $power): $i = ($i+1)%2;
+    if( $i ) echo $power->getPowerBox();
+  endforeach; ?>
 </div>
+
+<div id="powerRight" class="powerColumn"><? $i = 1;
+  foreach($power_list as $power): $i = ($i+1)%2;
+    if( $i ) echo $power->getPowerBox();
+  endforeach; ?>
+</div>
+
+<form method="post" action="<?=SITE_URL;?>/update">
+  <div id="PlayerNotes">
+    <input type="hidden" name="id" value="<?=$char->id;?>" />
+    <input type="hidden" name="action" value="notes" />
+    <input type="submit" value="Update Player Notes" /><br />
+    <textarea name="notes" cols="25" rows="5"><?=$char->notes;?></textarea>
+  </div>
 </form>
 
-<div id="powerList">
-<? foreach($power_list as $power): $i=0; ?>
-  <div class="power" id="powerBox<?=$power->id;?>">
-    <div id="p<?=$power->id;?>" class="titleBar
-      <?=$power->getDisplayUseType()?>">
-      <span class="powerLevel">
-        <?=$char->Archetype->name;?> <?=$power->level;?>
-      </span>
-      <span class="powerTitle"><?=$power->name;?></span>
-    </div>
-    <div class="description <?=$power->used?'usedPower':'';?>">
-      <div class="row<?=$i; $i=($i+1)%2?>">
-        <div>
-          <span class="usage"><?=$power->getDisplayUseType();?></span>
-          <? if(0<$power->Keywords->count()): ?>&diams;
-          <span class="keywords"><?
-            echo $power->Keywords[0]->name;
-            for($k=1;$k<$power->Keywords->count();$k++):
-              echo ", {$power->Keywords[$k]->name}";
-            endfor; ?>
-          </span>
-          <? endif; ?>
-        </div>
-        <div>
-          <? if( !empty($power->power_range) ): ?>
-            <span class="range"><?=$power->power_range;?></span>
-          <? endif; ?>
-          <span class="actionType"><?=$power->actionTypeDisplay();?></span>
-        </div>
-      <? if( !empty($power->target) ): ?>
-        <div><span class="target">Target:</span> <?=$power->target;?></div>
-      <? endif; ?>
-        
-        <? if( 'none'!=$power->attack_ability): ?>
-        <div>
-          <span class="attack">Attack:</span>          
-          +<?=$power->attack_bonus;?> (<?=$power->attack_ability;?>)
-          vs. <?=$power->defense;?>
-        </div>
-        <? endif; ?>
-      </div>
-      
-      <? if(!empty($power->hit)): ?>
-      <div class="row<?=$i; $i=($i+1)%2;?>" id="p<?=$power->id;?>hit">
-        <label>Hit:</label>
-        <span><?=nl2br($power->hit);?></span>
-      </div>
-      <? endif; ?>
-      
-      <? if(!empty($power->miss)): ?>
-      <div class="row<?=$i; $i=($i+1)%2;?>" id="p<?=$power->id;?>miss">
-        <label>Miss:</label>
-        <span><?=nl2br($power->miss);?></span>
-      </div>
-      <? endif; ?>
-      
-      <? if(!empty($power->effect)): ?>
-      <div class="row<?=$i; $i=($i+1)%2;?>" id="p<?=$power->id;?>effect">
-        <label>Effect:</label>
-        <span><?=nl2br($power->effect);?></span>
-      </div>
-      <? endif; ?>
-      
-      <? if('none'!=$power->sustain_action): ?>
-      <div class="row<?=$i; $i=($i+1)%2;?>" id="p<?=$power->id;?>sustain">
-        <label>Sustain <?=$power->sustain_action;?>:</label>
-        <span><?=nl2br($power->sustain);?></span>
-      </div>
-      <? endif; ?>
-      
-      <? if(!empty($power->notes)): ?>
-      <div class="row<?=$i; $i=($i+1)%2;?>">
-        <label>Notes:</label>
-        <span><?=nl2br($power->notes);?></span>
-      </div>
-      <? endif; ?>
-    </div>
-  </div>
-<? endforeach; ?>
-</div>
 <div class="clear" />
 
 <?php include('footer.php'); ?>

@@ -22,7 +22,6 @@ if( 'save' == $action ) {
   }
 }
 
+
+include('footer.php');
 ?>
-
-
-<?php include('footer.php'); ?>

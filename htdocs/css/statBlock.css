@@ -1,11 +1,18 @@
-#notesBox {
-	float                 : right;
+#PlayerNotes {
+	margin-left           : 655px;
+	width                 : 205px;
 }
-#notesBox textarea {
-	width                 : 300px;
-	height                : 300px;
-	margin                : 5px;
+
+#PlayerNotes textarea {
+	width                 : 200px;
+	height                : 400px;
+	margin                : 0px;
 }
+#PlayerNotes input[type="submit"] {
+	width                : 200px;
+}
+
+
 .abilityLabel {
 	font-weight           : bold;
 }
