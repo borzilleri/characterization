@@ -58,7 +58,7 @@ else {
  $return = "FALSE"; 
 }
 
-$level = $msg->getHighestLevel();
+$level = $msg->getHighestLevel(true);
 $msg_out = "";
 foreach($msg->messages() as $m) {
  $msg_out .= $msg->generateHTMLBlock($m['message'],$m['level']);

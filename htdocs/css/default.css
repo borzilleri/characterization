@@ -98,14 +98,25 @@ ul.inline li.firstListItem {
 	margin                : 5px auto;
 	width                 : 75%;
 	display               : none;
-	border: 1px dotted red;
 }
 #Messages label {
 	font-weight           : bold;
 }
 #messageText {
-	margin-left           : 2em;
+	margin                : 10px 20px;
 }
 #clearLink {
 	float                 : left;
+}
+div.Success {
+	border                : 2px solid #87CEEB;
+}
+div.Notice {
+	border                : 2px solid #888;
+}
+div.Warning {
+	border                : 2px solid #FFA500;
+}
+div.Error {
+	border                : 2px solid #F00;
 }

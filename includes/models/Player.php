@@ -335,8 +335,17 @@ class Player extends BasePlayer
   }
   
   public function subtractSurge() {
-    $this->surges_cur = max($this->surges_cur-1,0);
-    return true;
+    global $msg;
+    $error = false;
+    
+    if( 1 > $this->surges_cur ) {
+      $msg->add('You do not have any surges left.', Message::NOTICE);
+      $error = true;
+    }
+    else {
+      $this->surges_cur = max($this->surges_cur-1,0);
+    }
+    return !$error;
   }
   
   /**
@@ -362,12 +371,12 @@ class Player extends BasePlayer
           Message::NOTICE);
       }
       else {
-        $msg->add("You do not have a healing surge to spend", Message::NOTICE);
+        $msg->add("You do not have a healing surge to spend", Message::WARNING);
         $error = true;
       }
     }
     elseif( $this->health_cur >= $this->health_max ) {
-      $msg->add("You are at maximum health.");
+      $msg->add("You are at maximum health.", Message::NOTICE);
       $error = true;
     }
     else {
@@ -388,6 +397,7 @@ class Player extends BasePlayer
     $error = false;
 
     if( 1 > $health ) {
+      $msg->add('You cannot heal negative hit points', Message::ERROR);
       $error = true;
     }
     else {
@@ -409,7 +419,7 @@ class Player extends BasePlayer
     $damage_left = (int)$damage;
     
     if( $this->isDead() ) {
-      $msg->add("Unable to take damage. You are dead.", Message::NOTICE);
+      $msg->add("Unable to take damage. You are dead.", Message::WARNING);
       $error = true;
     }
     else {
