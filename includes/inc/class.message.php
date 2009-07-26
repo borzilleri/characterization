@@ -42,7 +42,7 @@ class Message {
         
         $_SESSION['messages'][] = array(
           'level' => $level,
-          'message' => _(self::$strings[$level]).": ".$message
+          'message' => $message
         );
     }
   
@@ -58,6 +58,20 @@ class Message {
     private function setupSession() {
         if ( !isset($_SESSION['messages']) || !is_array($_SESSION['messages']) )
             $_SESSION['messages'] = array();
+    }
+    
+    public function getHighestLevel($asString = false) {
+      $level = self::SUCCESS;
+      foreach( $_SESSION['messages'] as $msg ) {
+        if( $msg['level'] > $level ) $level = $msg['level'];
+      }
+      
+      return $asString ? self::$strings[$level] : $level;
+    }
+    
+    public function generateHTMLBlock($msg, $level) {
+      return '<div class="message'.self::$strings[$level].'">'.
+        '<label>'.self::$strings[$level].':</label> '.$msg.'</div>';
     }
 }
 

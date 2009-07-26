@@ -3,6 +3,7 @@
  *
  * @author Jonathan Borzilleri
  */
+#include(dirname(__FILE__).'/../../includes/inc/session.php');
 session_start();
 include(dirname(__FILE__).'/../../includes/inc/class.message.php');
 
@@ -24,5 +25,6 @@ foreach ( $messages as $msg ) {
     $output .= '<div class="message' . Message::$strings[$msg['level']] . '">' .
                $msg['message'] . '</div>';
 }
+
+echo Message::$strings[$highestLevel].'|'.$output;
 ?>
-<?= Message::$strings[$highestLevel] ?>|<?= $output ?>

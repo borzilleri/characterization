@@ -1,6 +1,7 @@
 var PLAYER_PROCESS = SITE_URL+"/ajax/playerProcess.php";
 var PROCESS_FAILURE = 'FALSE';
 var RESULT_DELIMITER = ':';
+var MESSSAGE_DELIMITER = '|';
 var STATUS_DEAD = 'Dead';
 var STATUS_UNCONSCIOUS = 'Unconscious';
 var STATUS_BLOODIED = 'Bloodied';
@@ -51,7 +52,11 @@ function usePower(divID) {
 			action: 'togglePower'
 		},
 		function(data) {
-			if( PROCESS_FAILURE != data ) {
+			var response = data.split(MESSSAGE_DELIMITER);
+			var result = response[0];
+			var message = new Array(response[1],response[2]);
+			
+			if( PROCESS_FAILURE != response ) {
 				$(powerIDstring).toggle();
 			}
 		}
@@ -67,8 +72,16 @@ function updateSurges(op) {
 			action: op_string
 		},
 		function(data) {
-			if( PROCESS_FAILURE != data ) {
-				$('#surges_cur').text(data);
+			var response = data.split(MESSSAGE_DELIMITER);
+			var result = response[0];
+			var message = new Array(response[1],response[2]);
+
+			if( PROCESS_FAILURE != result ) {
+				$('#surges_cur').text(result);
+			}
+			
+			if( message.length ) {
+				printMessage(message);
 			}
 		}
 	);
@@ -76,6 +89,7 @@ function updateSurges(op) {
 
 function spendSurge() {
 	var surge_bonus = $('#surge_bonus').val();
+	var response;
 	
 	$.post(PLAYER_PROCESS,
 		{
@@ -84,16 +98,23 @@ function spendSurge() {
 			surge_bonus: surge_bonus
 		},
 		function(data) {
-			if( PROCESS_FAILURE != data ) {
-				var result = data.split(RESULT_DELIMITER);
+			var response = data.split(MESSSAGE_DELIMITER);
+			var result = response[0];
+			var message = new Array(response[1],response[2]);
+			
+			if( PROCESS_FAILURE != result ) {
+				var info = result.split(RESULT_DELIMITER);
 				
 				$('#surge_bonus').val(0);
-				$('#surges_cur').text(result[0]);
-				updateCurrentHealth(result[1]);
+				$('#surges_cur').text(info[0]);
+				updateCurrentHealth(info[1]);				
+			}
+			
+			if( message.length ) {
+				printMessage(message);
 			}
 		}
 	);
-			
 }
 
 function updateActionPoints(op) {
@@ -111,8 +132,16 @@ function updateActionPoints(op) {
 			action: op_string
 		},
 		function(data) {
-			if( PROCESS_FAILURE != data ) {
-				$('#action_points').text(data);
+			var response = data.split(MESSSAGE_DELIMITER);
+			var result = response[0];
+			var message = new Array(response[1],response[2]);
+			
+			if( PROCESS_FAILURE != result ) {
+				$('#action_points').text(result);
+			}
+			
+			if( message.length ) {
+				printMessage(message);
 			}
 		}
 	);
@@ -128,7 +157,11 @@ function doRest(restType) {
 			rest_type: restType
 		},
 		function(data) {
-			if( PROCESS_FAILURE != data ) {
+			var response = data.split(MESSSAGE_DELIMITER);
+			var result = response[0];
+			var message = new Array(response[1],response[2]);
+			
+			if( PROCESS_FAILURE != result ) {
 				// Reset temp HP.
 				updateTempHealth(0);
 								
@@ -140,11 +173,15 @@ function doRest(restType) {
 					// Set Current Surges to Maximum Surges
 					$('#surges_cur').text($('#surges_max').text());
 					// Reset Action Points
-					$('#action_points').text(data);
+					$('#action_points').text(result);
 				}
 				
 				// Un-hide powers
 				$('div.power div.'+divClass+' ~ div.description:hidden').show();
+			}
+			
+			if( message.length ) {
+				printMessage(message);
 			}
 		}
 	);
@@ -160,13 +197,21 @@ function adjustHealth() {
 			health: damage
 		},
 		function(data) {
-			if( PROCESS_FAILURE != data ) {
-				var result = data.split(RESULT_DELIMITER);
+			var response = data.split(MESSSAGE_DELIMITER);
+			var result = response[0];
+			var message = new Array(response[1],response[2]);
+			
+			if( PROCESS_FAILURE != result ) {
+				var info = result.split(RESULT_DELIMITER);
 				// Adjust Current Health
-				updateCurrentHealth(result[0]);
+				updateCurrentHealth(info[0]);
 				// Adjust Temporary Health
-				updateTempHealth(result[1]);
+				updateTempHealth(info[1]);
 				$('#damage_value').val(0);
+			}
+			
+			if( message.length ) {
+				printMessage(message);
 			}
 		}
 	);
@@ -182,9 +227,16 @@ function addTempHealth() {
 			health: health
 		},
 		function(data) {
-			if( PROCESS_FAILURE != data ) {
-				updateTempHealth(data);
+			var response = data.split(MESSSAGE_DELIMITER);
+			var result = response[0];
+			var message = new Array(response[1],response[2]);
+			
+			if( PROCESS_FAILURE != result ) {
+				updateTempHealth(result);
 				$('#health').val(0);
+			}
+			if( message.length ) {
+				printMessage(message);
 			}
 		}
 	);
@@ -204,8 +256,8 @@ $(document).ready(function() {
 	$('#apMinus').click(function() { updateActionPoints('subtract') });
 
 	// Rest Actions
-	$('#ShortRest').click(function() { doRest('short') });
-	$('#ExtendedRest').click(function() { doRest('extended') });
+	$('#shortRest').click(function() { doRest('short') });
+	$('#extendedRest').click(function() { doRest('extended') });
 	
 	// Damage/Health/Temp Health
 	$('#takeDamage').click(function() { adjustHealth() });

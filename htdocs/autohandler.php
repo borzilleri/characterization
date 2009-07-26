@@ -39,29 +39,47 @@ else {
 var SITE_URL = '<?=SITE_URL;?>';
 var MEDIA_URL = '<?=MEDIA_URL;?>';
 
+function getMessages() {
+  $.get(SITE_URL+'/ajax/messages.php', null,
+  function(responseText, textStatus, XMLHttpRequest) {
+    var trimResponseText = responseText.replace(/^\s+|\s+$/g,'');
+    var data = trimResponseText.split('|');
+            
+    if( 'success' == textStatus && '' != trimResponseText ) {
+      printMessage(data);
+    }
+    else {
+      printMessage(new Array(
+        'An unknown error occured while retrieving messages', 
+        ''
+      ));
+    }
+  });
+}
+
+function printMessage(data) {
+  var level = data[0];
+  var message = data[1];
+  
+  if( '' == message ) {
+    $('#Messages').hide();
+  }
+  else {
+    $('#messageText').append(message);
+    $('#Messages').fadeIn();
+  }
+}
+
+function clearMessages() {
+  $('#Messages').hide();
+  $('#messageText').text('');
+}
+
 $(document).ready(function() {
-    //$("label.overlabel").overlabel();
-
     // Global Error display handling
-    $.get("<?=SITE_URL;?>/ajax/messages.php", null,
-    function(responseText, textStatus, XMLHttpRequest) {
-        var trimResponseText = responseText.replace(/^\s+|\s+$/g, '');
-
-        var data = trimResponseText.split('|');
-        var statusText = data[0];
-        var message = data[1];
-
-        if( "success" == textStatus ) {
-            if( "" == trimResponseText ) {
-                $("#messageBlock").hide();
-            } else {
-                $("#messageBlock").addClass('message' + statusText).append(message).fadeIn();
-            }
-        } else {
-            $("#messageBlock").append('<?=_("An unknown error occured, please try again.");?>');
-            $("#messageBlock").fadeIn();
-        }
-    });
+    getMessages();
+    
+    $('#ClearMessages').click(function() { clearMessages() });
 });
 //]]>
   </script>

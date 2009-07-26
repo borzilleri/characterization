@@ -14,7 +14,7 @@ body div, input, textarea, select {
 
 #Header {
 	/* height should be the same as the line-height for the menu */
-	height                : 1.8em;
+	height                : 1.5em;
 	background-color      : #CCDDEE;
 	border-bottom         : 1px dotted #445566;
 }
@@ -34,15 +34,19 @@ body div, input, textarea, select {
 #MenuBar {
 	position              : absolute;
 }
-#MenuBar ul {	
+#MenuBar div.menu_item, #MenuBar ul {
 	background-color      : #CCDDEE;
 	line-height           : 1.5em;
+	margin                : 0 9px;
+	padding               : 0px;
 	float                 : left;
-	width                 : 10em;
+}
+#MenuBar ul {
+	list-style            : none;
 	border-left           : 1px solid #CCDDEE;
 	margin                : 0 9px;
 	padding               : 0px;
-	list-style            : none;
+	width                 : 8em;
 }
 #MenuBar ul li {
 	padding               : 0 2px;
@@ -64,13 +68,15 @@ body div, input, textarea, select {
 	border-left           : 1px solid #445566;
 	border-bottom         : 1px solid #445566;
 }
+#MenuBar div.menu_item label {
+	font-weight           : bold;
+}
 
 
 ul.inline {
   padding               : 0;
   margin                : 10px;
 }
-
 ul.inline li {
   display               : inline;
   list-style-type       : none;
@@ -80,7 +86,6 @@ ul.inline li {
   margin                : 0;
   
 }
-
 ul.inline li.firstListItem {
   border-left           : none;
 }
@@ -89,5 +94,18 @@ ul.inline li.firstListItem {
 	clear                 : both;
 }
 
-#PlayerTitle #playerName {
+#Messages {
+	margin                : 5px auto;
+	width                 : 75%;
+	display               : none;
+	border: 1px dotted red;
+}
+#Messages label {
+	font-weight           : bold;
+}
+#messageText {
+	margin-left           : 2em;
+}
+#clearLink {
+	float                 : left;
 }
