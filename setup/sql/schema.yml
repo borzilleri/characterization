@@ -32,6 +32,18 @@ Player:
       unsigned: 1
     name: string(50)
     level: integer
+    attack_general:
+        type: integer
+        default: 0
+    attack_weapon_main:
+        type: integer
+        default: 0
+    attack_weapon_off:
+        type: integer
+        default: 0
+    attack_implement:
+        type: integer
+        default: 0
     action_points:
         type: integer
         default: 0

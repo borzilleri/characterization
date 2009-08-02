@@ -10,6 +10,9 @@ class Player extends BasePlayer
   const STATUS_DEAD = 'Dead';
   const STATUS_UNCONSCIOUS = 'Unconscious';
   const STATUS_BLOODIED = 'Bloodied';
+  
+  const ATTACK_WEAPON = 'Weapon';
+  const ATTACK_IMPLEMENT = 'Implement';
 
   public function preDelete() {
 		$this->Powers->delete();
@@ -98,6 +101,50 @@ class Player extends BasePlayer
       $this->charisma = (int)$_POST['character_cha'];
     }
     
+    // General Attack Bonus
+    if( !is_numeric($_POST['attack_general']) || 
+        (int)$_POST['attack_general'] < 0 ) {
+      $msg->add('General Attack Bonus must be a non-negative integer.', 
+        Message::WARNING);
+      $error = true;
+    }
+    else {
+      $this->attack_general = (int)$_POST['attack_general'];
+    }
+
+    // Implement Attack Bonus
+    if( !is_numeric($_POST['attack_implement']) ||
+        (int)$_POST['attack_implement'] < 0 ) {
+      $msg->add('Implement Attack Bonus must be a non-negative integer.', 
+        Message::WARNING);
+      $error = true;
+    }
+    else {
+      $this->attack_implement = (int)$_POST['attack_implement'];
+    }
+
+    // Main Hand Weapon Bonus
+    if( !is_numeric($_POST['attack_weapon_main']) ||
+        (int)$_POST['attack_weapon_main'] < 0 ) {
+      $msg->add('Main Hand Weapon Attack Bonus must be a non-negative integer.', 
+        Message::WARNING);
+      $error = true;
+    }
+    else {
+      $this->attack_weapon_main = (int)$_POST['attack_weapon_main'];
+    }
+
+    // Off Hand Weapon Attack Bonus
+    if( !is_numeric($_POST['attack_weapon_off']) ||
+        (int)$_POST['attack_weapon_off'] < 0 ) {
+      $msg->add('Off Hand Weapon Attack Bonus must be a non-negative integer.', 
+        Message::WARNING);
+      $error = true;
+    }
+    else {
+      $this->attack_weapon_off = (int)$_POST['attack_weapon_off'];
+    }
+        
     // Health Maximum
     // Calculate how much health this character 'should' have, based on their
     // class, level, and constitution score.
@@ -239,7 +286,13 @@ class Player extends BasePlayer
    * @return int
    */
   public function getMod($ability) {
-    return floor($this->getAbilityScore($ability)/2)-5;
+    $ability = $this->getAbilityScore($ability);
+    if( 0 <= $ability ) {
+      return floor($ability/2)-5;
+    }
+    else {
+      return 0;
+    }
   }
   
   private function getAbilityScore($ability) {
@@ -269,7 +322,7 @@ class Player extends BasePlayer
         return $this->charisma;
         break;
       default:
-        return 0;
+        return -1;
         break;
     }
   }
@@ -487,7 +540,28 @@ class Player extends BasePlayer
     $this->action_points = max(0, $this->action_points-1);
     return true;
   }
-
+  
+  /**
+   * Returns the attack bonus using a given accessory.
+   *
+   *
+   * @param string $accessory Accessory type to use for the attack.
+   * @return integer
+   */
+  public function getAttackBonus($accessory = self::ATTACK_WEAPON) {
+    $bonus = floor($this->level/2) + $this->attack_general;    
+    switch($accessory) {
+      case self::ATTACK_WEAPON:
+        $bonus += $this->attack_weapon_main;
+        break;
+      case self::ATTACK_IMPLEMENT:
+        $bonus += $this->attack_implement;
+        break;
+      default:
+        break;
+    }
+    return $bonus;
+  }
 }
 
 ?>

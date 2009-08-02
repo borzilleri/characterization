@@ -98,10 +98,28 @@ if( 'add' == $action ) {
   <input type="text" id="character_surge_value" name="character_surge_value"
    size="4" maxlength="3" value="<?=$char->surge_value;?>" />
  </div>
-
  
- <div>
-  <input type="submit" name="Submit" />
+  <div>
+    <label for="attack_general">General Attack Bonus:</label>
+    <input type="text" id="attack_general" name="attack_general"
+      size="4" maxlength="4" value="<?=$char->attack_general;?>" />
+  </div>
+  <div>
+    <label for="attack_implement">Implement Attack Bonus:</label>
+    <input type="text" id="attack_implement" name="attack_implement"
+      size="4" maxlength="4" value="<?=$char->attack_implement;?>" />
+  </div>
+  <div>
+    <label for="attack_weapon_main">Weapon Attack Bonus:</label>
+    <input type="text" id="attack_weapon_main" name="attack_weapon_main"
+      size="4" maxlength="4" value="<?=$char->attack_weapon_main;?>" />&nbsp;/
+    <input type="text" id="attack_weapon_off" name="attack_weapon_off"
+      size="4" maxlength="4" value="<?=$char->attack_weapon_off;?>" />
+  </div>
+ 
+  <div>
+    <input type="submit" name="Submit" />
+  </div>
 </form>
 <? endif; ?>
 

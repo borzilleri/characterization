@@ -322,6 +322,29 @@ class Power extends BasePower
     return $out;
   }
 
+  /**
+   * 
+   * @param string $keyword The keyword to check
+   * @return bool
+   */
+  public function hasKeyword($keyword) {
+    $k = Doctrine::getTable('Keyword')->findOneByName($keyword);
+    return ($k && $k->exists() );
+  }
+
+  public function getFullAttackBonus() {
+    $bonus = $this->attack_bonus;
+    $bonus += (int)$this->Player->getMod($this->attack_ability);
+    
+    if( $this->hasKeyword('Implement') ) {
+      $bonus += $this->Player->getAttackBonus(Player::ATTACK_IMPLEMENT);
+    }
+    elseif( $this->hasKeyword('Weapon') ) {
+      $bonus += $this->Player->getAttackBonus(Player::ATTACK_WEAPON);
+    }
+    return $bonus;
+  }
+
 	/**
 	 * Generates the html for a power box and returns it.
 	 *
@@ -390,7 +413,7 @@ class Power extends BasePower
 		// Attack
 		if( 'none' != $this->attack_ability ) {
 			$box .= '<div><label>Attack: </label><span>';
-			$box .= '+'.$this->attack_bonus.' ('.$this->attack_ability.')';
+			$box .= '+'.$this->getFullAttackBonus().' ('.$this->attack_ability.')';
 			$box .= ' vs. '.$this->defense.'</span></div>';
 		}
 		
