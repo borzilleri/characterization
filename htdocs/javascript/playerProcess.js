@@ -6,6 +6,8 @@ var STATUS_DEAD = 'Dead';
 var STATUS_UNCONSCIOUS = 'Unconscious';
 var STATUS_BLOODIED = 'Bloodied';
 
+var notes_tmp = '';
+
 function updateCurrentHealth(health_cur) {
 	$('#health_cur').text(health_cur);
 	var health_max = $('#health_max').text();
@@ -239,7 +241,53 @@ function addTempHealth() {
 	);
 }
 
+function updateNotes() {
+	var notesText = $('#player_notes').val();
+	
+	$.post(PLAYER_PROCESS,
+		{
+			id: CHAR_ID,
+			action: 'updateNotes',
+			notes: notesText
+		},
+		function(data) {
+			var response = data.split(MESSSAGE_DELIMITER);
+			var result = response[0];
+			
+			if( PROCESS_FAILURE != result ) {
+				// At this point result stores the current value of the notes field.
+				// However, since we're just dumping the content of the textarea into
+				// the field, we don't actually HAVE to push this update back out.
+				//
+				// Still, we're going to anyway, to make sure that post-update we're
+				// displaying the current content. This allows us to be sure we're
+				// correct when setting the dirty/clean notification to clean
+				$('#player_notes').val(result);
+			
+				// Now, set the dirty state to 'clean'
+				$('#notes_dirty').fadeOut();
+			}
+			
+			if( response.length > 1 ) {
+				printMessage(new Array(response[1],response[2]));
+			}
+		});
+}
+
+function notesDirtyCheck() {
+	var notes_cur = $('#player_notes').val()
+	
+	if( notes_tmp != notes_cur ) {
+		$('#notes_dirty').fadeIn();
+	}
+}
+
 $(document).ready(function() {
+	// Fill the notes_tmp variable
+	notes_tmp = $('#player_notes').val();
+	// Handle dirty notification for player notes
+	$('#player_notes').keyup(function(k) { notesDirtyCheck() });
+	
 	// Power Usage
 	$(".power .titleBar").click(function() { usePower(this.id); });
 	
@@ -259,6 +307,9 @@ $(document).ready(function() {
 	// Damage/Health/Temp Health
 	$('#takeDamage').click(function() { adjustHealth() });
 	$('#tempHealth').click(function() { addTempHealth() });
+	
+	// Player notes
+	$('#updateNotes').click(function() { updateNotes() });
 	
 	// Enable form fields on pressing enter/return
 	$('#damage_value').keyup(function(e) { if(e.keyCode==13) adjustHealth(); });

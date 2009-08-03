@@ -49,6 +49,10 @@ switch($action) {
   case 'tempHealth':
     $success = $char->addTempHealth((int)@$_POST['health']);
     $return = $char->health_tmp;
+    break;
+  case 'updateNotes':
+    $char->notes = trim($_POST['notes']);
+    $return = $char->notes;
 }
 
 if( $success ) {
@@ -64,7 +68,6 @@ foreach($msg->messages() as $m) {
  $msg_out .= $msg->generateHTMLBlock($m['message'],$m['level']);
 }
 $msg->clear();
-
 
 if( $msg_out ) {
  echo "{$return}|{$status}|{$msg_out}";
