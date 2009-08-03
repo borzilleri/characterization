@@ -259,4 +259,9 @@ $(document).ready(function() {
 	// Damage/Health/Temp Health
 	$('#takeDamage').click(function() { adjustHealth() });
 	$('#tempHealth').click(function() { addTempHealth() });
+	
+	// Enable form fields on pressing enter/return
+	$('#damage_value').keyup(function(e) { if(e.keyCode==13) adjustHealth(); });
+	$('#health').keyup(function(e) { if(e.keyCode==13) addTempHealth(); });
+	$('#surge_bonus').keyup(function(e) { if(e.keyCode==13) spendSurge(); });
 });
