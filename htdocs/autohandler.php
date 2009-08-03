@@ -60,7 +60,7 @@ function getMessages() {
 function printMessage(data) {
   var level = data[0];
   var message = data[1];
-
+  
   $('#Messages').removeClass();
   
   if( '' == message ) {

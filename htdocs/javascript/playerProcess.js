@@ -54,10 +54,13 @@ function usePower(divID) {
 		function(data) {
 			var response = data.split(MESSSAGE_DELIMITER);
 			var result = response[0];
-			var message = new Array(response[1],response[2]);
 			
 			if( PROCESS_FAILURE != response ) {
 				$(powerIDstring).toggle();
+			}
+			
+			if( response.length > 1 ) {
+				printMessage(new Array(response[1],response[2]));
 			}
 		}
 	);
@@ -74,14 +77,13 @@ function updateSurges(op) {
 		function(data) {
 			var response = data.split(MESSSAGE_DELIMITER);
 			var result = response[0];
-			var message = new Array(response[1],response[2]);
 
 			if( PROCESS_FAILURE != result ) {
 				$('#surges_cur').text(result);
 			}
 			
-			if( message.length ) {
-				printMessage(message);
+			if( response.length > 1 ) {
+				printMessage(new Array(response[1],response[2]));
 			}
 		}
 	);
@@ -100,7 +102,6 @@ function spendSurge() {
 		function(data) {
 			var response = data.split(MESSSAGE_DELIMITER);
 			var result = response[0];
-			var message = new Array(response[1],response[2]);
 			
 			if( PROCESS_FAILURE != result ) {
 				var info = result.split(RESULT_DELIMITER);
@@ -110,8 +111,8 @@ function spendSurge() {
 				updateCurrentHealth(info[1]);				
 			}
 			
-			if( message.length ) {
-				printMessage(message);
+			if( response.length > 1 ) {
+				printMessage(new Array(response[1],response[2]));
 			}
 		}
 	);
@@ -134,14 +135,13 @@ function updateActionPoints(op) {
 		function(data) {
 			var response = data.split(MESSSAGE_DELIMITER);
 			var result = response[0];
-			var message = new Array(response[1],response[2]);
 			
 			if( PROCESS_FAILURE != result ) {
 				$('#action_points').text(result);
 			}
 			
-			if( message.length ) {
-				printMessage(message);
+			if( response.length > 1 ) {
+				printMessage(new Array(response[1],response[2]));
 			}
 		}
 	);
@@ -159,7 +159,6 @@ function doRest(restType) {
 		function(data) {
 			var response = data.split(MESSSAGE_DELIMITER);
 			var result = response[0];
-			var message = new Array(response[1],response[2]);
 			
 			if( PROCESS_FAILURE != result ) {
 				// Reset temp HP.
@@ -180,8 +179,8 @@ function doRest(restType) {
 				$('div.power div.'+divClass+' ~ div.description:hidden').show();
 			}
 			
-			if( message.length ) {
-				printMessage(message);
+			if( response.length > 1 ) {
+				printMessage(new Array(response[1],response[2]));
 			}
 		}
 	);
@@ -199,7 +198,6 @@ function adjustHealth() {
 		function(data) {
 			var response = data.split(MESSSAGE_DELIMITER);
 			var result = response[0];
-			var message = new Array(response[1],response[2]);
 			
 			if( PROCESS_FAILURE != result ) {
 				var info = result.split(RESULT_DELIMITER);
@@ -210,8 +208,8 @@ function adjustHealth() {
 				$('#damage_value').val(0);
 			}
 			
-			if( message.length ) {
-				printMessage(message);
+			if( response.length > 1 ) {
+				printMessage(new Array(response[1],response[2]));
 			}
 		}
 	);
@@ -229,14 +227,13 @@ function addTempHealth() {
 		function(data) {
 			var response = data.split(MESSSAGE_DELIMITER);
 			var result = response[0];
-			var message = new Array(response[1],response[2]);
 			
 			if( PROCESS_FAILURE != result ) {
 				updateTempHealth(result);
 				$('#health').val(0);
 			}
-			if( message.length ) {
-				printMessage(message);
+			if( response.length > 1 ) {
+				printMessage(new Array(response[1],response[2]));
 			}
 		}
 	);
