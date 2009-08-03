@@ -329,20 +329,32 @@ class Power extends BasePower
    */
   public function hasKeyword($keyword) {
     $k = Doctrine::getTable('Keyword')->findOneByName($keyword);
-    return ($k && $k->exists() );
+    return ($k && $k->exists() && $this->Keywords->contains($k->id));
   }
 
-  public function getFullAttackBonus() {
-    $bonus = $this->attack_bonus;
-    $bonus += (int)$this->Player->getMod($this->attack_ability);
+  public function getAttackBonusTable() {
+    $power_bonus = $this->attack_bonus;
+    $power_bonus += (int)$this->Player->getMod($this->attack_ability);
     
     if( $this->hasKeyword('Implement') ) {
-      $bonus += $this->Player->getAttackBonus(Player::ATTACK_IMPLEMENT);
+      return $this->Player->getAttackBonus(
+        Player::ATTACK_IMPLEMENT, $power_bonus);
     }
     elseif( $this->hasKeyword('Weapon') ) {
-      $bonus += $this->Player->getAttackBonus(Player::ATTACK_WEAPON);
+      return $this->Player->getAttackBonus(
+        Player::ATTACK_WEAPON, $power_bonus);
     }
     return $bonus;
+  }
+  
+  public function attackBonusDisplay() {
+    $bonus_table = $this->getAttackBonusTable();
+    foreach($bonus_table as $k => $b) {
+      if( $b >= 0 ) {
+        $bonus_table[$k] = '+'.$bonus_table[$k];
+      }
+    }
+    return implode('/',$bonus_table);
   }
 
 	/**
@@ -413,7 +425,7 @@ class Power extends BasePower
 		// Attack
 		if( 'none' != $this->attack_ability ) {
 			$box .= '<div><label>Attack: </label><span>';
-			$box .= '+'.$this->getFullAttackBonus().' ('.$this->attack_ability.')';
+			$box .= $this->attackBonusDisplay().' ('.$this->attack_ability.')';
 			$box .= ' vs. '.$this->defense.'</span></div>';
 		}
 		

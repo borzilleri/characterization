@@ -546,18 +546,24 @@ class Player extends BasePlayer
    *
    *
    * @param string $accessory Accessory type to use for the attack.
-   * @return integer
+   * @return array
    */
-  public function getAttackBonus($accessory = self::ATTACK_WEAPON) {
-    $bonus = floor($this->level/2) + $this->attack_general;    
+  public function getAttackBonus(
+    $accessory = self::ATTACK_WEAPON, $power_bonus = null) {
+    $base_bonus = floor($this->level/2) + $this->attack_general;
+    $base_bonus += (int)$power_bonus;
+    $bonus = array();
+
     switch($accessory) {
       case self::ATTACK_WEAPON:
-        $bonus += $this->attack_weapon_main;
+        $bonus[] = $base_bonus + $this->attack_weapon_main;
+        $bonus[] = $base_bonus + $this->attack_weapon_off;
         break;
       case self::ATTACK_IMPLEMENT:
-        $bonus += $this->attack_implement;
+        $bonus[] = $base_bonus + $this->attack_implement;
         break;
       default:
+        $bonus[] = $base_bonus;
         break;
     }
     return $bonus;
