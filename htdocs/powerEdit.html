@@ -138,7 +138,9 @@ $kw_list = Doctrine_Query::create()
   </div>
   
   <div class="formRow">
-    <label for="keywords">Keywords:</label>
+    <label for="keywords">Keywords:
+      <span class="help" title="Hold Control (Win/Linux) or Command (OS X) to select multiple keywords.">?</span>
+    </label>
     <div class="field">
       <select name="keywords[]" id="keywords" multiple="multiple">
         <? foreach($kw_list as $kw): ?>
@@ -155,7 +157,9 @@ $kw_list = Doctrine_Query::create()
 
 <div class="formColumn leftColumn">
   <div class="formRow">
-    <label for="hit">Hit:</label>
+    <label for="hit">Hit:
+      <span class="help" title="Any on-hit effects, such as secondary attacks, aftereffects, etc, should be included here.">?</span>
+    </label>
     <div class="field"><textarea id="hit" name="hit" cols="25" rows="4"
       ><?=$power->hit;?></textarea></div>
   </div>
@@ -194,7 +198,9 @@ $kw_list = Doctrine_Query::create()
   </div>
   
   <div class="formRow">
-    <label for="notes">Notes:</label>
+    <label for="notes">Notes:
+      <span class="help" title="Any additional ability details, information, or notes may be included here.">?</span>
+    </label>
     <div class="field"><textarea id="notes" name="notes" cols="25" rows="4"
       ><?=$power->notes;?></textarea></div>
   </div>

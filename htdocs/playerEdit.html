@@ -64,7 +64,9 @@ if( 'add' == $action ) {
   </div>
   
   <div class="formRow">
-    <label for="attack_general">General Atk Bonus:</label>
+    <label for="attack_general">General Atk Bonus:
+      <span class="help" title="General Attack Bonus: Any bonuses that would apply to ALL your attacks should be set here. (DO NOT count level or ability bonuses.)">?</span>
+    </label>
     <div class="field">
       <input type="text" id="attack_general" name="attack_general"
         size="3" maxlength="3" value="<?=$char->attack_general;?>" />
@@ -72,7 +74,9 @@ if( 'add' == $action ) {
   </div>
 
   <div class="formRow">
-    <label for="attack_implement">Implement Atk Bonus:</label>
+    <label for="attack_implement">Implement Atk Bonus:
+      <span class="help" title="Implement Attack Bonus: Any bonuses that apply to your Implmenet powers (from a magic implement, feat, etc) should be set here.">?</span>
+    </label>
     <div class="field">
       <input type="text" id="attack_implement" name="attack_implement"
         size="3" maxlength="3" value="<?=$char->attack_implement;?>" />
@@ -80,7 +84,9 @@ if( 'add' == $action ) {
   </div>
 
   <div class="formRow">
-    <label for="attack_weapon_main">Weapon Atk Bonus:</label>
+    <label for="attack_weapon_main">Weapon Atk Bonus:
+      <span class="help" title="Weapon Attack Bonus: Any bonuses that apply to your Weapon powers (from a magic weapon, feat, etc) should be set here. You may set main hand and off hand bonuses separately.">?</span>
+    </label>
     <div class="field">
       <label>Main:</label>
       <input type="text" id="attack_weapon_main" name="attack_weapon_main"
@@ -91,8 +97,10 @@ if( 'add' == $action ) {
     </div>
   </div>
 
-  <div class="formRow">
-    <label for="character_health">Max Health:</label>
+  <div class="formRow optional">
+    <label for="character_health">Max Health:
+      <span class="help" title="Maximum Health: Optional. If you have an ability that grants additional health, enter your FULL maximum health here.">?</span>
+    </label>
     <div class="field">
       <input type="text" id="character_health" name="character_health"
         size="5" maxlength="4" value="<?=$char->health_max;?>" />
@@ -145,16 +153,20 @@ if( 'add' == $action ) {
     </div>
   </div>
   
-  <div class="formRow">
-    <label for="character_surges">Surges/Day:</label>
+  <div class="formRow optional">
+    <label for="character_surges">Surges/Day:
+      <span class="help" title="Surges Per Day: Optional. If you have an ability that grants additional surges, enter your TOTAL surges per day here.">?</span>
+    </label>
     <div class="field">
       <input type="text" id="character_surges" name="character_surges"
         size="4" maxlength="3" value="<?=$char->surges_max;?>" />
     </div>
   </div>
 
-  <div class="formRow">
-    <label for="character_surge_value">Surge Value:</label>
+  <div class="formRow optional">
+    <label for="character_surge_value">Surge Value:
+      <span class="help" title="Surge Value: Optional. If you have an ability that grants a larger than normal surge value, enter your full surge value here.">?</span>
+    </label>
     <div class="field">
       <input type="text" id="character_surge_value" name="character_surge_value"
         size="4" maxlength="3" value="<?=$char->surge_value;?>" />

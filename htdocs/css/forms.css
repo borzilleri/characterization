@@ -26,7 +26,7 @@ div.formRow {
 
 div.formRow > label:first-child {
 	text-align            : right;
-	width                 : 160px;
+	width                 : 170px;
 	margin                : 0 10px 0 0;
 	padding               : 0px;
 
@@ -56,4 +56,15 @@ textarea, input.text {
 select#keywords {
 	width                 : 200px;
 	height                : 125px;
+}
+
+.optional > label:before {
+	content               : "* ";
+	color                 : blue;
+}
+
+div.formRow > label:first-child .help {
+	font-weight           : normal;
+	color                 : #888;
+	font-size             : .75em;
 }
