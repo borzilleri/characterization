@@ -17,11 +17,9 @@
 	height                : 300px;
 	margin                : 0px;
 }
-#PlayerNotes input[type="submit"] {
-	width                : 300px;
-}
 
 #notes_dirty {
+	color                : maroon;
 	float                : right;
 	display              : none;
 }
@@ -43,6 +41,7 @@ div.statRow label.statLabel {
 }
 
 div.statRow input[type="text"] {
+	font-family           : Courier, monospaced;
 	margin               : 0px;
 	padding              : 0px;
 	border               : 1px solid #777;

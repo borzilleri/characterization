@@ -102,8 +102,9 @@ $power_list = Doctrine_Query::create()
 
 <div id="PlayerNotes" class="notesColumn contentColumn">
   <div>
-    <span id="notes_dirty">unsaved</span>
-    <a href="#" id="updateNotes">update notes</a>
+    <span id="notes_dirty" 
+      title="Unsaved changes, click 'save notes' to save">*</span>
+    <a href="#" id="updateNotes">save notes</a>
   </div>
   <textarea name="notes" id="player_notes" 
     cols="25" rows="5"><?=$char->notes;?></textarea>
