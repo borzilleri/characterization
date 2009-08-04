@@ -103,8 +103,9 @@ $kw_list = Doctrine_Query::create()
           <?='Cha'==$power->attack_ability?'selected="selected"':'';?>
           >Charisma</option>
       </select>
+      <label>Bonus:</label>
       +<input type="text" name="attack_bonus" id="attack_bonus" class="number"
-        size="3" maxlength="255" value="<?=$power->attack_bonus;?>" />
+        size="3" maxlength="3" value="<?=$power->attack_bonus;?>" />
     </div>
   </div> 
   

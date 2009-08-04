@@ -1,4 +1,5 @@
 <?php
+$css_include = array('forms.css');
 include('autohandler.php');
 
 if( 'add' == $action ) {
@@ -25,101 +26,149 @@ if( 'add' == $action ) {
 <? else: ?>
 
 <form method="POST" action="<?=SITE_URL;?>/save">
- <div>
-  <? if($char->exists()): ?>
+<div class="formColumn leftColumn">
+  <div class="formRow">
+    <label for="character_name">Name:</label>
+    <div class="field">
+      <input type="text" class="text" size="20" maxlength="255"
+        id="character_name" name="character_name" value="<?=$char->name;?>" />
+    </div>
+  </div>
+  
+  <div class="formRow">
+    <label for="character_race">Race:</label>
+    <div class="field">
+      <?=Race::generateSelect(
+        'character_race', 'character_race', $char->race_id);?>
+    </div>
+  </div>
+  
+  <div class="formRow">
+    <label for="character_class">Class:</label>
+    <div class="field">
+      <?=Archetype::generateSelect(
+        'character_class', 'character_class', $char->archetype_id);?>
+    </div>
+  </div>
+  
+  <div class="formRow">
+    <label for="character_level">Level:</label>
+    <div class="field">
+      <select name="character_level" id="character_level">
+      <? for($i=1;$i<=30;$i++): ?>
+        <option value="<?=$i;?>"
+          <?=$i==$char->level?'selected="selected"':'';?>><?=$i;?></option>
+      <? endfor; ?>
+      </select>
+    </div>
+  </div>
+  
+  <div class="formRow">
+    <label for="attack_general">General Atk Bonus:</label>
+    <div class="field">
+      <input type="text" id="attack_general" name="attack_general"
+        size="3" maxlength="3" value="<?=$char->attack_general;?>" />
+    </div>
+  </div>
+
+  <div class="formRow">
+    <label for="attack_implement">Implement Atk Bonus:</label>
+    <div class="field">
+      <input type="text" id="attack_implement" name="attack_implement"
+        size="3" maxlength="3" value="<?=$char->attack_implement;?>" />
+    </div>
+  </div>
+
+  <div class="formRow">
+    <label for="attack_weapon_main">Weapon Atk Bonus:</label>
+    <div class="field">
+      <label>Main:</label>
+      <input type="text" id="attack_weapon_main" name="attack_weapon_main"
+        size="3" maxlength="3" value="<?=$char->attack_weapon_main;?>" />&nbsp;/
+      <label>Off:</label>
+      <input type="text" id="attack_weapon_off" name="attack_weapon_off"
+        size="3" maxlength="3" value="<?=$char->attack_weapon_off;?>" />
+    </div>
+  </div>
+
+  <div class="formRow">
+    <label for="character_health">Max Health:</label>
+    <div class="field">
+      <input type="text" id="character_health" name="character_health"
+        size="5" maxlength="4" value="<?=$char->health_max;?>" />
+    </div>
+  </div>
+
+</div><!-- end div.leftColumn -->
+
+<div class="formColumn rightColumn">
+  <div class="formRow">
+    <label for="character_str">Strength:</label>
+    <div class="field">
+      <input type="text" id="character_str" name="character_str"
+      size="3" maxlength="2" value="<?=$char->strength;?>" />
+    </div>
+  </div>
+  <div class="formRow">
+    <label for="character_con">Constitution:</label>
+    <div class="field">
+      <input type="text" id="character_con" name="character_con"
+      size="3" maxlength="2" value="<?=$char->constitution;?>" />
+    </div>
+  </div>
+  <div class="formRow">
+    <label for="character_dex">Dexterity:</label>
+    <div class="field">
+      <input type="text" id="character_dex" name="character_dex"
+      size="3" maxlength="2" value="<?=$char->dexterity;?>" />
+    </div>
+  </div>
+  <div class="formRow">
+    <label for="character_int">Intelligence:</label>
+    <div class="field">
+      <input type="text" id="character_int" name="character_int"
+      size="3" maxlength="2" value="<?=$char->intelligence;?>" />
+    </div>
+  </div>
+  <div class="formRow">
+    <label for="character_wis">Wisdom:</label>
+    <div class="field">
+      <input type="text" id="character_wis" name="character_wis"
+      size="3" maxlength="2" value="<?=$char->wisdom;?>" />
+    </div>
+  </div>
+  <div class="formRow">
+    <label for="character_cha">Charisma:</label>
+    <div class="field">
+      <input type="text" id="character_cha" name="character_cha"
+      size="3" maxlength="2" value="<?=$char->charisma;?>" />
+    </div>
+  </div>
+  
+  <div class="formRow">
+    <label for="character_surges">Surges/Day:</label>
+    <div class="field">
+      <input type="text" id="character_surges" name="character_surges"
+        size="4" maxlength="3" value="<?=$char->surges_max;?>" />
+    </div>
+  </div>
+
+  <div class="formRow">
+    <label for="character_surge_value">Surge Value:</label>
+    <div class="field">
+      <input type="text" id="character_surge_value" name="character_surge_value"
+        size="4" maxlength="3" value="<?=$char->surge_value;?>" />
+    </div>
+  </div>
+</div><!-- end div.rightColumn -->
+
+<div class="clear" />
+<div id="SubmitButton" class="clear">
+  <? if( $char->exists() ): ?>
   <input type="hidden" name="id" value="<?=$char->id;?>" />
   <? endif; ?>
-  <label for="character_name">Character Name:</label>
-  <input type="text" id="character_name" name="character_name" 
-   size="20" maxlength="255" value="<?=$char->name;?>" />
- </div>
- 
- <div>
-  <label for="character_race">Race:</label>
-  <?=Race::generateSelect('character_race', 'character_race', $char->race_id);?>
- </div>
- 
- <div>
-  <label for="character_class">Class:</label>
-  <?=Archetype::generateSelect('character_class', 'character_class', $char->archetype_id);?>
- </div>
- 
- <div>
-  <label for="character_level">Level:</label>
-  <input type="text" id="character_level" name="character_level"
-   size="3" maxlength="2" value="<?=$char->level;?>" />
- </div>
- 
- <div>
-  <label for="character_str">STR:</label>
-  <input type="text" id="character_str" name="character_str"
-   size="3" maxlength="2" value="<?=$char->strength;?>" />
- </div>
- <div>
-  <label for="character_con">CON:</label>
-  <input type="text" id="character_con" name="character_con"
-   size="3" maxlength="2" value="<?=$char->constitution;?>" />
- </div>
- <div>
-  <label for="character_dex">DEX:</label>
-  <input type="text" id="character_dex" name="character_dex"
-   size="3" maxlength="2" value="<?=$char->dexterity;?>" />
- </div>
- <div>
-  <label for="character_int">INT</label>
-  <input type="text" id="character_int" name="character_int"
-   size="3" maxlength="2" value="<?=$char->intelligence;?>" />
- </div>
- <div>
-  <label for="character_wis">WIS:</label>
-  <input type="text" id="character_wis" name="character_wis"
-   size="3" maxlength="2" value="<?=$char->wisdom;?>" />
- </div>
- <div>
-  <label for="character_cha">CHA:</label>
-  <input type="text" id="character_cha" name="character_cha"
-   size="3" maxlength="2" value="<?=$char->charisma;?>" />
- </div>
-
- <div>
-  <label for="character_health">Health:</label>
-  <input type="text" id="character_health" name="character_health"
-   size="4" maxlength="3" value="<?=$char->health_max;?>" />
- </div>
- 
- <div>
-  <label for="character_surges">Surges/Day:</label>
-  <input type="text" id="character_surges" name="character_surges"
-   size="3" maxlength="2" value="<?=$char->surges_max;?>" />
- </div>
-
- <div>
-  <label for="character_surge_value">Surge Value:</label>
-  <input type="text" id="character_surge_value" name="character_surge_value"
-   size="4" maxlength="3" value="<?=$char->surge_value;?>" />
- </div>
- 
-  <div>
-    <label for="attack_general">General Attack Bonus:</label>
-    <input type="text" id="attack_general" name="attack_general"
-      size="4" maxlength="4" value="<?=$char->attack_general;?>" />
-  </div>
-  <div>
-    <label for="attack_implement">Implement Attack Bonus:</label>
-    <input type="text" id="attack_implement" name="attack_implement"
-      size="4" maxlength="4" value="<?=$char->attack_implement;?>" />
-  </div>
-  <div>
-    <label for="attack_weapon_main">Weapon Attack Bonus:</label>
-    <input type="text" id="attack_weapon_main" name="attack_weapon_main"
-      size="4" maxlength="4" value="<?=$char->attack_weapon_main;?>" />&nbsp;/
-    <input type="text" id="attack_weapon_off" name="attack_weapon_off"
-      size="4" maxlength="4" value="<?=$char->attack_weapon_off;?>" />
-  </div>
- 
-  <div>
-    <input type="submit" name="Submit" />
-  </div>
+  <input type="submit" value="Submit" />
+</div>
 </form>
 <? endif; ?>
 

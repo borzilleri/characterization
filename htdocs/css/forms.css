@@ -1,12 +1,12 @@
 .formColumn {
-	width                 : 350px;
+	width                 : 400px;
 }
 .leftColumn {
 	margin-top            : -5px;
 	float                 : left;
 }
 .rightColumn {
-	margin-left           : 350px;
+	margin-left           : 400px;
 }
 
 #SubmitButton {
@@ -24,9 +24,9 @@ div.formRow {
 }
 
 
-div.formRow label:first-child {
+div.formRow > label:first-child {
 	text-align            : right;
-	width                 : 115px;
+	width                 : 160px;
 	margin                : 0 10px 0 0;
 	padding               : 0px;
 
