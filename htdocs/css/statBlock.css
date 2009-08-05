@@ -23,6 +23,9 @@
 	float                : right;
 	display              : none;
 }
+#updateNotes {
+	font-size            : .75em;
+}
 
 #StatBlock {
 	font-size            : .75em;
@@ -63,4 +66,16 @@ div.statRow input[type="submit"] {
 }
 .Bloodied {
   color                 : #F00;
+}
+
+a.ajaxLink {
+	text-decoration       : none;
+	color                 : #223399;
+}
+a.ajaxLink:hover {
+	text-decoration       : underline;
+}
+a.ajaxLink:active {
+	text-decoration       : none;
+	color                 : #CCDDEE;
 }

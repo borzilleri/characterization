@@ -40,23 +40,23 @@ $power_list = Doctrine_Query::create()
         &nbsp;/&nbsp;
         <span id="surges_max"><?=$char->surges_max;?></span>
         (<span id="surge_value"><?=$char->surge_value;?></span>)
-        <a href="#" id="surgePlus">add</a>&nbsp;/
-        <a href="#" id="surgeMinus">remove</a>        
+        <a href="#" id="surgePlus" class="ajaxLink">add</a>&nbsp;/
+        <a href="#" id="surgeMinus" class="ajaxLink">remove</a>        
       </div>
     </div>
     <div class="statRow">
       <label class="statLabel" for="player_apoints">AP:</label>
       <div class="statInfo" id="player_apoints">
         <span id="action_points"><?=$char->action_points;?></span>
-        <a href="#" id="apPlus">add</a>&nbsp;/
-        <a href="#" id="apMinus">remove</a>
+        <a href="#" id="apPlus" class="ajaxLink">add</a>&nbsp;/
+        <a href="#" id="apMinus" class="ajaxLink">remove</a>
       </div>
     </div>
     <div class="statRow">
       <label class="statLabel" for="player_rest">Rest:</label>
       <div class="statInfo" id="player_rest">
-        <a href="#" id="shortRest">short</a>&nbsp;/
-        <a href="#" id="extendedRest">extended</a>
+        <a href="#" id="shortRest" class="ajaxLink">short</a>&nbsp;/
+        <a href="#" id="extendedRest" class="ajaxLink">extended</a>
       </div>
     </div>
   </div><!-- end div.leftColumn -->
@@ -66,21 +66,21 @@ $power_list = Doctrine_Query::create()
       <label class="statLabel">Damage:</label>
       <div class="statInfo">
         <input type="text" id="damage_value" value="0" size="3" maxlength="3" />
-        <a href="#" id="takeDamage">Damage</a>
+        <a href="#" id="takeDamage" class="ajaxLink">Damage</a>
       </div>
     </div>
     <div class="statRow">
       <label class="statLabel">Surges:</label>
       <div class="statInfo">
         <input type="text" id="surge_bonus" size="3" maxlength="3" value="0" />
-        <a href="#" id="spendSurge">Use Surge</a>
+        <a href="#" id="spendSurge" class="ajaxLink">Use Surge</a>
       </div>
     </div>
     <div class="statRow">
       <label class="statLabel">Temp Health:</label>
       <div class="statInfo">
         <input type="text" id="health" value="0" size="3" maxlength="3" />
-        <a href="#" id="tempHealth">TmpHealth</a>
+        <a href="#" id="tempHealth" class="ajaxLink">Temp Health</a>
       </div>
     </div>
   </div><!-- end div.rightColumn -->
@@ -104,7 +104,7 @@ $power_list = Doctrine_Query::create()
   <div>
     <span id="notes_dirty" 
       title="Unsaved changes, click 'save notes' to save">*</span>
-    <a href="#" id="updateNotes">save notes</a>
+    <a href="#" id="updateNotes" class="ajaxLink">save notes</a>
   </div>
   <textarea name="notes" id="player_notes" 
     cols="25" rows="5"><?=$char->notes;?></textarea>

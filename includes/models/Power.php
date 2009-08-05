@@ -430,7 +430,6 @@ class Power extends BasePower
       return $this->Player->getAttackBonus(
         Player::ATTACK_WEAPON, $power_bonus);
     }
-    return $bonus;
   }
   
   /**

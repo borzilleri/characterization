@@ -22,10 +22,10 @@
       <li class="item"
         ><a href="<?=SITE_URL;?>/<?=$char->id;?>/delete">Delete</a></li>
     </ul>
-    <div class="menu_item" id="PlayerInfo">
+    <div class="menu_text" id="PlayerInfo">
       <?=$char->Race->name;?> <?=$char->Archetype->name;?> <?=$char->level;?>
     </div>
-    <div class="menu_item" id="PlayerAbilities">
+    <div class="menu_text" id="PlayerAbilities">
       <label>Str: </label><?=$char->strength;?> (<?=$char->getMod('str');?>)
       <label>Con: </label><?=$char->constitution;?> (<?=$char->getMod('con');?>)
       <label>Dex: </label><?=$char->dexterity;?> (<?=$char->getMod('dex');?>)
