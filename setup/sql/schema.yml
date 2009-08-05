@@ -47,14 +47,20 @@ Player:
     action_points:
         type: integer
         default: 0
-    health_max: integer
     health_cur: integer
+    health_bonus:
+        type: integer
+        default: 0
     health_tmp:
       type: integer
       default: 0
-    surges_max: integer
     surges_cur: integer
-    surge_value: integer
+    surges_bonus:
+      type: integer
+      default: 0
+    surge_value_bonus:
+      type: integer
+      default: 0
     strength: integer
     dexterity: integer
     constitution: integer

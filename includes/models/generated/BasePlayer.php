@@ -13,12 +13,12 @@
  * @property integer $attack_weapon_off
  * @property integer $attack_implement
  * @property integer $action_points
- * @property integer $health_max
  * @property integer $health_cur
+ * @property integer $health_bonus
  * @property integer $health_tmp
- * @property integer $surges_max
  * @property integer $surges_cur
- * @property integer $surge_value
+ * @property integer $surges_bonus
+ * @property integer $surge_value_bonus
  * @property integer $strength
  * @property integer $dexterity
  * @property integer $constitution
@@ -76,24 +76,27 @@ abstract class BasePlayer extends Doctrine_Record
              'type' => 'integer',
              'default' => 0,
              ));
-        $this->hasColumn('health_max', 'integer', null, array(
-             'type' => 'integer',
-             ));
         $this->hasColumn('health_cur', 'integer', null, array(
              'type' => 'integer',
+             ));
+        $this->hasColumn('health_bonus', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
              ));
         $this->hasColumn('health_tmp', 'integer', null, array(
              'type' => 'integer',
              'default' => 0,
              ));
-        $this->hasColumn('surges_max', 'integer', null, array(
-             'type' => 'integer',
-             ));
         $this->hasColumn('surges_cur', 'integer', null, array(
              'type' => 'integer',
              ));
-        $this->hasColumn('surge_value', 'integer', null, array(
+        $this->hasColumn('surges_bonus', 'integer', null, array(
              'type' => 'integer',
+             'default' => 0,
+             ));
+        $this->hasColumn('surge_value_bonus', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
              ));
         $this->hasColumn('strength', 'integer', null, array(
              'type' => 'integer',

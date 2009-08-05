@@ -13,25 +13,27 @@
 Doctrine::getTable('Power')->setAttribute(Doctrine::ATTR_COLL_KEY,'id');
 Doctrine::getTable('Keyword')->setAttribute(Doctrine::ATTR_COLL_KEY,'id');
 
+/**#@+
+ * Constants
+ */
 /**
  * String constant, base URI for the site.
  */
 define('SITE_URL', 'http://'.$_SERVER['HTTP_HOST']);
-
 /**
  * Base URI for Media files.
  */
 define('MEDIA_URL', SITE_URL);
-
 /**
  * String constant
  * File path to the directory for importing player yml files.
  */
 define('IMPORT_PATH', dirname(__FILE__).'/../../setup/sql/players/');
 
+
 /**
  * Messenger object
- * @global object $GLOBALS['messenger']
+ * @global Message $GLOBALS['messenger']
  * @name $messenger
  */
 $GLOBALS['msg'] = new Message();

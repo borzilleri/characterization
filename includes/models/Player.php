@@ -13,13 +13,77 @@ class Player extends BasePlayer
   
   const ATTACK_WEAPON = 'Weapon';
   const ATTACK_IMPLEMENT = 'Implement';
+  
+  const REST_SHORT = 'short';
+  const REST_EXTENDED = 'extended';
+  
+  /**
+   * Maximum health for the player
+   *
+   * This is derived from the player's class, level, constitution score, and
+   * any bonus health the player may have.
+   *
+   * @var integer
+   **/
+  private $health_max;
+  /**
+   * Maximum Surges/Day for the player
+   *
+   * This is derived from the player's class, constitution modifier, and
+   * any bonus surges the player may have.
+   *
+   * @var integer
+   **/
+  private $surges_max;
+  /**
+   * Surge Value for the player
+   *
+   * This is derived from the player's maximum health, and any bonus surge value
+   * the player may have.
+   *
+   * @var integer
+   **/
+  private $surge_value;
+  
+  /**
+   * Initialize derive values on construction
+   *
+   */
+  public function construct() {
+    $this->health_max = $this->generateMaxHealth();
+    $this->surges_max = $this->generateMaxSurges();
+    $this->surge_value = $this->generateSurgeValue();
+  }
+  
+  /**
+   * Re-initialize derived values after saving
+   */
+  public function postSave() {
+    $this->health_max = $this->generateMaxHealth();
+    $this->surges_max = $this->generateMaxSurges();
+    $this->surge_value = $this->generateSurgeValue();    
+  }
+  
+  /**
+   * Initialize current health and current surges to the derived max values
+   * before an insert
+   */
+  public function preInsert() {
+    // Set Current Health
+    $this->health_cur = $this->generateMaxHealth();    
+    // Set Current Surges
+    $this->surges_cur = $his->generateMaxSurges();
+  }
 
+  /**
+   * Before deleting our Player, we have to delete all our powers first.
+   */
   public function preDelete() {
 		$this->Powers->delete();
 	}
 
   /**
-   * @global $msg
+   * @global Message
    * @return bool
    */
   public function updateFromForm() {
@@ -145,74 +209,117 @@ class Player extends BasePlayer
       $this->attack_weapon_off = (int)$_POST['attack_weapon_off'];
     }
         
-    // Health Maximum
-    // Calculate how much health this character 'should' have, based on their
-    // class, level, and constitution score.
-    $health_calc = $this->Archetype->health_first + $this->constitution +
-      ($this->Archetype->health_level * ($this->level-1));
-    if( empty($_POST['character_health']) || 1 > $_POST['character_health'] ||
-        $health_calc > $_POST['character_health']) {
-      // The entered value is empty, invalid, or less than our calculated value.
-      // At this point, we check to see if the current value is empty,
-      // or less than our calculated value. If so, we update the field using
-      // our calculated value.
-      if( empty($this->health_max) || $this->health_max < $health_calc ) {
-        $this->health_max = $health_calc;
-      }
+    // Bonus Health
+    if( !is_numeric($_POST['health_bonus']) || 
+        (int)$_POST['health_bonus'] < 0 ) {
+      $msg->add('Bonus Health must be a non-negative integer.',
+        Message::WARNING);
     }
     else {
-      $this->health_max = (int)$_POST['character_health'];
-    }
-    
-    // Healing Surges Per Day
-    // Calculate how many surges we have based on our current class/con modifier
-    $surges_calc = $this->Archetype->surges + $this->getMod('con');
-    if( empty($_POST['character_surges']) || 1 > $_POST['character_surges'] ||
-        $surges_calc > $_POST['character_surges']) {
-      // The entered value is empty, invalid, or less than our calculated value.
-      
-      // If our current surges/day is LESS than the calculated value, or empty,
-      // we update the value, otherwise we leave it alone.
-      if( $this->surges_max < $surges_calc ) {
-        $this->surges_max = $surges_calc;
-      }
-    }
-    else {
-      $this->surges_max = (int)$_POST['character_surges'];
-    }
-    
-    
-    // Surge Value
-    // If the current surge value is empty,
-    // or if it is less than 1/4 of the newly updated maximum health,
-    // then update it to be 1/4 of our new maximum health.
-    /**
-     * @todo If we do this, send a notice to alert the player to check their
-     * surge value?
-     */
-    $surge_v_calc = floor($this->health_max/4);
-    if( empty($_POST['character_surge_value']) || 
-        1 > $_POST['character_surge_value'] || 
-        $surge_v_calc > $_POST['character_surge_value'] ) {
-      $this->surge_value = $surge_v_calc;   
-    }
-    else {
-      $this->surge_value = $_POST['character_surge_value'];
+      $this->health_bonus = (int)$_POST['health_bonus'];
     }
 
-    // Current Health
-    if( !$this->exists() ) {
-      $this->health_cur = $this->health_max;
+    // Bonus Surges
+    if( !is_numeric($_POST['surges_bonus']) || 
+        (int)$_POST['surges_bonus'] < 0 ) {
+      $msg->add('Bonus Surges must be a non-negative integer.',
+        Message::WARNING);
+    }
+    else {
+      $this->surges_bonus = (int)$_POST['surges_bonus'];
     }
 
-    // Current Surges
-    if( !$this->exists() ) {
-      $this->surges_cur = $this->surges_max;
+    // Bonus Surge Value
+    if( !is_numeric($_POST['surge_value_bonus']) || 
+        (int)$_POST['surge_value_bonus'] < 0 ) {
+      $msg->add('Bonus Surge Value must be a non-negative integer.',
+        Message::WARNING);
+    }
+    else {
+      $this->surge_value_bonus = (int)$_POST['surge_value_bonus'];
     }
     
     return !$error;
   }
   
+  /**
+   * Accessor for health_max
+   * @uses $health_max
+   */
+  public function getHealthMax() {
+    return $this->health_max;
+  }
+  /**
+   * Accessor for surges_max
+   * @uses $surges_max
+   */
+  public function getSurgesMax() {
+    return $this->surges_max;
+  }
+  /**
+   * Accessor for surge_value
+   * @uses $surge_value
+   */
+  public function getSurgeValue() {
+    return $this->surge_value;
+  }
+  
+  /**
+   * Generate the maximum health for the player
+   *
+   * Maximum health is calculated by summing:
+   * - The health granted at first level for the player's class
+   * - The player's constitution score
+   * - The health granted at additional levels for the player's class, times
+   * times the player's level-1
+   * - Any bonus health the player may have
+   * 
+   * @return integer
+   */
+  public function generateMaxHealth() {
+    $max_health = $this->Archetype->health_first + $this->constitution +
+      ($this->Archetype->health_level * ($this->level-1)) + 
+      $this->health_bonus;    
+    return $max_health;
+  }
+  
+  /**
+   * Generate the maximum surges per day for the player
+   *
+   * Surges per day is calculated by summing:
+   * - The base surges granted by the player's class
+   * - The player's constitution modifier
+   * - Any bonus surges the player may recieve
+   *
+   * @return integer
+   */
+  public function generateMaxSurges() {
+    $surges = $this->Archetype->surges + 
+      $this->getMod('con') + $this->surges_bonus;
+    return $surges;
+  }
+  
+  /**
+   * Generate the surge value for the player
+   *
+   * Surge Value is calculated by taking one quarter of the player's
+   * maximum health and adding in any bonus surge value the player may have.
+   *
+   * @uses generateMaxHealth()
+   * @return integer
+   */
+  public function generateSurgeValue() {
+    $max_health = $this->generateMaxHealth();
+    return floor($max_health/4) + $this->surge_value_bonus;
+  }
+  
+  /**
+   * Retrieves the bloodied value for the player
+   *
+   * A player is bloodied at 1/2 their maximum health.
+   *
+   * @return integer
+   */
   public function getBloodiedValue() {
     return floor($this->health_max/2);
   }
@@ -256,6 +363,11 @@ class Player extends BasePlayer
     return false;
   }
   
+  /**
+   * Retrieve a friendly display string for the player's status
+   *
+   * @return string
+   */
   public function getStatusText() {
     if( $this->isDead() ) {
       return self::STATUS_DEAD;
@@ -274,14 +386,9 @@ class Player extends BasePlayer
    * Returns the modifier for a given Ability Score
    * An ability score modifier is equal to (score/2)-5
    *
-   * Valid parameters are:
-   * 'strength', 'str'
-   * 'dexterity', 'dex'
-   * 'constitution', 'con'
-   * 'intelligence, 'int'
-   * 'wisdom', 'wis'
-   * 'charisma', 'cha'
+   * The valid parameters for this are exactly the same as getAbilityScore
    *
+   * @uses getAbilityScore()
    * @param string $ability The name of the ability score, eg 'strength'
    * @return int
    */
@@ -295,6 +402,20 @@ class Player extends BasePlayer
     }
   }
   
+  /**
+   * Returns the player's socre for the passed in ability.
+   *
+   * Valid parameters are:
+   * 'strength', 'str'
+   * 'dexterity', 'dex'
+   * 'constitution', 'con'
+   * 'intelligence, 'int'
+   * 'wisdom', 'wis'
+   * 'charisma', 'cha'
+   *
+   * @param string $ability The name of the ability score, e.g. 'strength'
+   * @return integer
+   */
   private function getAbilityScore($ability) {
     switch(strtolower($ability)) {
       case 'strength':
@@ -327,14 +448,24 @@ class Player extends BasePlayer
     }
   }
   
-  public function doRest($restType = 'short') {
-    if( 'extended' == $restType ) {
-      $this->extendedRest();
+  /**
+   * Perform a rest action
+   *
+   * restType should be one of the REST_* class constants.
+   *
+   * @param string $restType The type of rest to perform
+   * @return bool
+   */
+  public function doRest($restType = self::REST_SHORT) {
+    switch($restType) {
+      case self::REST_EXTENDED:
+        return $this->extendedRest();
+        break;
+      case self::REST_SHORT:
+      default:
+        return $this->shortRest();
+        break;
     }
-    else {
-      $this->shortRest();
-    }
-    return true;
   }
   
   /**
@@ -382,11 +513,33 @@ class Player extends BasePlayer
     return true;
   }
 
+  /**
+   * Add a surge to our current total.
+   *
+   * Note, we cannot exceed our maximum surges
+   * @global Message
+   * @return bool
+   */
   public function addSurge() {
-    $this->surges_cur = min($this->surges_cur+1,$this->surges_max);
-    return true;
+    global $msg;
+    $error = true;
+    if( $this->surges_cur >= $this->surges_max ) {
+      $msg->add('You are already at maximum surges.', Message::NOTICE);
+      return false;
+    }
+    else {
+      $this->surges_cur = min($this->surges_cur+1,$this->surges_max);
+      return true;
+    }
   }
   
+  /**
+   * Remove a surge from our current total
+   *
+   * Note, we cannot go below zero surges
+   * @global Message
+   * @return bool
+   */
   public function subtractSurge() {
     global $msg;
     $error = false;
@@ -409,7 +562,7 @@ class Player extends BasePlayer
    * happen and a notice will be sent. The exception is if the character is
    * under 1 health, at which point they are set to 1 health.
    * 
-   * @global $msg
+   * @global Message
    * @param int $extra Extra health to be added along with the surge value.
    * @return bool
    */
@@ -463,7 +616,7 @@ class Player extends BasePlayer
   /**
    * Take an amount of damage.
    *
-   * @global $msg
+   * @global Message
    * @return bool
    */
   public function takeDamage($damage) {
@@ -498,7 +651,7 @@ class Player extends BasePlayer
   }
   
   /**
-   * @global $msg
+   * @global Message
    * @param int $health Temporary HP to add.
    * @return bool
    */
@@ -548,8 +701,7 @@ class Player extends BasePlayer
    * @param string $accessory Accessory type to use for the attack.
    * @return array
    */
-  public function getAttackBonus(
-    $accessory = self::ATTACK_WEAPON, $power_bonus = null) {
+  public function getAttackBonus($accessory = null, $power_bonus = null) {
     $base_bonus = floor($this->level/2) + $this->attack_general;
     $base_bonus += (int)$power_bonus;
     $bonus = array();

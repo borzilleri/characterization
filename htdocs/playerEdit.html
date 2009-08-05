@@ -98,12 +98,12 @@ if( 'add' == $action ) {
   </div>
 
   <div class="formRow optional">
-    <label for="character_health">Max Health:
-      <span class="help" title="Maximum Health: Optional. If you have an ability that grants additional health, enter your FULL maximum health here.">?</span>
+    <label for="health_bonus">Bonus Health:
+      <span class="help" title="Bonus Health: Optional. If you have an ability that grants additional health (e.g. Toughness), enter the total extra health you get here.">?</span>
     </label>
     <div class="field">
-      <input type="text" id="character_health" name="character_health"
-        size="5" maxlength="4" value="<?=$char->health_max;?>" />
+      <input type="text" id="health_bonus" name="health_bonus"
+        size="5" maxlength="4" value="<?=$char->health_bonus;?>" />
     </div>
   </div>
 
@@ -154,22 +154,22 @@ if( 'add' == $action ) {
   </div>
   
   <div class="formRow optional">
-    <label for="character_surges">Surges/Day:
-      <span class="help" title="Surges Per Day: Optional. If you have an ability that grants additional surges, enter your TOTAL surges per day here.">?</span>
+    <label for="surges_bonus">Bonus Surges:
+      <span class="help" title="Bonus Surges: Optional. If you have an ability that grants additional surges, enter the total extra surges you have here.">?</span>
     </label>
     <div class="field">
-      <input type="text" id="character_surges" name="character_surges"
-        size="4" maxlength="3" value="<?=$char->surges_max;?>" />
+      <input type="text" id="surges_bonus" name="surges_bonus"
+        size="4" maxlength="3" value="<?=$char->surges_bonus;?>" />
     </div>
   </div>
 
   <div class="formRow optional">
-    <label for="character_surge_value">Surge Value:
-      <span class="help" title="Surge Value: Optional. If you have an ability that grants a larger than normal surge value, enter your full surge value here.">?</span>
+    <label for="surge_value_bonus">Bonus Surge Value:
+      <span class="help" title="Bonus Surge Value: Optional. If you have an ability that grants bonus surge value (e.g. Draconic Heritage), enter the extra surge value you get here.">?</span>
     </label>
     <div class="field">
-      <input type="text" id="character_surge_value" name="character_surge_value"
-        size="4" maxlength="3" value="<?=$char->surge_value;?>" />
+      <input type="text" id="surge_value_bonus" name="surge_value_bonus"
+        size="4" maxlength="3" value="<?=$char->surge_value_bonus;?>" />
     </div>
   </div>
 </div><!-- end div.rightColumn -->

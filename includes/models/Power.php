@@ -12,10 +12,16 @@ class Power extends BasePower
 	const POWER_ENCOUNTER = '2_encounter';
 	const POWER_DAILY = '3_daily';
 
+  /**
+   * Pre-Delete handling, we must delete our keyword associations first.
+   */
 	public function preDelete() {
 		$this->PowerKeywords->delete();
 	}
 	
+	/**
+	 * Post-save handling, update our keywords appropriately.
+	 */
 	public function postSave() {
 		// After saving the Power, we need to go through the $tmp_keywords array
 		// and update any objects there with our ID, and save them.
@@ -27,7 +33,7 @@ class Power extends BasePower
 
   /**
    *
-   * @global $msg
+   * @global Message
    * @return bool
    */
   public function updateFromForm() {
@@ -150,6 +156,12 @@ class Power extends BasePower
     return !$error;    
   }
   
+  /**
+   * Determines if an action type is valid.
+   *
+   * @param string $action The action type to validate.
+   * @return bool
+   **/
   private function isValidActionType($action) {
     switch($this->action) {
       case 'standard':
@@ -166,6 +178,13 @@ class Power extends BasePower
         break;
     }
   }
+
+  /**
+   * Determines if an attack ability score is valid
+   *
+   * @param string $stat the Ability score name to validate
+   * @return bool
+   */
   private function isValidAttackStat($stat) {
     switch($stat) {
       case 'Str':
@@ -182,6 +201,12 @@ class Power extends BasePower
         break;
     }
   }
+  /**
+   * Determines if a defense is valid
+   *
+   * @param string $def the Defense to validate
+   * @return bool
+   */
   private function isValidDefense($def) {
     switch($def) {
       case 'AC':
@@ -195,6 +220,12 @@ class Power extends BasePower
         break;
     }
   }
+  /**
+   * Determines if the sustaion action type is valid
+   *
+   * @param string $action The sustain action to validate.
+   * @return bool
+   */
   private function isValidSustainAction($action) {
     switch($action) {
       case 'standard':
@@ -210,6 +241,12 @@ class Power extends BasePower
     }
   }
   
+  /**
+   * Determines if the usage is valid
+   *
+   * @param string $type The usage type to validate
+   * @return bool
+   */
   public function isValidUseType($type) {
 		switch($type) {
 			case self::POWER_ATWILL:
@@ -222,10 +259,22 @@ class Power extends BasePower
 				break;
 		}
   }
+  
+  /**
+   * Determines if this power is of the usage type passed in
+   *
+   * @param string $type A POWER_* class constant.
+   * @return bool
+   */
   public function isUseType($type) {
     return $type == $this->use_type;
   }
 
+  /**
+   * Return a friendly display string for the power's usage type
+   *
+   * @return string
+   */
 	public function getDisplayUseType() {
 		switch($this->use_type) {
 			case self::POWER_ENCOUNTER:
@@ -240,11 +289,21 @@ class Power extends BasePower
 				break;
 		}
 	}
-	  
+	
+	/**
+	 * Refresh the power, allowing it to be used again.
+	 */ 
   public function refresh() {
     $this->used = false;
   }
   
+  /**
+   * Use a power, expending it.
+   *
+   * At-Will Powers cannot be expended.
+   *
+   * @return bool
+   */
   private function usePower() {
     if( self::POWER_ATWILL != $this->use_type ) {
       $this->used = true;
@@ -255,6 +314,13 @@ class Power extends BasePower
     }
   }
   
+  /**
+   * Toggle a power's expended state.
+   *
+   * At-Will Powers cannot be toggled.
+   *
+   * @return bool
+   */
   public function togglePower() {
     if( self::POWER_ATWILL == $this->use_type ) {
       $this->used = false;
@@ -266,6 +332,11 @@ class Power extends BasePower
     }
   }
   
+  /**
+   * Return a friendly display string for an action type.
+   *
+   * @return string
+   */
   public function actionTypeDisplay() {
     switch($this->action) {
       case 'move':
@@ -293,13 +364,20 @@ class Power extends BasePower
     }
   }
   
-  public function getTextDisplay($text, $echo = false) {
-    $out = $this->$text;
+  /**
+   * Perform post-processing on text fields
+   *
+   * @param string $field The field to process.
+   * @param bool $echo Whether to echo the result.
+   * @return string
+   */
+  public function getTextDisplay($field, $echo = false) {
+    $out = $this->$field;
     
     $out = htmlentities($out);
     $out = nl2br($out);
     
-    switch($text) {
+    switch($field) {
       case 'hit':
         // Secondary Attack
         $out = preg_replace('/(secondary attack:)/i','<label>$1</label>',$out);
@@ -323,15 +401,23 @@ class Power extends BasePower
   }
 
   /**
-   * 
-   * @param string $keyword The keyword to check
+   * Check to see if a power has a given keywords 
+   *
+   * @param string $keyword A Keyword string
    * @return bool
    */
   public function hasKeyword($keyword) {
     $k = Doctrine::getTable('Keyword')->findOneByName($keyword);
     return ($k && $k->exists() && $this->Keywords->contains($k->id));
   }
-
+  
+  /**
+   * Return an array of attack bonuses for this power. 
+   *
+   * @uses Player::getMod()
+   * @uses Player::getAttackBonus()
+   * @return array
+   */
   public function getAttackBonusTable() {
     $power_bonus = $this->attack_bonus;
     $power_bonus += (int)$this->Player->getMod($this->attack_ability);
@@ -347,6 +433,12 @@ class Power extends BasePower
     return $bonus;
   }
   
+  /**
+   * Generate a friendly attack bonus display
+   *
+   * @uses getAttackBonusTable()
+   * @return string
+   */
   public function attackBonusDisplay() {
     $bonus_table = $this->getAttackBonusTable();
     foreach($bonus_table as $k => $b) {
@@ -360,6 +452,11 @@ class Power extends BasePower
 	/**
 	 * Generates the html for a power box and returns it.
 	 *
+	 * @uses getDisplayUseType()
+	 * @uses getTextDisplay()
+	 * @uses getActionTypeDisplay()
+	 * @uses attackBonusDisplay()
+	 * @uses Archetype::$name
 	 * @param string $echo Whether to print the generated box or return it.
 	 * @return string
 	 */
