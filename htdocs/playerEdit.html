@@ -10,22 +10,28 @@ if( 'add' == $action ) {
 <? if( 'delete' == $action ): ?>
 
 <form method="post" action="<?=SITE_URL;?>/delete">
-  <div>
-    <p>Confirm Deletion of:</p>
-    <p><?=$char->name;?>, 
+<div class="formColumn leftColumn">
+  <div class="formRow">
+    <label>Confirm Delete For:</label>
+    <div class="field">
+      <?=$char->name;?>, 
       <?=$char->Race->name;?>
-      <?=$char->Archetype->name;?> <?=$char->level;?></p>
+      <?=$char->Archetype->name;?> <?=$char->level;?>
+    </div>
   </div>
-  
-  <div>
-    <input type="hidden" name="id" value="<?=$char->id;?>" />
-    <input type="submit" value="Delete" />
+  <div class="formRow">
+    <label>&nbsp;</label>
+    <div class="field">
+      <input type="hidden" name="id" value="<?=$char->id;?>" />
+      <input type="submit" value="Delete" />
+    </div>
   </div>
+</div>
 </form>
 
 <? else: ?>
 
-<form method="POST" action="<?=SITE_URL;?>/save">
+<form method="post" action="<?=SITE_URL;?>/save">
 <div class="formColumn leftColumn">
   <div class="formRow">
     <label for="character_name">Name:</label>
