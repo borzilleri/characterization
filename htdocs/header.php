@@ -39,6 +39,7 @@
 
 <div id="Content">
   <div id="Messages">
-    <div id="clearLink"><a href="#" id="ClearMessages">x</a></div>
+    <div id="clearLink">
+      <a href="#" id="ClearMessages" class="ajax">X</a></div>
     <div id="messageText"></div>
   </div>

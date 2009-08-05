@@ -123,18 +123,26 @@ ul.inline li.firstListItem {
 #messageText {
 	margin                : 10px 20px;
 }
+#messageText > div {
+	color                 : #888;
+}
+#messageText > div:first-child {
+	color                 : #000;
+}
 #clearLink {
+	font-size             : .625em;
+	line-height           : .875em;
 	float                 : left;
 }
 div.Success {
-	border                : 2px solid #87CEEB;
+	border                : 2px solid #87CEEB; /* blue */
 }
 div.Notice {
-	border                : 2px solid #888;
+	border                : 2px solid #888; /* grey */
 }
 div.Warning {
-	border                : 2px solid #FFA500;
+	border                : 2px solid #FFA500; /* orange */
 }
 div.Error {
-	border                : 2px solid #F00;
+	border                : 2px solid #F00; /* red */
 }

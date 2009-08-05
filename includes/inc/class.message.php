@@ -71,7 +71,8 @@ class Message {
     
     public function generateHTMLBlock($msg, $level) {
       return '<div class="message'.self::$strings[$level].'">'.
-        '<label>'.self::$strings[$level].':</label> '.$msg.'</div>';
+        '<label>'.self::$strings[$level].':</label> '.
+        '<span>'.$msg.'</span></div>';
     }
 }
 
