@@ -1,5 +1,5 @@
 <?php
-$css_include = array('forms.css');
+$css_include = array('forms.css', 'powerBox.css');
 include('autohandler.php');
 
 $char = Doctrine::getTable('Player')->findOneById($_REQUEST['id']);
@@ -15,6 +15,8 @@ $kw_list = Doctrine_Query::create()
   ->orderBy('k.id ASC')
   ->execute();
 ?>
+
+<div id="PowerBox"><?=$power->getPowerBoxDisplay();?></div>
 
 <form method="post" action="<?=SITE_URL;?>/<?=$char->id;?>/power/save">
 <div class="formColumn leftColumn">

@@ -68,3 +68,7 @@ div.formRow > label:first-child .help {
 	color                 : #888;
 	font-size             : .75em;
 }
+
+#PowerBox {
+	margin-left          : 300px;
+}

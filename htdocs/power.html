@@ -12,31 +12,37 @@ $power_list = Doctrine_Query::create()
   ->where('p.player_id = ?', $char->id)
   ->orderBy('p.use_type, p.level')
   ->execute();
-?>
-<div id="PowerPreview"></div>
-<ul class="list">
-  <li
-    <div class="listLinks">
-      <a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new">[new]</a>
-    </div>
-  </li>
-<? foreach($power_list as $p): ?>
-  <li>
-    <div class="listLinks">
-      <span><a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit">
-        [edit]</a></span>
-    </div>
-    <div class="listLabel">
-      <a href="#" id="p<?=$p->id;?>" class="power_preview"><?=$p->name;?></a>
-    </div>
-    <div class="listInfo">
-      <span><?=$p->getUseTypeDisplay();?></span>
-      <span>Level <?=$p->level;?></span>
-    </div>
-  </li>
-<? endforeach; ?>
-<li><a href="#" id="p100" class="power_preview">test invalid power</a></li>
-</ul>
 
+$i = 0;
+?>
+<div id="PowerList">
+  <ul class="list">
+    <li class="row<?=$i;$i=($i+1)%2;?>">
+      <div class="listLinks">
+        [<a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new">new power</a>]
+      </div>
+    </li>
+  <? foreach($power_list as $p): ?>
+    <li class="row<?=$i;$i=($i+1)%2;?>">
+      <div class="listLinks">
+        [ <a href="#" id="l<?=$p->id;?>" class="power_preview">
+          view</a>&nbsp;|
+        <a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit">
+            edit</a> ]
+      </div>
+      <div class="listLabel">
+        <span><?=$p->name;?></span>
+      </div>
+      <div class="listInfo">
+        <span class="<?=$p->getUseTypeDisplay();?>">
+          Level <?=$p->level;?> <?=$p->getUseTypeDisplay();?>
+        </span>
+      </div>
+    </li>
+  <? endforeach; ?>
+  </ul>
+</div><!-- end div#PowerList -->
+
+<div id="PowerPreview"></div>
 
 <?php include('footer.php');?>

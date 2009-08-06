@@ -143,9 +143,12 @@ ul.list {
 }
 ul.list li {
 	clear                 : both;
+	margin                : 0;
+	padding               : 2px 0;
 }
 div.listLinks {
-	width                 : 40px;
+	font-size             : .75em;
+	width                 : 70px;
 	float                 : left;
 	margin                : 0;
 	padding               : 0;
@@ -158,6 +161,24 @@ li.noCheck div.listLabel {
 	margin-left           : 25px;
 }
 
+#PowerList {
+	width                 : 475px;
+	float                 : left;
+}
 #PowerPreview {
+	margin-left           : 500px;
+	width                 : 310px;
 	display               : none;
+}
+ul.list span.At-Will {
+	color                 : #528855;
+	background-color      : inherit;
+}
+ul.list span.Encounter {
+	color                 : #7E012A;
+	background-color      : inherit;
+}
+ul.list span.Daily {
+	color                 : #3B3B3C;
+	background-color      : inherit;
 }
