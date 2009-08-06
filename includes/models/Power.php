@@ -456,10 +456,12 @@ class Power extends BasePower
 	 * @uses getActionTypeDisplay()
 	 * @uses getAttackBonusDisplay()
 	 * @uses Archetype::$name
-	 * @param string $echo Whether to print the generated box or return it.
+	 * @param bool $collapseUsed Whether to collapse the power box to it's title
+	 *  bar based on the used property.
+	 * @param bool $echo Whether to print the generated box or return it.
 	 * @return string
 	 */
-	public function getPowerBoxDisplay($echo = false) {
+	public function getPowerBoxDisplay($collapseUsed = false, $echo = false) {
 		$box = ""; $i = 0;
 		
 		// Outer div
@@ -477,7 +479,10 @@ class Power extends BasePower
 		// End TitleBar
 		
 		// Description
-		$box .='<div class="description '.($this->used?'usedPower':'').'">';
+		// Only add the 'usedPower' class if the power is used AND we're
+		// collapsing powers.
+		$box .='<div class="description '.
+		  ($collapseUsed&&$this->used?'usedPower':'').'">';
 		
 		
 		// Statblock Row

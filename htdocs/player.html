@@ -86,13 +86,13 @@ $power_list = Doctrine_Query::create()
 
 <div id="powerLeft" class="leftColumn contentColumn"><? $i = 0; 
   foreach($power_list as $power): $i = ($i+1)%2;
-    if( $i ) echo $power->getPowerBoxDisplay();
+    if( $i ) echo $power->getPowerBoxDisplay(true);
   endforeach; ?>
 </div>
 
 <div id="powerRight" class="rightColumn contentColumn"><? $i = 1;
   foreach($power_list as $power): $i = ($i+1)%2;
-    if( $i ) echo $power->getPowerBoxDisplay();
+    if( $i ) echo $power->getPowerBoxDisplay(true);
   endforeach; ?>
 </div>
 
