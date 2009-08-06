@@ -1,20 +1,42 @@
 <?php
+$css_include = array('powerBox.css');
+$js_include = array('power.js');
 include('autohandler.php');
 
 if( !$char || !$char->exists() ) {
   loadPage('/');
 }
+
+$power_list = Doctrine_Query::create()
+  ->from('Power p')
+  ->where('p.player_id = ?', $char->id)
+  ->orderBy('p.use_type, p.level')
+  ->execute();
 ?>
-
-<a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new">add power</a>
-
-<ul>
-<? foreach($char->Powers as $p): ?>
- <li>
-  <?=$p->name;?>
-  <a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit">(edit)</a>
- </li>
+<div id="PowerPreview"></div>
+<ul class="list">
+  <li
+    <div class="listLinks">
+      <a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new">[new]</a>
+    </div>
+  </li>
+<? foreach($power_list as $p): ?>
+  <li>
+    <div class="listLinks">
+      <span><a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit">
+        [edit]</a></span>
+    </div>
+    <div class="listLabel">
+      <a href="#" id="p<?=$p->id;?>" class="power_preview"><?=$p->name;?></a>
+    </div>
+    <div class="listInfo">
+      <span><?=$p->getUseTypeDisplay();?></span>
+      <span>Level <?=$p->level;?></span>
+    </div>
+  </li>
 <? endforeach; ?>
+<li><a href="#" id="p100" class="power_preview">test invalid power</a></li>
 </ul>
+
 
 <?php include('footer.php');?>

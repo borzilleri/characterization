@@ -1,7 +1,4 @@
 var PLAYER_PROCESS = SITE_URL+"/ajax/playerProcess.php";
-var PROCESS_FAILURE = 'FALSE';
-var RESULT_DELIMITER = ':';
-var MESSSAGE_DELIMITER = '|';
 var STATUS_DEAD = 'Dead';
 var STATUS_UNCONSCIOUS = 'Unconscious';
 var STATUS_BLOODIED = 'Bloodied';
@@ -47,7 +44,7 @@ function usePower(divID) {
 	var id = divID.substring(1);
 	var powerIDstring = '#powerBox'+id+' .description';
 	
-	$.post(SITE_URL+"/ajax/playerProcess.php",
+	$.post(PLAYER_PROCESS,
 		{
 			id: CHAR_ID,
 			p_id: id,
@@ -57,7 +54,7 @@ function usePower(divID) {
 			var response = data.split(MESSSAGE_DELIMITER);
 			var result = response[0];
 			
-			if( PROCESS_FAILURE != response ) {
+			if( PROCESS_FAILURE != result ) {
 				$(powerIDstring).toggle();
 			}
 			

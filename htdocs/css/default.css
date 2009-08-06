@@ -1,3 +1,4 @@
+/* General Styles */
 body {
 	font-size	            : 100%; /* Assume 1em is 16px */
 	line-height           : 1.1em;
@@ -24,6 +25,11 @@ a:active {
 	text-decoration       : none;
 }
 
+.clear {
+	clear                 : both;
+}
+
+/* Header Style */
 #Header {
 	/* height should be the same as the line-height for the menu */
 	height                : 1.5em;
@@ -31,18 +37,7 @@ a:active {
 	border-bottom         : 1px dotted #445566;
 }
 
-#Content {
-	padding               : 10px;
-}
-
-#Footer {
-	font-size             : .625em; /* 10px = 16px * .625em */
-  text-align            : center;
-  color                 : #777;
-	border-top            : 1px dotted black;
-	margin                : 10px;
-}
-
+/* Menu Bar Styles */
 #MenuBar {
 	position              : absolute;
 }
@@ -90,28 +85,12 @@ a:active {
 	text-decoration       : none;
 }
 
-
-ul.inline {
-  padding               : 0;
-  margin                : 10px;
-}
-ul.inline li {
-  display               : inline;
-  list-style-type       : none;
-  border-left           : 1px solid black;
-  
-  padding               : 0 8px;
-  margin                : 0;
-  
-}
-ul.inline li.firstListItem {
-  border-left           : none;
+/* Main Content Styles */
+#Content {
+	padding               : 10px;
 }
 
-.clear {
-	clear                 : both;
-}
-
+/* Message notification area styles */
 #Messages {
 	margin                : 5px auto;
 	width                 : 75%;
@@ -145,4 +124,40 @@ div.Warning {
 }
 div.Error {
 	border                : 2px solid #F00; /* red */
+}
+
+/* Footer Style */
+#Footer {
+	font-size             : .625em; /* 10px = 16px * .625em */
+  text-align            : center;
+  color                 : #777;
+	border-top            : 1px dotted black;
+	margin                : 10px;
+}
+
+/* list Styles */
+ul.list {
+	list-style            : none;
+	margin                : 0;
+	padding               : 0;
+}
+ul.list li {
+	clear                 : both;
+}
+div.listLinks {
+	width                 : 40px;
+	float                 : left;
+	margin                : 0;
+	padding               : 0;
+}
+div.listLabel {
+	width                 : 225px;
+	float                 : left;
+}
+li.noCheck div.listLabel {
+	margin-left           : 25px;
+}
+
+#PowerPreview {
+	display               : none;
 }

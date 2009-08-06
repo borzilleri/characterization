@@ -38,6 +38,10 @@ else {
 // Various site 'constants'
 var SITE_URL = '<?=SITE_URL;?>';
 var MEDIA_URL = '<?=MEDIA_URL;?>';
+var PROCESS_FAILURE = 'FALSE';
+var RESULT_DELIMITER = ':';
+var MESSSAGE_DELIMITER = '|';
+var CHAR_ID = <?=$char?$char->id:0;?>;
 
 function getMessages() {
   $.get(SITE_URL+'/ajax/messages.php', null,

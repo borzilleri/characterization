@@ -13,10 +13,6 @@ $power_list = Doctrine_Query::create()
   ->orderBy('p.use_type, p.level')
   ->execute();
 ?>
-<script type="text/javascript" charset="utf-8">
-  var CHAR_ID = <?=$char->id;?>;
-</script>
-
 <div id="StatBlock">
   <div class="leftColumn contentColumn">
     <div class="statRow">
@@ -90,13 +86,13 @@ $power_list = Doctrine_Query::create()
 
 <div id="powerLeft" class="leftColumn contentColumn"><? $i = 0; 
   foreach($power_list as $power): $i = ($i+1)%2;
-    if( $i ) echo $power->getPowerBox();
+    if( $i ) echo $power->getPowerBoxDisplay();
   endforeach; ?>
 </div>
 
 <div id="powerRight" class="rightColumn contentColumn"><? $i = 1;
   foreach($power_list as $power): $i = ($i+1)%2;
-    if( $i ) echo $power->getPowerBox();
+    if( $i ) echo $power->getPowerBoxDisplay();
   endforeach; ?>
 </div>
 

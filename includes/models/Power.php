@@ -275,7 +275,7 @@ class Power extends BasePower
    *
    * @return string
    */
-	public function getDisplayUseType() {
+	public function getUseTypeDisplay() {
 		switch($this->use_type) {
 			case self::POWER_ENCOUNTER:
 				return 'Encounter';
@@ -337,7 +337,7 @@ class Power extends BasePower
    *
    * @return string
    */
-  public function actionTypeDisplay() {
+  public function getActionTypeDisplay() {
     switch($this->action) {
       case 'move':
         return 'Move Action';
@@ -371,7 +371,7 @@ class Power extends BasePower
    * @param bool $echo Whether to echo the result.
    * @return string
    */
-  public function getTextDisplay($field, $echo = false) {
+  public function getTextFieldDisplay($field, $echo = false) {
     $out = $this->$field;
     
     $out = htmlentities($out);
@@ -438,7 +438,7 @@ class Power extends BasePower
    * @uses getAttackBonusTable()
    * @return string
    */
-  public function attackBonusDisplay() {
+  public function getAttackBonusDisplay() {
     $bonus_table = $this->getAttackBonusTable();
     foreach($bonus_table as $k => $b) {
       if( $b >= 0 ) {
@@ -451,15 +451,15 @@ class Power extends BasePower
 	/**
 	 * Generates the html for a power box and returns it.
 	 *
-	 * @uses getDisplayUseType()
-	 * @uses getTextDisplay()
+	 * @uses getUseTypeDisplay()
+	 * @uses getTextFieldDisplay()
 	 * @uses getActionTypeDisplay()
-	 * @uses attackBonusDisplay()
+	 * @uses getAttackBonusDisplay()
 	 * @uses Archetype::$name
 	 * @param string $echo Whether to print the generated box or return it.
 	 * @return string
 	 */
-	public function getPowerBox($echo = false) {
+	public function getPowerBoxDisplay($echo = false) {
 		$box = ""; $i = 0;
 		
 		// Outer div
@@ -467,7 +467,7 @@ class Power extends BasePower
 		
 		// TitleBar
 		$box .= '<div id="p'.$this->id.'" class="titleBar '.
-			$this->getDisplayUseType().'">';
+			$this->getUseTypeDisplay().'">';
 		// Power Class/Level
 		$box .= '<span class="powerLevel">'.$this->Player->Archetype->name.
 			' '.$this->level.'</span>';
@@ -486,7 +486,7 @@ class Power extends BasePower
 		// Usage/Keywords
 		$box .= '<div>';
 		// Usage
-		$box .= '<span class="usage">'.$this->getDisplayUseType().'</span>';		
+		$box .= '<span class="usage">'.$this->getUseTypeDisplay().'</span>';		
 		// Keywords
 		if( $this->Keywords->count() ) {
 			$box .= ' &diams; <span class="keywords">';
@@ -505,23 +505,23 @@ class Power extends BasePower
 		// Range
 		if( !empty($this->power_range) ) {
 			$box .= '<span class="range">'.
-			  $this->getTextDisplay('power_range').'</span>';
+			  $this->getTextFieldDisplay('power_range').'</span>';
 		}
 		// Action Type
-		$box .= '<span class="actionType">'.$this->actionTypeDisplay().'</span>';
+		$box .= '<span class="actionType">'.$this->getActionTypeDisplay().'</span>';
 		$box .= '</div>';
 		// End Action/Range
 		
 		// Target
 		if( !empty($this->target) ) {
 			$box .= '<div><label>Target: </label><span>'.
-			  $this->getTextDisplay('target').'</span></div>';
+			  $this->getTextFieldDisplay('target').'</span></div>';
 		}
 		
 		// Attack
 		if( 'none' != $this->attack_ability ) {
 			$box .= '<div><label>Attack: </label><span>';
-			$box .= $this->attackBonusDisplay().' ('.$this->attack_ability.')';
+			$box .= $this->getAttackBonusDisplay().' ('.$this->attack_ability.')';
 			$box .= ' vs. '.$this->defense.'</span></div>';
 		}
 		
@@ -532,35 +532,35 @@ class Power extends BasePower
 		if( !empty($this->hit) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'hit">'; $i+=1;
 			$box .= '<label>Hit: </label>';
-			$box .= '<span>'.$this->getTextDisplay('hit').'</span></div>';
+			$box .= '<span>'.$this->getTextFieldDisplay('hit').'</span></div>';
 		}
 
 		// Miss
 		if( !empty($this->miss) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'miss">'; $i+=1;
 			$box .= '<label>Miss: </label>';
-			$box .= '<span>'.$this->getTextDisplay('miss').'</span></div>';
+			$box .= '<span>'.$this->getTextFieldDisplay('miss').'</span></div>';
 		}
 		
 		// Effect
 		if( !empty($this->effect) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'effect">'; $i+=1;
 			$box .= '<label>Effect: </label>';
-			$box .= '<span>'.$this->getTextDisplay('effect').'</span></div>';
+			$box .= '<span>'.$this->getTextFieldDisplay('effect').'</span></div>';
 		}
 
 		// Sustain
 		if( 'none'!=$this->sustain_action ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'sustain">'; $i+=1;
 			$box .= '<label>Sustain '.$this->sustain_action.': </label>';
-			$box .= '<span>'.$this->getTextDisplay('sustain').'</span></div>';
+			$box .= '<span>'.$this->getTextFieldDisplay('sustain').'</span></div>';
 		}
 		
 		// Notes
 		if( !empty($this->notes) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'notes">'; $i+=1;
 			$box .= '<label>Notes: </label>';
-			$box .= '<span>'.$this->getTextDisplay('notes').'</span></div>';
+			$box .= '<span>'.$this->getTextFieldDisplay('notes').'</span></div>';
 		}
 		
 		// End Description
