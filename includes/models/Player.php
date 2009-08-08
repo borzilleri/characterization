@@ -89,83 +89,96 @@ class Player extends BasePlayer
   public function updateFromForm() {
     global $msg;
     $error = false;
-    
+    $cache = array();
+        
     // Race
-    $this->race_id = (int)@$_POST['character_race'];
+    $this->race_id = (int)@$_POST['race'];
+    $cache['race_id'] = $this->race_id;
+    
     // Archetype (Class)
-    $this->archetype_id = (int)@$_POST['character_class'];
+    $this->archetype_id = (int)@$_POST['archetype'];
+    $cache['archetype_id'] = $this->archetype_id;
 
     // Character Name    
     $this->name = empty($_POST['character_name'])?
-      'unknown':$_POST['character_name'];
+      'unknown':trim($_POST['character_name']);
+    $cache['name'] = $_POST['character_name'];
     
     // Character Level
-    if( empty($_POST['character_level']) ||
-        1 > $_POST['character_level'] || 30 < $_POST['character_level'] ) {
+    $cache['level'] = $_POST['level'];
+    if( empty($_POST['level']) ||
+        1 > $_POST['level'] || 30 < $_POST['level'] ) {
       $msg->add('Level must be 1-30 inclusive.', Message::WARNING);
       $error = true;
     }
     else {
-      $this->level = (int)$_POST['character_level'];
+      $this->level = (int)$_POST['level'];
     }
     
     // Ability Scores
     
     // Strength
-    if( empty($_POST['character_str']) || $_POST['character_str'] < 1 ) {
+    $cache['strength'] = $_POST['strength'];
+    if( empty($_POST['strength']) || $_POST['strength'] < 1 ) {
       $msg->add('Strenth must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
-      $this->strength = (int)$_POST['character_str'];
+      $this->strength = (int)$_POST['strength'];
     }
     
     // Dexterity
-    if( empty($_POST['character_dex']) || $_POST['character_dex'] < 1 ) {
+    $cache['dexterity'] = $_POST['dexterity'];
+    if( empty($_POST['dexterity']) || $_POST['dexterity'] < 1 ) {
       $msg->add('Dexterity must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
-      $this->dexterity = (int)$_POST['character_dex'];
+      $this->dexterity = (int)$_POST['dexterity'];
     }
     
     // Constitution
-    if( empty($_POST['character_con']) || $_POST['character_con'] < 1 ) {
+    $cache['constitution'] = $_POST['constitution'];
+    if( empty($_POST['constitution']) || $_POST['constitution'] < 1 ) {
       $msg->add('Constitution must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
-      $this->constitution = (int)$_POST['character_con'];
+      $this->constitution = (int)$_POST['constitution'];
     }
     
     // Intelligence
-    if( empty($_POST['character_int']) || $_POST['character_int'] < 1 ) {
+    $cache['intelligence'] = $_POST['intelligence'];
+    if( empty($_POST['intelligence']) || $_POST['intelligence'] < 1 ) {
       $msg->add('Intelligence must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
-      $this->intelligence = (int)$_POST['character_int'];
+      $this->intelligence = (int)$_POST['intelligence'];
     }
     
     // Wisdom
-    if( empty($_POST['character_wis']) || $_POST['character_wis'] < 1 ) {
+    $cache['wisdom'] = $_POST['wisdom'];
+    if( empty($_POST['wisdom']) || $_POST['wisdom'] < 1 ) {
       $msg->add('Wisdom must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
-      $this->wisdom = (int)$_POST['character_wis'];
+      $this->wisdom = (int)$_POST['wisdom'];
     }
     
     // Charisma
-    if( empty($_POST['character_cha']) || $_POST['character_cha'] < 1 ) {
+    $cache['charisma'] = $_POST['charisma'];
+    if( empty($_POST['charisma']) || $_POST['charisma'] < 1 ) {
       $msg->add('Charisma must be a positive number.', Message::WARNING);
       $error = true;
     }
     else {
-      $this->charisma = (int)$_POST['character_cha'];
+      $this->charisma = (int)$_POST['charisma'];
     }
     
     // General Attack Bonus
+    $cache['attack_general'] = $_POST['attack_general'];
     if( !is_numeric($_POST['attack_general']) || 
         (int)$_POST['attack_general'] < 0 ) {
       $msg->add('General Attack Bonus must be a non-negative integer.', 
@@ -177,6 +190,7 @@ class Player extends BasePlayer
     }
 
     // Implement Attack Bonus
+    $cache['attack_implement'] = $_POST['attack_implement'];
     if( !is_numeric($_POST['attack_implement']) ||
         (int)$_POST['attack_implement'] < 0 ) {
       $msg->add('Implement Attack Bonus must be a non-negative integer.', 
@@ -188,6 +202,7 @@ class Player extends BasePlayer
     }
 
     // Main Hand Weapon Bonus
+    $cache['attack_weapon_main'] = $_POST['attack_weapon_main'];
     if( !is_numeric($_POST['attack_weapon_main']) ||
         (int)$_POST['attack_weapon_main'] < 0 ) {
       $msg->add('Main Hand Weapon Attack Bonus must be a non-negative integer.', 
@@ -199,6 +214,7 @@ class Player extends BasePlayer
     }
 
     // Off Hand Weapon Attack Bonus
+    $cache['attack_weapon_off'] = $_POST['attack_weapon_off'];
     if( !is_numeric($_POST['attack_weapon_off']) ||
         (int)$_POST['attack_weapon_off'] < 0 ) {
       $msg->add('Off Hand Weapon Attack Bonus must be a non-negative integer.', 
@@ -210,33 +226,48 @@ class Player extends BasePlayer
     }
         
     // Bonus Health
+    $cache['health_bonus'] = $_POST['health_bonus'];
     if( !is_numeric($_POST['health_bonus']) || 
         (int)$_POST['health_bonus'] < 0 ) {
       $msg->add('Bonus Health must be a non-negative integer.',
         Message::WARNING);
+      $error = true;
     }
     else {
       $this->health_bonus = (int)$_POST['health_bonus'];
     }
 
     // Bonus Surges
+    $cache['surges_bonus'] = $_POST['surges_bonus'];
     if( !is_numeric($_POST['surges_bonus']) || 
         (int)$_POST['surges_bonus'] < 0 ) {
       $msg->add('Bonus Surges must be a non-negative integer.',
         Message::WARNING);
+      $error = true;
     }
     else {
       $this->surges_bonus = (int)$_POST['surges_bonus'];
     }
 
     // Bonus Surge Value
+    $cache['surge_value_bonus'] = $_POST['surge_value_bonus'];
     if( !is_numeric($_POST['surge_value_bonus']) || 
         (int)$_POST['surge_value_bonus'] < 0 ) {
       $msg->add('Bonus Surge Value must be a non-negative integer.',
         Message::WARNING);
+      $error = true;
     }
     else {
       $this->surge_value_bonus = (int)$_POST['surge_value_bonus'];
+    }
+    
+    if( !empty($_POST['form_key']) ) {
+      if( !$error ) {
+        unset($_SESSION[$_POST['form_key']]);
+      }
+      else {
+        $_SESSION[$_POST['form_key']] = $cache;
+      }
     }
     
     return !$error;
@@ -719,6 +750,26 @@ class Player extends BasePlayer
         break;
     }
     return $bonus;
+  }
+
+  /**
+   * Retrieve a cached value for a property if one exists. 
+   *
+   * @param string $field Property name to retrieve
+   * @param string $form_key Key name for the form cache to check
+   * @return mixed The cached value, or the internal value if no cached value
+   */
+  public function getCached($field, $form_key = null) {
+    /**
+     * @todo Add a check to make sure that we HAVE a property named $field
+     */
+    if( !empty($form_key) && !empty($_SESSION[$form_key]) && 
+        array_key_exists($field, $_SESSION[$form_key]) ) {
+      return $_SESSION[$form_key][$field];
+    }
+    else {
+      return $this->$field;
+    }
   }
 }
 

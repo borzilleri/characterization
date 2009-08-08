@@ -1,4 +1,5 @@
 <?php
+$form_key = 'player_edit';
 $css_include = array('forms.css');
 include('autohandler.php');
 
@@ -8,7 +9,6 @@ if( 'add' == $action ) {
 ?>
 
 <? if( 'delete' == $action ): ?>
-
 <form method="post" action="<?=SITE_URL;?>/delete">
 <div class="formColumn leftColumn">
   <div class="formRow">
@@ -28,7 +28,6 @@ if( 'add' == $action ) {
   </div>
 </div>
 </form>
-
 <? else: ?>
 
 <form method="post" action="<?=SITE_URL;?>/save">
@@ -37,33 +36,34 @@ if( 'add' == $action ) {
     <label for="character_name">Name:</label>
     <div class="field">
       <input type="text" class="text" size="20" maxlength="255"
-        id="character_name" name="character_name" value="<?=$char->name;?>" />
+        id="character_name" name="character_name"
+        value="<?=$char->getCached('name',$form_key);?>" />
     </div>
   </div>
   
   <div class="formRow">
-    <label for="character_race">Race:</label>
+    <label for="race">Race:</label>
     <div class="field">
       <?=Race::generateSelect(
-        'character_race', 'character_race', $char->race_id);?>
+        'race', 'race', $char->getCached('race_id', $form_key));?>
     </div>
   </div>
   
   <div class="formRow">
-    <label for="character_class">Class:</label>
+    <label for="archetype">Class:</label>
     <div class="field">
       <?=Archetype::generateSelect(
-        'character_class', 'character_class', $char->archetype_id);?>
+        'archetype', 'archetype', $char->getCached('archetype_id',$form_key));?>
     </div>
   </div>
   
   <div class="formRow">
-    <label for="character_level">Level:</label>
+    <label for="level">Level:</label>
     <div class="field">
-      <select name="character_level" id="character_level">
+      <select name="level" id="level">
       <? for($i=1;$i<=30;$i++): ?>
-        <option value="<?=$i;?>"
-          <?=$i==$char->level?'selected="selected"':'';?>><?=$i;?></option>
+        <option value="<?=$i;?>" <?=$i==$char->getCached('level',$form_key)?
+            'selected="selected"':'';?>><?=$i;?></option>
       <? endfor; ?>
       </select>
     </div>
@@ -74,8 +74,9 @@ if( 'add' == $action ) {
       <span class="help" title="General Attack Bonus: Any bonuses that would apply to ALL your attacks should be set here. (DO NOT count level or ability bonuses.)">?</span>
     </label>
     <div class="field">
-      <input type="text" id="attack_general" name="attack_general"
-        size="3" maxlength="3" value="<?=$char->attack_general;?>" />
+      <input type="text" size="3" maxlength="3" 
+        id="attack_general" name="attack_general"
+        value="<?=$char->getCached('attack_general',$form_key);?>" />
     </div>
   </div>
 
@@ -84,8 +85,9 @@ if( 'add' == $action ) {
       <span class="help" title="Implement Attack Bonus: Any bonuses that apply to your Implmenet powers (from a magic implement, feat, etc) should be set here.">?</span>
     </label>
     <div class="field">
-      <input type="text" id="attack_implement" name="attack_implement"
-        size="3" maxlength="3" value="<?=$char->attack_implement;?>" />
+      <input type="text" size="3" maxlength="3"
+        id="attack_implement" name="attack_implement"
+        value="<?=$char->getCached('attack_implement', $form_key);?>" />
     </div>
   </div>
 
@@ -94,12 +96,14 @@ if( 'add' == $action ) {
       <span class="help" title="Weapon Attack Bonus: Any bonuses that apply to your Weapon powers (from a magic weapon, feat, etc) should be set here. You may set main hand and off hand bonuses separately.">?</span>
     </label>
     <div class="field">
-      <label>Main:</label>
-      <input type="text" id="attack_weapon_main" name="attack_weapon_main"
-        size="3" maxlength="3" value="<?=$char->attack_weapon_main;?>" />&nbsp;/
-      <label>Off:</label>
-      <input type="text" id="attack_weapon_off" name="attack_weapon_off"
-        size="3" maxlength="3" value="<?=$char->attack_weapon_off;?>" />
+      <label for="attack_weapon_main">Main:</label>
+      <input type="text" size="3" maxlength="3"
+        id="attack_weapon_main" name="attack_weapon_main"
+        value="<?=$char->getCached('attack_weapon_main',$form_key);?>" />&nbsp;/
+      <label for="attack_weapon_off">Off:</label>
+      <input type="text" size="3" maxlength="3"
+        id="attack_weapon_off" name="attack_weapon_off"
+        value="<?=$char->getCached('attack_weapon_off', $form_key);?>" />
     </div>
   </div>
 
@@ -108,8 +112,9 @@ if( 'add' == $action ) {
       <span class="help" title="Bonus Health: Optional. If you have an ability that grants additional health (e.g. Toughness), enter the total extra health you get here.">?</span>
     </label>
     <div class="field">
-      <input type="text" id="health_bonus" name="health_bonus"
-        size="5" maxlength="4" value="<?=$char->health_bonus;?>" />
+      <input type="text" size="5" maxlength="4" 
+        id="health_bonus" name="health_bonus" 
+        value="<?=$char->getCached('health_bonus', $form_key);?>" />
     </div>
   </div>
 
@@ -117,45 +122,51 @@ if( 'add' == $action ) {
 
 <div class="formColumn rightColumn">
   <div class="formRow">
-    <label for="character_str">Strength:</label>
+    <label for="strength">Strength:</label>
     <div class="field">
-      <input type="text" id="character_str" name="character_str"
-      size="3" maxlength="2" value="<?=$char->strength;?>" />
+      <input type="text" id="strength" name="strength"
+      size="3" maxlength="2" 
+      value="<?=$char->getCached('strength', $form_key);?>" />
     </div>
   </div>
   <div class="formRow">
-    <label for="character_con">Constitution:</label>
+    <label for="constitution">Constitution:</label>
     <div class="field">
-      <input type="text" id="character_con" name="character_con"
-      size="3" maxlength="2" value="<?=$char->constitution;?>" />
+      <input type="text" id="constitution" name="constitution"
+      size="3" maxlength="2" 
+      value="<?=$char->getCached('constitution', $form_key);?>" />
     </div>
   </div>
   <div class="formRow">
-    <label for="character_dex">Dexterity:</label>
+    <label for="dexterity">Dexterity:</label>
     <div class="field">
-      <input type="text" id="character_dex" name="character_dex"
-      size="3" maxlength="2" value="<?=$char->dexterity;?>" />
+      <input type="text" id="dexterity" name="dexterity"
+        size="3" maxlength="2"
+        value="<?=$char->getCached('dexterity', $form_key);?>" />
     </div>
   </div>
   <div class="formRow">
-    <label for="character_int">Intelligence:</label>
+    <label for="intelligence">Intelligence:</label>
     <div class="field">
-      <input type="text" id="character_int" name="character_int"
-      size="3" maxlength="2" value="<?=$char->intelligence;?>" />
+      <input type="text" id="intelligence" name="intelligence"
+        size="3" maxlength="2" 
+        value="<?=$char->getCached('intelligence', $form_key);?>" />
     </div>
   </div>
   <div class="formRow">
-    <label for="character_wis">Wisdom:</label>
+    <label for="wisdom">Wisdom:</label>
     <div class="field">
-      <input type="text" id="character_wis" name="character_wis"
-      size="3" maxlength="2" value="<?=$char->wisdom;?>" />
+      <input type="text" id="wisdom" name="wisdom"
+        size="3" maxlength="2" 
+        value="<?=$char->getCached('wisdom', $form_key);?>" />
     </div>
   </div>
   <div class="formRow">
-    <label for="character_cha">Charisma:</label>
+    <label for="charisma">Charisma:</label>
     <div class="field">
-      <input type="text" id="character_cha" name="character_cha"
-      size="3" maxlength="2" value="<?=$char->charisma;?>" />
+      <input type="text" id="charisma" name="charisma"
+        size="3" maxlength="2" 
+        value="<?=$char->getCached('charisma', $form_key);?>" />
     </div>
   </div>
   
@@ -165,7 +176,8 @@ if( 'add' == $action ) {
     </label>
     <div class="field">
       <input type="text" id="surges_bonus" name="surges_bonus"
-        size="4" maxlength="3" value="<?=$char->surges_bonus;?>" />
+        size="4" maxlength="3" 
+        value="<?=$char->getCached('surges_bonus', $form_key);?>" />
     </div>
   </div>
 
@@ -175,12 +187,14 @@ if( 'add' == $action ) {
     </label>
     <div class="field">
       <input type="text" id="surge_value_bonus" name="surge_value_bonus"
-        size="4" maxlength="3" value="<?=$char->surge_value_bonus;?>" />
+        size="4" maxlength="3" 
+        value="<?=$char->getCached('surge_value_bonus', $form_key);?>" />
     </div>
   </div>
 </div><!-- end div.rightColumn -->
 
 <div id="SubmitButton" class="clear">
+  <input type="hidden" name="form_key" value="<?=$form_key;?>" />
   <? if( $char->exists() ): ?>
   <input type="hidden" name="id" value="<?=$char->id;?>" />
   <? endif; ?>
