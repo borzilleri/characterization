@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Power
  * 
@@ -39,8 +38,10 @@ class Power extends BasePower
   public function updateFromForm() {
     global $msg;
     $error = false;
+    $cache = array();
     
     // Power Name
+    $cache['power_name'] = $_POST['power_name'];
     if( empty($_POST['power_name']) ) {
       $msg->add('Name must not be empty.', Message::WARNING);
       $error = true;
@@ -50,6 +51,7 @@ class Power extends BasePower
     }
     
     // Level
+    $cache['level'] = $_POST['level'];
     if( empty($_POST['level']) ||
         1 > $_POST['level'] || 30 < $_POST['level'] ) {
       $msg->add('Level must be between 1 and 30.', Message::WARNING);
@@ -60,6 +62,7 @@ class Power extends BasePower
     }
     
     // UseType
+    $cache['use_type'] = $_POST['use_type'];
     if( empty($_POST['use_type']) || 
         !$this->isValidUseType($_POST['use_type']) ) {
       $msg->add('Usage Type must be "at-will", "encounter", or "daily."',
@@ -71,6 +74,7 @@ class Power extends BasePower
     }
     
     // Action Type
+    $cache['action_type'] = $_POST['action_type'];
     if( empty($_POST['action_type']) || 
         !$this->isValidActionType($_POST['action_type']) ) {
       $msg->add('Invalid action type.', Message::WARNING);
@@ -81,6 +85,7 @@ class Power extends BasePower
     }
     
     // Attack Stat
+    $cache['attack_ability'] = $_POST['attack_ability'];
     if( empty($_POST['attack_ability']) || 
         !$this->isValidAttackStat($_POST['attack_ability']) ) {
       $msg->add('Invalid Attack Stat', Message::WARNING);
@@ -91,6 +96,7 @@ class Power extends BasePower
     }
     
     // Attack Defense
+    $cache['defense'] = $_POST['defense'];
     if( empty($_POST['defense']) ||
         !$this->isValidDefense($_POST['defense']) ) {
       $msg->add('Invalid Defense', Message::WARNING);
@@ -101,8 +107,9 @@ class Power extends BasePower
     }
 
 		// Attack Bonus
+    $cache['attack_bonus'] = $_POST['attack_bonus'];
 		if( !empty($_POST['attack_bonus']) && !is_numeric($_POST['attack_bonus'])) {
-			$msg->add('Attack Bonus must be numeric', Message::WARNING);
+			$msg->add('Attack Bonus must be an integer.', Message::WARNING);
 			$error = true;
 		}
 		else {
@@ -110,6 +117,8 @@ class Power extends BasePower
 		}
     
     // Sustain Action
+    $cache['sustain_action'] = $_POST['sustain_action'];
+    $cache['sustain'] = $_POST['sustain'];
     if( empty($_POST['sustain_action']) ||
         !$this->isValidSustainAction($_POST['sustain_action']) ) {
       $msg->add('Invalid Sustain Action', Message::WARNING);
@@ -121,11 +130,22 @@ class Power extends BasePower
     }
     
     $this->target = trim(@$_POST['target']);
+    $cache['target'] = $_POST['target'];
+
     $this->power_range = trim(@$_POST['power_range']);
+    $cache['power_range'] = $_POST['power_range'];
+
     $this->hit = trim(@$_POST['hit']);
+    $cache['hit'] = $_POST['hit'];
+    
     $this->miss = trim(@$_POST['miss']);
+    $cache['miss'] = $_POST['miss'];
+
     $this->effect = trim(@$_POST['effect']);
+    $cache['effect'] = $_POST['effect'];
+
     $this->notes = trim(@$_POST['notes']);
+    $cache['notes'] = $_POST['notes'];
 		
 		// Power Keywords
 		if( !empty($_POST['keywords']) && is_array($_POST['keywords']) ) {
@@ -152,6 +172,17 @@ class Power extends BasePower
 				$this->unlink('Keywords', $keywords_to_unlink);
 			}
 		}		
+
+    // Update the form cache in the session if necessary.
+    if( !empty($_POST['form_key']) ) {
+      if( !$error ) {
+        unset($_SESSION[$_POST['form_cache']]);
+      }
+      else {
+        $cache['form_key'] = $_POST['form_key'];
+        $_SESSION['form_cache'] = $cache;
+      }
+    }
 
     return !$error;    
   }
@@ -446,6 +477,30 @@ class Power extends BasePower
       }
     }
     return implode('/',$bonus_table);
+  }
+
+  /**
+   * Retrieve a cached value for a property if one exists. 
+   *
+   * If a field is passed in that is not contained in the object,
+   * we return false.
+   *
+   * @param string $field Property name to retrieve
+   * @param string $form_key Key name for the form cache to check
+   * @return mixed The cached value, or the internal value if no cached value
+   */
+  public function getCached($field, $form_key = null) {
+    if( $this->contains($field) ) {
+      if( !empty($form_key) && !empty($_SESSION['form_cache']) &&
+          $_SESSION['form_cache']['form_key'] == $form_key &&
+          array_key_exists($field, $_SESSION['form_cache']) ) {
+        return $_SESSION['form_cache'][$field];
+      }
+      else {
+        return $this->$field;
+      }
+    }
+    return false;
   }
 
 	/**

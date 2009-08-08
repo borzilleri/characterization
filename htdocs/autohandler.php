@@ -15,6 +15,18 @@ else {
   $char = null;
 }
 
+/**
+ * Unset form cache if:
+ * - $form_key is empty
+ * - $_SESSION['form_cache'] exists, and does not contain a form_key entry
+ * - $_SESSION['form_cache'] exists, contains a form_key entry, and it is
+ *   NOT the same as $form_key.
+ */
+if( empty($form_key) || (!empty($_SESSION['form_cache']) &&
+    (!array_key_exists('form_key', $_SESSION['form_cache']) || 
+    $form_key != $_SESSION['form_cache']['form_key'])) ) {
+  unset($_SESSION['form_cache']);
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

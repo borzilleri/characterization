@@ -1,12 +1,11 @@
 <?php
+$form_key = 'power_edit_'.$_REQUEST['p_id'];
 $css_include = array('forms.css', 'powerBox.css');
 include('autohandler.php');
 
-$char = Doctrine::getTable('Player')->findOneById($_REQUEST['id']);
 if( !$char || !$char->exists() ) {
   loadPage('/');
 }
-
 $power = $char->Powers->get(@$_REQUEST['p_id']);
 
 $kw_list = Doctrine_Query::create()
@@ -15,7 +14,6 @@ $kw_list = Doctrine_Query::create()
   ->orderBy('k.id ASC')
   ->execute();
 ?>
-
 <div id="PowerBox"><?=$power->getPowerBoxDisplay();?></div>
 
 <form method="post" action="<?=SITE_URL;?>/<?=$char->id;?>/power/save">
@@ -23,7 +21,8 @@ $kw_list = Doctrine_Query::create()
   <div class="formRow">
     <label for="power_name">Name:</label>
     <div class="field"><input type="text" id="power_name" name="power_name"
-      class="text" size="20" maxlength="255" value="<?=$power->name;?>" /></div>
+      class="text" size="20" maxlength="255" 
+      value="<?=$power->getCached('name', $form_key);?>" /></div>
   </div>
       
   <div class="formRow">
@@ -32,7 +31,7 @@ $kw_list = Doctrine_Query::create()
       <option value="<?=Power::POWER_ATWILL;?>" 
         selected="selected">At-Will</option>
       <option value="<?=Power::POWER_ENCOUNTER;?>"
-        <?=$power->isUseType(Power::POWER_ENCOUNTER)?
+        <?=Power::POWER_ENCOUNTER==$power->getCached('use_type',$form_key)?
           'selected="selected"':'';?>>Encounter</option>
       <option value="<?=POWER::POWER_DAILY;?>"
         <?=$power->isUseType(Power::POWER_DAILY)?
@@ -45,23 +44,23 @@ $kw_list = Doctrine_Query::create()
     <div class="field"><select name="action_type" id="action_type">
       <option value="standard" selected="selected">Standard</option>
       <option value="move"
-        <?=$power->action=='move'?'selected="selected"':'';?>
-        >Move</option>
+        <?=$power->getCached('action',$form_key)=='move'?
+        'selected="selected"':'';?>>Move</option>
       <option value="minor"
-        <?=$power->action=='minor'?'selected="selected"':'';?>
-        >Minor</option>
+        <?=$power->getCached('action',$form_key)=='minor'?
+        'selected="selected"':'';?>>Minor</option>
       <option value="free"
-        <?=$power->action=='free'?'selected="selected"':'';?>
-        >Free</option>
+        <?=$power->getCached('action',$form_key)=='free'?
+        'selected="selected"':'';?>>Free</option>
       <option value="interrupt"
-        <?=$power->action=='interrupt'?'selected="selected"':'';?>
-        >Immediate Interrupt</option>
+        <?=$power->getCached('action',$form_key)=='interrupt'?
+        'selected="selected"':'';?>>Immediate Interrupt</option>
       <option value="reaction"
-        <?=$power->action=='reaction'?'selected="selected"':'';?>
-        >Immediate Reaction</option>
+        <?=$power->getCached('action',$form_key)=='reaction'?
+        'selected="selected"':'';?>>Immediate Reaction</option>
       <option value="none" 
-        <?=$power->action=='none'?'selected="selected"':'';?>
-        >No Action</option>
+        <?=$power->getCached('action',$form_key)=='none'?
+        'selected="selected"':'';?>>No Action</option>
     </select></div>
   </div>
 
@@ -69,7 +68,8 @@ $kw_list = Doctrine_Query::create()
     <label for="target">Target:</label>
     <div class="field">
       <input type="text" name="target" id="target" class="text"
-        size="20" maxlength="255" value="<?=$power->target;?>" />
+        size="20" maxlength="255" 
+        value="<?=$power->getCached('target',$form_key);?>" />
     </div>
   </div>
 
@@ -77,7 +77,8 @@ $kw_list = Doctrine_Query::create()
     <label for="power_range">Range:</label>
     <div class="field">
       <input type="text" name="power_range" id="power_range" class="text"
-        size="20" maxlength="255" value="<?=$power->power_range;?>" />
+        size="20" maxlength="255" 
+        value="<?=$power->getCached('power_range',$form_key);?>" />
     </div>
   </div>
 
@@ -87,27 +88,28 @@ $kw_list = Doctrine_Query::create()
       <select name="attack_ability" id="attack_ability">
         <option value="none">none</option>
         <option value="Str"
-          <?='Str'==$power->attack_ability?'selected="selected"':'';?>
-          >Strength</option>
+          <?='Str'==$power->getCached('attack_ability',$form_key)?
+          'selected="selected"':'';?>>Strength</option>
         <option value="Con"
-          <?='Con'==$power->attack_ability?'selected="selected"':'';?>
-          >Constitution</option>
+          <?='Con'==$power->getCached('attack_ability',$form_key)?
+          'selected="selected"':'';?>>Constitution</option>
         <option value="Dex"
-          <?='Dex'==$power->attack_ability?'selected="selected"':'';?>
-          >Dexterity</option>
+          <?='Dex'==$power->getCached('attack_ability',$form_key)?
+          'selected="selected"':'';?>>Dexterity</option>
         <option value="Int"
-          <?='Int'==$power->attack_ability?'selected="selected"':'';?>
-          >Intelligence</option>
+          <?='Int'==$power->getCached('attack_ability',$form_key)?
+          'selected="selected"':'';?>>Intelligence</option>
         <option value="Wis"
-          <?='Wis'==$power->attack_ability?'selected="selected"':'';?>
-          >Wisdom</option>
+          <?='Wis'==$power->getCached('attack_ability',$form_key)?
+          'selected="selected"':'';?>>Wisdom</option>
         <option value="Cha"
-          <?='Cha'==$power->attack_ability?'selected="selected"':'';?>
-          >Charisma</option>
+          <?='Cha'==$power->getCached('attack_ability',$form_key)?
+          'selected="selected"':'';?>>Charisma</option>
       </select>
       <label>Bonus:</label>
       +<input type="text" name="attack_bonus" id="attack_bonus" class="number"
-        size="3" maxlength="3" value="<?=$power->attack_bonus;?>" />
+        size="3" maxlength="3" 
+        value="<?=$power->getCached('attack_bonus',$form_key);?>" />
     </div>
   </div> 
   
@@ -116,14 +118,14 @@ $kw_list = Doctrine_Query::create()
     <div class="field"><select name="defense" id="defense">
       <option value="AC">Armor Class</option>
       <option value="Fort"
-        <?='Fort'==$power->defense?'selected="selected"':'';?>
-        >Fortitude</option>
+        <?='Fort'==$power->getCached('defense',$form_key)?
+        'selected="selected"':'';?>>Fortitude</option>
       <option value="Ref"
-        <?='Ref'==$power->defense?'selected="selected"':'';?>
-        >Reflex</option>
+        <?='Ref'==$power->getCached('defense',$form_key)?
+        'selected="selected"':'';?>>Reflex</option>
       <option value="Will"
-        <?='Will'==$power->defense?'selected="selected"':'';?>
-        >Willpower</option>
+        <?='Will'==$power->getCached('defense',$form_key)?
+        'selected="selected"':'';?>>Willpower</option>
     </select></div>
   </div>
 </div><!-- end div.leftColumn -->
@@ -134,7 +136,8 @@ $kw_list = Doctrine_Query::create()
     <div class="field"><select name="level" id="level">
     <? for($i=1;$i<=30;$i++): ?>
       <option value="<?=$i;?>"
-        <?=$i==$power->level?'selected="selected"':'';?>><?=$i;?></option>
+        <?=$i==$power->getCached('level',$form_key)?
+        'selected="selected"':'';?>><?=$i;?></option>
     <? endfor; ?>
     </select></div>
   </div>
@@ -163,13 +166,13 @@ $kw_list = Doctrine_Query::create()
       <span class="help" title="Any on-hit effects, such as secondary attacks, aftereffects, etc, should be included here.">?</span>
     </label>
     <div class="field"><textarea id="hit" name="hit" cols="25" rows="4"
-      ><?=$power->hit;?></textarea></div>
+      ><?=$power->getCached('hit',$form_key);?></textarea></div>
   </div>
 
   <div class="formRow">
     <label for="miss">Miss:</label>
     <div class="field"><textarea id="miss" name="miss" cols="25" rows="4"
-      ><?=$power->miss;?></textarea></div>
+      ><?=$power->getCached('miss',$form_key);?></textarea></div>
   </div>
 
   <div class="formRow">
@@ -177,17 +180,17 @@ $kw_list = Doctrine_Query::create()
     <div class="field"><select id="sustain_action" name="sustain_action">
       <option value="none">none</option>
       <option value="Standard"
-        <?='Standard'==$power->sustain_action?'selected="selected"':'';?>
-        >Standard Action</option>
+        <?='Standard'==$power->getCached('sustain_action',$form_key)?
+        'selected="selected"':'';?>>Standard Action</option>
       <option value="Move"
-        <?='Move'==$power->sustain_action?'selected="selected"':'';?>
-        >Move Action</option>
+        <?='Move'==$power->getCached('sustain_action',$form_key)?
+        'selected="selected"':'';?>>Move Action</option>
       <option value="Minor"
-        <?='Minor'==$power->sustain_action?'selected="selected"':'';?>
-        >Minor Action</option>
+        <?='Minor'==$power->getCached('sustain_action',$form_key)?
+        'selected="selected"':'';?>>Minor Action</option>
       <option value="Free"
-        <?='Free'==$power->sustain_action?'selected="selected"':'';?>
-        >Free Action</option>
+        <?='Free'==$power->getCached('sustain_action',$form_key)?
+        'selected="selected"':'';?>>Free Action</option>
     </select></div>
   </div>
 </div><!-- end div.leftColumn -->
@@ -196,7 +199,7 @@ $kw_list = Doctrine_Query::create()
   <div class="formRow">
     <label for="effect">Effect:</label>
     <div class="field"><textarea id="effect" name="effect" cols="25" rows="4"
-      ><?=$power->effect;?></textarea></div>
+      ><?=$power->getCached('effect',$form_key);?></textarea></div>
   </div>
   
   <div class="formRow">
@@ -204,17 +207,18 @@ $kw_list = Doctrine_Query::create()
       <span class="help" title="Any additional ability details, information, or notes may be included here.">?</span>
     </label>
     <div class="field"><textarea id="notes" name="notes" cols="25" rows="4"
-      ><?=$power->notes;?></textarea></div>
+      ><?=$power->getCached('notes',$form_key);?></textarea></div>
   </div>
 
   <div class="formRow">
     <label for="sustain">Sustain Effect:</label>
     <div class="field"><textarea id="sustain" name="sustain" cols="25" rows="2"
-      ><?=$power->sustain;?></textarea></div>
+      ><?=$power->getCached('sustain',$form_key);?></textarea></div>
   </div>
 </div><!-- End div.rightColumn -->
 
 <div id="SubmitButton" class="clear">
+  <input type="hidden" name="form_key" value="<?=$form_key;?>" />
   <? if( $power->exists() ): ?>
   <input type="hidden" name="p_id" value="<?=$power->id;?>" />
   <? endif; ?>

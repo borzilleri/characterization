@@ -78,4 +78,15 @@ $GLOBALS['css_include'] = (empty($css_include)||!is_array($css_include))?array()
  * @name $action
  */
 $GLOBALS['action'] = empty($_REQUEST['action']) ? null : $_REQUEST['action'];
+
+/**
+ * Form Key
+ * 
+ * A string containing the key for a form, used to handling caching of form
+ * values.
+ *
+ * @global string $GLOBALS['form_key']
+ * @name $form_key
+ */
+$GLOBALS['form_key'] = empty($form_key)?'':$form_key;
 ?>

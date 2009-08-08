@@ -261,12 +261,14 @@ class Player extends BasePlayer
       $this->surge_value_bonus = (int)$_POST['surge_value_bonus'];
     }
     
+    // Update the form cache in the session if necessary.
     if( !empty($_POST['form_key']) ) {
       if( !$error ) {
-        unset($_SESSION[$_POST['form_key']]);
+        unset($_SESSION[$_POST['form_cache']]);
       }
       else {
-        $_SESSION[$_POST['form_key']] = $cache;
+        $cache['form_key'] = $_POST['form_key'];
+        $_SESSION['form_cache'] = $cache;
       }
     }
     
@@ -755,21 +757,25 @@ class Player extends BasePlayer
   /**
    * Retrieve a cached value for a property if one exists. 
    *
+   * If a field is passed in that is not contained in the object,
+   * we return false.
+   *
    * @param string $field Property name to retrieve
    * @param string $form_key Key name for the form cache to check
    * @return mixed The cached value, or the internal value if no cached value
    */
   public function getCached($field, $form_key = null) {
-    /**
-     * @todo Add a check to make sure that we HAVE a property named $field
-     */
-    if( !empty($form_key) && !empty($_SESSION[$form_key]) && 
-        array_key_exists($field, $_SESSION[$form_key]) ) {
-      return $_SESSION[$form_key][$field];
+    if( $this->contains($field) ) {
+      if( !empty($form_key) && !empty($_SESSION['form_cache']) &&
+          $_SESSION['form_cache']['form_key'] == $form_key &&
+          array_key_exists($field, $_SESSION['form_cache']) ) {
+        return $_SESSION['form_cache'][$field];
+      }
+      else {
+        return $this->$field;
+      }
     }
-    else {
-      return $this->$field;
-    }
+    return false;
   }
 }
 
