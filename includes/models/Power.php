@@ -39,6 +39,7 @@ class Power extends BasePower
     global $msg;
     $error = false;
     $cache = array();
+    $cache['keywords'] = array();
     
     // Power Name
     $cache['power_name'] = $_POST['power_name'];
@@ -153,6 +154,7 @@ class Power extends BasePower
 			// For any keyword we don't already have, make a new PowerKeyword object
 			// and add it to the tmp_keywords array
 			foreach($_POST['keywords'] as $k_id) {
+			  $cache['keywords'][$k_id] = true;
 				if( !$this->Keywords->contains($k_id) ) {
 					$k = new PowerKeyword;
 					$k->keyword_id = $k_id;
@@ -501,6 +503,15 @@ class Power extends BasePower
       }
     }
     return false;
+  }
+  
+  public function hasCachedKeyword($kw_id, $form_key = null) {
+    if( !empty($form_key) && !empty($_SESSION['form_cache']) &&
+        $_SESSION['form_cache']['form_key'] == $form_key ) {
+      return array_key_exists($kw_id, $_SESSION['form_cache']['keywords']);
+    }
+    
+    return $this->Keywords->contains($kw_id);
   }
 
 	/**

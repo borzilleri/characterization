@@ -150,8 +150,8 @@ $kw_list = Doctrine_Query::create()
       <select name="keywords[]" id="keywords" multiple="multiple">
         <? foreach($kw_list as $kw): ?>
         <option value="<?=$kw->id;?>"
-          <?=$power->Keywords->contains($kw->id)?'selected="selected"':'';?>
-          ><?=$kw->name;?></option>
+          <?=$power->hasCachedKeyword($kw->id, $form_key)?
+            'selected="selected"':'';?>><?=$kw->name;?></option>
         <? endforeach; ?>
       </select>
     </div>

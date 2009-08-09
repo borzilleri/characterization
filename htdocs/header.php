@@ -25,14 +25,6 @@
     <div class="menu_text" id="PlayerInfo">
       <?=$char->Race->name;?> <?=$char->Archetype->name;?> <?=$char->level;?>
     </div>
-    <div class="menu_text" id="PlayerAbilities">
-      <label>Str: </label><?=$char->strength;?> (<?=$char->getMod('str');?>)
-      <label>Con: </label><?=$char->constitution;?> (<?=$char->getMod('con');?>)
-      <label>Dex: </label><?=$char->dexterity;?> (<?=$char->getMod('dex');?>)
-      <label>Int: </label><?=$char->intelligence;?> (<?=$char->getMod('int');?>)
-      <label>Wis: </label><?=$char->wisdom;?> (<?=$char->getMod('wis');?>)
-      <label>Cha: </label><?=$char->charisma;?> (<?=$char->getMod('cha');?>)      
-    </div>
     <? endif; ?>
   </div>
 </div>
