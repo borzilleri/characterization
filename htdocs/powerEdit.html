@@ -106,7 +106,8 @@ $kw_list = Doctrine_Query::create()
           <?='Cha'==$power->getCached('attack_ability',$form_key)?
           'selected="selected"':'';?>>Charisma</option>
       </select>
-      <label>Bonus:</label>
+      <label for="attack_bonus">Bonus:
+        <span class="help" title="Attack Bonus: Any bonus to hit that applies specifically to this power.">?</span></label>
       +<input type="text" name="attack_bonus" id="attack_bonus" class="number"
         size="3" maxlength="3" 
         value="<?=$power->getCached('attack_bonus',$form_key);?>" />

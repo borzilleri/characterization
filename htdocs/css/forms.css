@@ -63,7 +63,7 @@ select#keywords {
 	color                 : blue;
 }
 
-div.formRow > label:first-child .help {
+span.help {
 	font-weight           : normal;
 	color                 : #888;
 	font-size             : .75em;
