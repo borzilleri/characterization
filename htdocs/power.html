@@ -10,7 +10,7 @@ if( !$char || !$char->exists() ) {
 $power_list = Doctrine_Query::create()
   ->from('Power p')
   ->where('p.player_id = ?', $char->id)
-  ->orderBy('p.use_type, p.level')
+  ->orderBy('p.use_type, p.level, p.name')
   ->execute();
 
 $i = 0;
@@ -22,11 +22,14 @@ $i = 0;
         [<a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new">new power</a>]
       </div>
       <div class="listLabel">
-        <a href="#" class="sort" id="power_name">name</a>
+        [ <a href="#" class="sort asc" id="power_name">Power Name</a>
+        <span id="name_arr"></span> ]
       </div>
       <div class="listInfo">
-        <a href="#" class="sort" id="level">level</a>
-        <a href="#" class="sort" id="use_type">Usage</a>
+        [ <a href="#" class="sort asc" id="level">Level</a>
+        <span id="level_arr"></span> ]
+        [ <a href="#" class="sort desc" id="use_type">Usage</a>
+        <span id="usage_arr">&uarr;</span> ]
       </div>
     </li>
   <? foreach($power_list as $p): ?>
