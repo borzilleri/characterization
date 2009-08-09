@@ -1,6 +1,7 @@
 <?php
 include('autohandler.php');
 
+$target_uri = '/import';
 switch($action) {
   case 'upload':
     if( empty($_POST['file_name']) || 
@@ -8,9 +9,11 @@ switch($action) {
         ( '.yml' != substr($_POST['file_name'],-4) &&
           '.yaml' != substr($_POST['file_name'],-5) ) ) {
       $msg->add('Invalid filename provided.', Message::ERROR);
+      break; // Break out of the switch and just redirect
     }
     elseif( !is_readable(IMPORT_PATH.$_POST['file_name']) ) {
       $msg->add('File does not exist or is unreadable.', Message::ERROR);
+      break; // Break out of the switch and just redirect
     }
     
     /**
@@ -25,7 +28,11 @@ switch($action) {
     catch( Exception $ex ) {
       $msg->add('An exception occured while loading the file '
         .$_POST['file_name'].'. Message: '.$ex->getMessage(), Message::ERROR);
-      loadPage('/import');
+      /**
+       * @todo figure out how to remove this, and shunt out of the switch.
+       * Maybe just use a break statement?
+       */
+      loadPage($target_uri);
     }
     
     /**
@@ -40,10 +47,10 @@ switch($action) {
       ->select('p.id')->from('Player p')
       ->orderBy('p.id DESC')->limit(1)->execute();
     
-    loadPage("/{$last_char[0]->id}");    
+    $target_uri = "/{$last_char[0]->id}";
     break;
 }
 
-loadPage('/import');
+loadPage($target_uri);
 include('footer.php');
 ?>

@@ -6,31 +6,30 @@ if( !empty($_POST['id']) ) {
   $char = Doctrine::getTable('Player')->findOneByID($_POST['id']);
 }
 
+$target_uri = '/new';
+
 switch($action) {
   case 'save':
     if( $char ) {
-      $redir_url = "/{$char->id}/edit";
+      $target_uri = "/{$char->id}/edit";
     }
     else {
       $char = new Player;
-      $redir_url = "/new";
+      $target_uri = "/new";
     }
     $success = $char->updateFromForm();
   
     if( $success ) {
       $char->save();
-      loadPage("/{$char->id}");
-    }
-    else {
-      loadPage($redir_url);
+      $target_uri = "/{$char->id}";
     }
     break;
   case 'delete':
     $char->delete();
-    loadPage("/");
+    $target_uri = "/";
     break;
 }
 
-loadPage('/new');
+loadPage($target_uri);
 include('footer.php');
 ?>
