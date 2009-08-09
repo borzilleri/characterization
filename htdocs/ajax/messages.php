@@ -7,24 +7,16 @@
 session_start();
 include(dirname(__FILE__).'/../../includes/inc/class.message.php');
 
-$messenger = new Message();
-$messages = $messenger->messages();
-$messenger->clear();
+$msg = new Message();
 
-if ( count($messages) == 0 )
-    die;
+$status = $msg->getHighestLevel(true);
+$msg_out = "";
 
-$output = '';
-$statusText = '';
-$highestLevel = 0;
-
-foreach ( $messages as $msg ) {
-    if ( $msg['level'] > $highestLevel )
-        $highestLevel = $msg['level'];
-
-    $output .= '<div class="message' . Message::$strings[$msg['level']] . '">' .
-               $msg['message'] . '</div>';
+foreach($msg->messages() as $m) {
+ $msg_out .= $msg->generateHTMLBlock($m['message'],$m['level']);
 }
 
-echo Message::$strings[$highestLevel].'|'.$output;
+$msg->clear();
+
+echo $status.'|'.$msg_out;
 ?>

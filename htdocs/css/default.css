@@ -105,7 +105,7 @@ a:active {
 #messageText > div {
 	color                 : #888;
 }
-#messageText > div:first-child {
+#messageText > div.new {
 	color                 : #000;
 }
 #clearLink {
