@@ -16,6 +16,11 @@ switch($action) {
       break; // Break out of the switch and just redirect
     }
     
+    // Pull the last character seen, so we can reference the id afterwards:
+    $last_char = Doctrine_Query::create()->select('p.id')->from('Player p')
+      ->orderBy('p.id DESC')->limit(1)->execute();
+    $last_char = $last_char->count()>0 ? $last_char->getFirst() : null;
+    
     /**
      * The Doctrine::loadData method does not (as far as I can determine)
      * have any useful return value. Stuff this in a try/catch block, so 
@@ -39,15 +44,41 @@ switch($action) {
      * By now, we /assume/ the data's been loaded successfully.
      * We still need to know what the ID of the inserted player record is, so
      * we'll have to pull that out of the DB
-     *
-     * @todo We can probably pull the highest ID before/after and compare them
-     * to see if the import was ACTUALLY successfull.
      */
-    $last_char = Doctrine_Query::create()
-      ->select('p.id')->from('Player p')
+    $this_char = Doctrine_Query::create()
+      ->from('Player p')
       ->orderBy('p.id DESC')->limit(1)->execute();
+    $this_char = $this_char->count()>0 ? $this_char->getFirst() : null;
     
-    $target_uri = "/{$last_char[0]->id}";
+    
+    if( $this_char && ( !$last_char || $this_char->id > $last_char->id ) ) {
+      /**
+       * I don't know WHY, but for some reason we're not getting the
+       * Archetype relation on the Player query above.
+       *
+       * So we manually pull down the Archetype into $a, below, and 
+       * assign it to $this_char->Archetype.
+       *
+       * This makes sure the call to initalizeCurrentValues() works properly.
+       */
+      $a = Doctrine_Query::create()->select('a.id')->from('Archetype a')
+        ->where('a.id = ?', $this_char->archetype_id)->execute()->getFirst();
+      $this_char->Archetype = $a;
+      
+      /**
+       * We need to initalize our current values, because for a fresh player
+       * they're based on derived values, which we dont have pre-insert
+       */
+      $this_char->initializeCurrentValues();
+      $this_char->save();
+    }
+    else {
+      $msg->add('An unknown error occured, please try again.',
+        Message::ERROR);
+      loadPage($target_uri);
+    }
+    
+    $target_uri = "/{$this_char->id}";
     break;
 }
 

@@ -50,31 +50,27 @@ class Player extends BasePlayer
    *
    */
   public function construct() {
-    $this->health_max = $this->generateMaxHealth();
-    $this->surges_max = $this->generateMaxSurges();
-    $this->surge_value = $this->generateSurgeValue();
+    $this->generateDerivedValues();
   }
   
   /**
    * Re-initialize derived values after saving
    */
   public function postSave() {
-    $this->health_max = $this->generateMaxHealth();
-    $this->surges_max = $this->generateMaxSurges();
-    $this->surge_value = $this->generateSurgeValue();    
+    $this->generateDerivedValues();
   }
   
-  /**
-   * Initialize current health and current surges to the derived max values
-   * before an insert
-   */
-  public function preInsert() {
-    // Set Current Health
-    $this->health_cur = $this->generateMaxHealth();    
-    // Set Current Surges
-    $this->surges_cur = $his->generateMaxSurges();
+  public function generateDerivedValues() {
+    $this->health_max = $this->generateMaxHealth();
+    $this->surges_max = $this->generateMaxSurges();
+    $this->surge_value = $this->generateSurgeValue();   
   }
 
+  public function initializeCurrentValues() {
+    $this->health_cur = $this->generateMaxHealth();
+    $this->surges_cur = $this->generateMaxSurges();
+  }
+  
   /**
    * Before deleting our Player, we have to delete all our powers first.
    */
@@ -312,7 +308,7 @@ class Player extends BasePlayer
   public function generateMaxHealth() {
     $max_health = $this->Archetype->health_first + $this->constitution +
       ($this->Archetype->health_level * ($this->level-1)) + 
-      $this->health_bonus;    
+      $this->health_bonus;
     return $max_health;
   }
   
