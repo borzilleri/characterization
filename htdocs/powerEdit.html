@@ -1,5 +1,5 @@
 <?php
-$form_key = 'power_edit_'.empty($_REQUEST['p_id'])?0:$_REQUEST['p_id'];
+$form_key = 'power_edit_'.(empty($_REQUEST['p_id'])?0:$_REQUEST['p_id']);
 $css_include = array('forms.css', 'powerBox.css');
 include('autohandler.php');
 
@@ -14,7 +14,6 @@ $kw_list = Doctrine_Query::create()
   ->orderBy('k.id ASC')
   ->execute();
 ?>
-
 <? if( $power->exists() ): ?>
 <div id="PowerBox"><?=$power->getPowerBoxDisplay();?></div>
 <? endif; ?>

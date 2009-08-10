@@ -1,5 +1,5 @@
 <?php
-$form_key = 'player_edit_'.empty($_REQUEST['id'])?0:$_REQUEST['id'];
+$form_key = 'player_edit_'.(empty($_REQUEST['id'])?0:$_REQUEST['id']);
 $css_include = array('forms.css');
 include('autohandler.php');
 
