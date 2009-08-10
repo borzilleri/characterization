@@ -37,15 +37,15 @@ class Power extends BasePower
    */
   public function updateFromForm() {
     global $msg;
-    $error = false;
     $cache = array();
     $cache['keywords'] = array();
+    $cache['error'] = array();
     
     // Power Name
-    $cache['power_name'] = $_POST['power_name'];
+    $cache['name'] = $_POST['power_name'];
     if( empty($_POST['power_name']) ) {
       $msg->add('Name must not be empty.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'name';
     }
     else {
       $this->name = trim($_POST['power_name']);
@@ -56,7 +56,7 @@ class Power extends BasePower
     if( empty($_POST['level']) ||
         1 > $_POST['level'] || 30 < $_POST['level'] ) {
       $msg->add('Level must be between 1 and 30.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'level';
     }
     else {
       $this->level = (int)$_POST['level'];
@@ -68,7 +68,7 @@ class Power extends BasePower
         !$this->isValidUseType($_POST['use_type']) ) {
       $msg->add('Usage Type must be "at-will", "encounter", or "daily."',
         Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'use_type';
     }
     else {
       $this->use_type = $_POST['use_type'];
@@ -79,7 +79,7 @@ class Power extends BasePower
     if( empty($_POST['action_type']) || 
         !$this->isValidActionType($_POST['action_type']) ) {
       $msg->add('Invalid action type.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'action_type';
     }
     else {
       $this->action = $_POST['action_type'];
@@ -90,7 +90,7 @@ class Power extends BasePower
     if( empty($_POST['attack_ability']) || 
         !$this->isValidAttackStat($_POST['attack_ability']) ) {
       $msg->add('Invalid Attack Stat', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'attack_ability';
     }
     else {
       $this->attack_ability = $_POST['attack_ability'];
@@ -101,7 +101,7 @@ class Power extends BasePower
     if( empty($_POST['defense']) ||
         !$this->isValidDefense($_POST['defense']) ) {
       $msg->add('Invalid Defense', Message::WARNING);
-      $error = true;  
+      $cache['error'][] = 'defense';
     }
     else {
       $this->defense = $_POST['defense'];
@@ -111,7 +111,7 @@ class Power extends BasePower
     $cache['attack_bonus'] = $_POST['attack_bonus'];
 		if( !empty($_POST['attack_bonus']) && !is_numeric($_POST['attack_bonus'])) {
 			$msg->add('Attack Bonus must be an integer.', Message::WARNING);
-			$error = true;
+			$cache['error'][] = 'attack_bonus';
 		}
 		else {
 			$this->attack_bonus = (int)trim(@$_POST['attack_bonus']);
@@ -123,7 +123,7 @@ class Power extends BasePower
     if( empty($_POST['sustain_action']) ||
         !$this->isValidSustainAction($_POST['sustain_action']) ) {
       $msg->add('Invalid Sustain Action', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'sustain_action';
     }
     else {
       $this->sustain_action = $_POST['sustain_action'];
@@ -177,7 +177,7 @@ class Power extends BasePower
 
     // Update the form cache in the session if necessary.
     if( !empty($_POST['form_key']) ) {
-      if( !$error ) {
+      if( empty($cache['error']) ) {
         unset($_SESSION[$_POST['form_cache']]);
       }
       else {
@@ -186,7 +186,7 @@ class Power extends BasePower
       }
     }
 
-    return !$error;    
+    return empty($cache['error']);
   }
   
   /**
@@ -512,6 +512,14 @@ class Power extends BasePower
     }
     
     return $this->Keywords->contains($kw_id);
+  }
+  
+  public function hasError($field, $form_key = null) {
+    return ( $this->contains($field) && !empty($form_key) && 
+      !empty($_SESSION['form_cache']) && 
+      $_SESSION['form_cache']['form_key'] == $form_key &&
+      !empty($_SESSION['form_cache']['error']) &&
+      in_array($field, $_SESSION['form_cache']['error']) );
   }
 
 	/**

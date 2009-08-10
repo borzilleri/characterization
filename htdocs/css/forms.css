@@ -37,6 +37,9 @@ div.formRow label {
 	font-weight           : bold;
 	vertical-align        : middle;
 }
+div.formRow label.error {
+	color                 : #700;
+}
 div.field {
 	margin                : 0px;
 	padding               : 0px;

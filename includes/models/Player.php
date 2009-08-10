@@ -84,8 +84,8 @@ class Player extends BasePlayer
    */
   public function updateFromForm() {
     global $msg;
-    $error = false;
     $cache = array();
+    $cache['error'] = array();
         
     // Race
     $this->race_id = (int)@$_POST['race'];
@@ -105,7 +105,7 @@ class Player extends BasePlayer
     if( empty($_POST['level']) ||
         1 > $_POST['level'] || 30 < $_POST['level'] ) {
       $msg->add('Level must be 1-30 inclusive.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'level';
     }
     else {
       $this->level = (int)$_POST['level'];
@@ -117,7 +117,7 @@ class Player extends BasePlayer
     $cache['strength'] = $_POST['strength'];
     if( empty($_POST['strength']) || $_POST['strength'] < 1 ) {
       $msg->add('Strenth must be a positive number.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'strength';
     }
     else {
       $this->strength = (int)$_POST['strength'];
@@ -127,7 +127,7 @@ class Player extends BasePlayer
     $cache['dexterity'] = $_POST['dexterity'];
     if( empty($_POST['dexterity']) || $_POST['dexterity'] < 1 ) {
       $msg->add('Dexterity must be a positive number.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'dexterity';
     }
     else {
       $this->dexterity = (int)$_POST['dexterity'];
@@ -137,7 +137,7 @@ class Player extends BasePlayer
     $cache['constitution'] = $_POST['constitution'];
     if( empty($_POST['constitution']) || $_POST['constitution'] < 1 ) {
       $msg->add('Constitution must be a positive number.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'constitution';
     }
     else {
       $this->constitution = (int)$_POST['constitution'];
@@ -147,7 +147,7 @@ class Player extends BasePlayer
     $cache['intelligence'] = $_POST['intelligence'];
     if( empty($_POST['intelligence']) || $_POST['intelligence'] < 1 ) {
       $msg->add('Intelligence must be a positive number.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'intelligence';
     }
     else {
       $this->intelligence = (int)$_POST['intelligence'];
@@ -157,7 +157,7 @@ class Player extends BasePlayer
     $cache['wisdom'] = $_POST['wisdom'];
     if( empty($_POST['wisdom']) || $_POST['wisdom'] < 1 ) {
       $msg->add('Wisdom must be a positive number.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'wisdom';
     }
     else {
       $this->wisdom = (int)$_POST['wisdom'];
@@ -167,7 +167,7 @@ class Player extends BasePlayer
     $cache['charisma'] = $_POST['charisma'];
     if( empty($_POST['charisma']) || $_POST['charisma'] < 1 ) {
       $msg->add('Charisma must be a positive number.', Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'charisma';
     }
     else {
       $this->charisma = (int)$_POST['charisma'];
@@ -179,7 +179,7 @@ class Player extends BasePlayer
         (int)$_POST['attack_general'] < 0 ) {
       $msg->add('General Attack Bonus must be a non-negative integer.', 
         Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'attack_general';
     }
     else {
       $this->attack_general = (int)$_POST['attack_general'];
@@ -191,7 +191,7 @@ class Player extends BasePlayer
         (int)$_POST['attack_implement'] < 0 ) {
       $msg->add('Implement Attack Bonus must be a non-negative integer.', 
         Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'attack_implement';
     }
     else {
       $this->attack_implement = (int)$_POST['attack_implement'];
@@ -203,7 +203,7 @@ class Player extends BasePlayer
         (int)$_POST['attack_weapon_main'] < 0 ) {
       $msg->add('Main Hand Weapon Attack Bonus must be a non-negative integer.', 
         Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'attack_weapon_main';
     }
     else {
       $this->attack_weapon_main = (int)$_POST['attack_weapon_main'];
@@ -215,7 +215,7 @@ class Player extends BasePlayer
         (int)$_POST['attack_weapon_off'] < 0 ) {
       $msg->add('Off Hand Weapon Attack Bonus must be a non-negative integer.', 
         Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'attack_weapon_off';
     }
     else {
       $this->attack_weapon_off = (int)$_POST['attack_weapon_off'];
@@ -227,7 +227,7 @@ class Player extends BasePlayer
         (int)$_POST['health_bonus'] < 0 ) {
       $msg->add('Bonus Health must be a non-negative integer.',
         Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'health_bonus';
     }
     else {
       $this->health_bonus = (int)$_POST['health_bonus'];
@@ -239,7 +239,7 @@ class Player extends BasePlayer
         (int)$_POST['surges_bonus'] < 0 ) {
       $msg->add('Bonus Surges must be a non-negative integer.',
         Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'surges_bonus';
     }
     else {
       $this->surges_bonus = (int)$_POST['surges_bonus'];
@@ -251,7 +251,7 @@ class Player extends BasePlayer
         (int)$_POST['surge_value_bonus'] < 0 ) {
       $msg->add('Bonus Surge Value must be a non-negative integer.',
         Message::WARNING);
-      $error = true;
+      $cache['error'][] = 'surge_value_bonus';
     }
     else {
       $this->surge_value_bonus = (int)$_POST['surge_value_bonus'];
@@ -259,7 +259,7 @@ class Player extends BasePlayer
     
     // Update the form cache in the session if necessary.
     if( !empty($_POST['form_key']) ) {
-      if( !$error ) {
+      if( empty($cache['error']) ) {
         unset($_SESSION[$_POST['form_cache']]);
       }
       else {
@@ -268,7 +268,7 @@ class Player extends BasePlayer
       }
     }
     
-    return !$error;
+    return empty($cache['error']);
   }
   
   /**
@@ -772,6 +772,14 @@ class Player extends BasePlayer
       }
     }
     return false;
+  }
+  
+  public function hasError($field, $form_key = null) {
+    return ( $this->contains($field) && !empty($form_key) && 
+      !empty($_SESSION['form_cache']) && 
+      $_SESSION['form_cache']['form_key'] == $form_key &&
+      !empty($_SESSION['form_cache']['error']) &&
+      in_array($field, $_SESSION['form_cache']['error']) ); 
   }
 }
 

@@ -21,14 +21,18 @@ $kw_list = Doctrine_Query::create()
 <form method="post" action="<?=SITE_URL;?>/<?=$char->id;?>/power/save">
 <div class="formColumn leftColumn">
   <div class="formRow">
-    <label for="power_name">Name:</label>
+    <label for="power_name"
+      class="<?=$power->hasError('name',$form_key)?'error':'';?>"
+      >Name:</label>
     <div class="field"><input type="text" id="power_name" name="power_name"
       class="text" size="20" maxlength="255" 
       value="<?=$power->getCached('name', $form_key);?>" /></div>
   </div>
       
   <div class="formRow">
-    <label for="use_type">Usage:</label>
+    <label for="use_type"
+      class="<?=$power->hasError('use_type',$form_key)?'error':'';?>"
+      >Usage:</label>
     <div class="field"><select name="use_type" id="use_type">
       <option value="<?=Power::POWER_ATWILL;?>" 
         selected="selected">At-Will</option>
@@ -42,7 +46,9 @@ $kw_list = Doctrine_Query::create()
   </div>
 
   <div class="formRow">
-    <label for="action_type">Action Type:</label>
+    <label for="action_type"
+      class="<?=$power->hasError('action_type',$form_key)?'error':'';?>"
+      >Action Type:</label>
     <div class="field"><select name="action_type" id="action_type">
       <option value="standard" selected="selected">Standard</option>
       <option value="move"
@@ -85,7 +91,9 @@ $kw_list = Doctrine_Query::create()
   </div>
 
   <div class="formRow">
-    <label for="attack_ability">Attack:</label>
+    <label for="attack_ability"
+      class="<?=$power->hasError('attack_ability',$form_key)?'error':'';?>"
+      >Attack:</label>
     <div class="field">
       <select name="attack_ability" id="attack_ability">
         <option value="none">none</option>
@@ -108,8 +116,9 @@ $kw_list = Doctrine_Query::create()
           <?='Cha'==$power->getCached('attack_ability',$form_key)?
           'selected="selected"':'';?>>Charisma</option>
       </select>
-      <label for="attack_bonus">Bonus:
-        <span class="help" title="Attack Bonus: Any bonus to hit that applies specifically to this power.">?</span></label>
+      <label for="attack_bonus"
+        class="<?=$power->hasError('attack_bonus',$form_key)?'error':'';?>"
+        >Bonus: <span class="help" title="Attack Bonus: Any bonus to hit that applies specifically to this power.">?</span></label>
       +<input type="text" name="attack_bonus" id="attack_bonus" class="number"
         size="3" maxlength="3" 
         value="<?=$power->getCached('attack_bonus',$form_key);?>" />
@@ -117,7 +126,9 @@ $kw_list = Doctrine_Query::create()
   </div> 
   
   <div class="formRow">
-    <label for="defense">vs. Defense:</label>
+    <label for="defense"
+      class="<?=$power->hasError('defense',$form_key)?'error':'';?>"
+      >vs. Defense:</label>
     <div class="field"><select name="defense" id="defense">
       <option value="AC">Armor Class</option>
       <option value="Fort"
@@ -135,7 +146,9 @@ $kw_list = Doctrine_Query::create()
 
 <div class="formColumn rightColumn">
   <div class="formRow">
-    <label for="level">Level:</label>
+    <label for="level"
+      class="<?=$power->hasError('level',$form_key)?'error':'';?>"
+      >Level:</label>
     <div class="field"><select name="level" id="level">
     <? for($i=1;$i<=30;$i++): ?>
       <option value="<?=$i;?>"
@@ -179,7 +192,9 @@ $kw_list = Doctrine_Query::create()
   </div>
 
   <div class="formRow">
-    <label for="sustain_action">Sustain:</label>
+    <label for="sustain_action"
+      class="<?=$power->hasError('sustain_action',$form_key)?'error':'';?>"
+      >Sustain:</label>
     <div class="field"><select id="sustain_action" name="sustain_action">
       <option value="none">none</option>
       <option value="Standard"
