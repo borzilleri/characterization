@@ -31,6 +31,8 @@ define('MEDIA_URL', SITE_URL);
 define('IMPORT_PATH', dirname(__FILE__).'/../../setup/sql/players/');
 
 
+define('INDEX_TEXT_PATH', dirname(__FILE__).'/../data/index.text');
+
 /**
  * Messenger object
  * @global Message $GLOBALS['messenger']

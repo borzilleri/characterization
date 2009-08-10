@@ -148,22 +148,27 @@ ul.list li {
 }
 div.listLinks {
 	font-size             : .75em;
-	width                 : 70px;
 	float                 : left;
 	margin                : 0;
 	padding               : 0;
 }
 div.listLabel {
-	width                 : 225px;
 	float                 : left;
 }
 li.noCheck div.listLabel {
 	margin-left           : 25px;
 }
 
+/* Power List styles */
 #PowerList {
 	width                 : 475px;
 	float                 : left;
+}
+#PowerList div.listLinks {
+	width                 : 70px;
+}
+#PowerList div.listLabel {
+	width                 : 225px;
 }
 #PowerPreview {
 	margin-left           : 575px;
@@ -182,4 +187,23 @@ ul.list span.Encounter {
 ul.list span.Daily {
 	color                 : #3B3B3C;
 	background-color      : inherit;
+}
+
+/* Index Page/Char List Styles */
+#PlayerList {
+	width                 : 350px;
+	float                 : left;
+}
+#PlayerList div.listLinks {
+	width                 : 45px;
+}
+#PlayerList div.listLabel {
+	width                 : 150px;
+}
+#MDInfo {
+	margin                : 5px;
+	padding               : 10px;
+	border                : 1px dotted #888;
+	margin-left           : 375px;
+	width                 : 550px;
 }

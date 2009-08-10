@@ -1,6 +1,7 @@
 <?php
 include('config.master.php');
 include('functions.utilities.php');
+include('markdown.php');
 
 /**
  * Load & Initialize the Doctrine ORM and it's DB connection.
