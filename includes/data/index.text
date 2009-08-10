@@ -1,1 +1,7 @@
-Test info
+Welcome to *Characaterization*, a character manager for 4th Edition <abbr title="Dungeons and Dragons">D&amp;D</abbr>. Please feel free to wander the site and poke around, editing and playign with existing characters, or creating your own. At any point the existing character (Kell) may be re-imported, proving a fresh copy to work with.
+
+*Characterization* allows you to manage aspects of your character that are routinely and often modified during a single gaming session or encounter. Health, surges, action points, as well as power usage can all be tracked in a persistent manner.
+
+Furthermore, you may enter your powers manually, allowing for full customization of your character's individual powers and bonuses. It will show your personalized attack bonus, as well as notes allowing you to specify a power's effects beyond the standard.
+
+This site makes heavy use of javascript for its functionality. You must have javascript enabled for the core functionality on the character page. *Characterization*'s source may be viewed at it's [github repository](http://github.com/duaiwe/characterization/tree/master "Characterization at github.com").

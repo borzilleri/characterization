@@ -29,5 +29,5 @@ $i = 0;
   </ul>
 </div>
 
-<div id="MDInfo"><?=$page_text;?></div>
+<div id="MDInfo"><?=Markdown($page_text);?></div>
 <?php include('footer.php'); ?>
