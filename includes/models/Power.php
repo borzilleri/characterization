@@ -261,10 +261,10 @@ class Power extends BasePower
    */
   private function isValidSustainAction($action) {
     switch($action) {
-      case 'standard':
-      case 'move':
-      case 'minor':
-      case 'free':
+      case 'Standard':
+      case 'Move':
+      case 'Minor':
+      case 'Free':
       case 'none':
         return true;
         break;
@@ -463,6 +463,9 @@ class Power extends BasePower
       return $this->Player->getAttackBonus(
         Player::ATTACK_WEAPON, $power_bonus);
     }
+		else {
+			return $this->Player->getAttackBonus(null, $power_bonus);
+		}
   }
   
   /**
