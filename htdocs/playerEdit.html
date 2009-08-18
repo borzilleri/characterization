@@ -32,7 +32,8 @@ if( 'add' == $action ) {
 <form method="post" action="<?=SITE_URL;?>/save">
 <div class="formColumn leftColumn">
   <div class="formRow">
-    <label for="character_name">Name:</label>
+    <label for="character_name" 
+			class="<?=$char->hasError('name',$form_key)?'error':'';?>">Name:</label>
     <div class="field">
       <input type="text" class="text" size="20" maxlength="255"
         id="character_name" name="character_name"

@@ -65,7 +65,9 @@ a:active {
 	border-left           : 1px solid #CCDDEE;
 	margin                : 0 9px;
 	padding               : 0px;
-	width                 : 8em;
+	width                 : 10em;
+	overflow              : hidden;
+	white-space           : nowrap;
 }
 #MenuBar ul li {
 	padding               : 0 2px;

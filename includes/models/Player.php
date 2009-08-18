@@ -59,7 +59,9 @@ class Player extends BasePlayer
   public function postSave() {
     $this->generateDerivedValues();
   }
-  
+  public function preInsert() {
+		$this->initializeCurrentValues();
+	}
   public function generateDerivedValues() {
     $this->health_max = $this->generateMaxHealth();
     $this->surges_max = $this->generateMaxSurges();
@@ -88,18 +90,41 @@ class Player extends BasePlayer
     $cache['error'] = array();
         
     // Race
-    $this->race_id = (int)@$_POST['race'];
-    $cache['race_id'] = $this->race_id;
-    
-    // Archetype (Class)
-    $this->archetype_id = (int)@$_POST['archetype'];
-    $cache['archetype_id'] = $this->archetype_id;
+		$cache['race_id'] = (int)@$_POST['race'];
+    $race = Doctrine::getTable('Race')->findOneById(@$_POST['race']);
+		if( $race && $race->exists() ) {
+			$this->Race = $race;
+		}
+		else {
+			$msg->add('Unknown race', Message::WARNING);
+			$cache['error'][] = 'race';
+		}
 
-    // Character Name    
-    $this->name = empty($_POST['character_name'])?
-      'unknown':trim($_POST['character_name']);
+    // Archetype (Class)
+    $cache['archetype_id'] = (int)@$_POST['archetype'];
+		$archetype = Doctrine::getTable('Archetype')->findOneByID(@$_POST['archetype']);
+		if( $archetype && $archetype->exists() ) {
+			$this->Archetype = $archetype;
+		}
+		else {
+			$msg->add('Unknown class.', Message::WARNING);
+			$cache['error'][] = 'archetype';
+		}
+
+    // Character Name
     $cache['name'] = $_POST['character_name'];
-    
+    if( empty($_POST['level']) ) {
+			$msg->add('Character name may not be blank.',
+				Message::WARNING);
+			$cache['error'][] = 'name';
+		}
+		else {
+			/**
+			 * @todo Check for uniqueness of name here
+			 */
+			$this->name = trim($_POST['character_name']);
+		}
+
     // Character Level
     $cache['level'] = $_POST['level'];
     if( empty($_POST['level']) ||
@@ -110,7 +135,7 @@ class Player extends BasePlayer
     else {
       $this->level = (int)$_POST['level'];
     }
-    
+
     // Ability Scores
     
     // Strength
@@ -267,10 +292,10 @@ class Player extends BasePlayer
         $_SESSION['form_cache'] = $cache;
       }
     }
-    
+
     return empty($cache['error']);
   }
-  
+
   /**
    * Accessor for health_max
    * @uses $health_max

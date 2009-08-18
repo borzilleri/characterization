@@ -18,7 +18,7 @@ switch($action) {
       $target_uri = "/new";
     }
     $success = $char->updateFromForm();
-  
+
     if( $success ) {
       $char->save();
       $target_uri = "/{$char->id}";
