@@ -1,30 +1,30 @@
 Race:
-  Deva:
+  1:
     name: Deva
-  Dragonborn:
+  2:
     name: Dragonborn
-  Dwarf:
+  3:
     name: Dwarf
-  Eladrin:
+  4:
     name: Eladrin
-  Elf:
+  5:
     name: Elf
-  Gnome:
+  6:
     name: Gnome
-  Goliath:
+  7:
     name: Goliath
-  HalfElf:
+  8:
     name: Half-Elf
-  HalfOrc:
+  9:
     name: Half-Orc
-  Halfling:
+  10:
     name: Halfling
-  Human:
+  11:
     name: Human
-  ShifterLongtooth:
+  12:
     name: Longtooth Shifter
-  ShifterRazorclaw:
+  13:
     name: Razorclaw Shifter
-  Tiefling:
+  14:
     name: Tiefling
 
