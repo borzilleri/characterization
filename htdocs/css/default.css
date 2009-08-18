@@ -33,6 +33,9 @@ a:active {
 .clear {
 	clear                 : both;
 }
+.clearLeft {
+	clear                 : left;
+}
 
 .row0 {
 	background-color      : #FFFFFF;

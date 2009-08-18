@@ -424,6 +424,8 @@ class Power extends BasePower
       case 'notes':
         // Special
         $out = preg_replace('/(special:)/i', '<label>$1</label>', $out);
+				// Trigger
+				$out = preg_replace('/(trigger:)/i', '<label>$1</label>', $out);
         break;
       default:
         break;
