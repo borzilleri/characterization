@@ -20,7 +20,12 @@ switch($action) {
     $last_char = Doctrine_Query::create()->select('p.id')->from('Player p')
       ->orderBy('p.id DESC')->limit(1)->execute();
     $last_char = $last_char->count()>0 ? $last_char->getFirst() : null;
-    
+   
+		// Pull the player name out of the file.
+		$c = file_get_contents(IMPORT_PATH.$_POST['file_name']);
+		preg_match('/Player:\s+\w+:\s+name: "?(.*?)"?\s/', $c, $m);
+		$char_name = $m[1];
+
     /**
      * The Doctrine::loadData method does not (as far as I can determine)
      * have any useful return value. Stuff this in a try/catch block, so 
@@ -28,7 +33,14 @@ switch($action) {
      * gracefully.
      */
     try {
-      Doctrine::loadData(IMPORT_PATH.$_POST['file_name']);
+			// First, attempt to delete the old character
+			$p_list = Doctrine::getTable('Player')->findByName($char_name);
+			if( $p_list && $p_list->count > 0 ) {
+				foreach($p_list as $p) {
+					$p->delete();
+				}
+			}
+      Doctrine::loadData(IMPORT_PATH.$_POST['file_name'], true);
     }
     catch( Exception $ex ) {
       $msg->add('An exception occured while loading the file '
@@ -45,8 +57,8 @@ switch($action) {
      * We still need to know what the ID of the inserted player record is, so
      * we'll have to pull that out of the DB
      */
-    $this_char = Doctrine_Query::create()
-      ->from('Player p')
+		$this_char = Doctrine_Query::create()
+			->from('Player p')
       ->orderBy('p.id DESC')->limit(1)->execute();
     $this_char = $this_char->count()>0 ? $this_char->getFirst() : null;
     

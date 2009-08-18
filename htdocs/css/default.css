@@ -34,6 +34,13 @@ a:active {
 	clear                 : both;
 }
 
+.row0 {
+	background-color      : #FFFFFF;
+}
+.row1 {
+	background-color      : #D8D7C5;
+}
+
 /* Header Style */
 #Header {
 	/* height should be the same as the line-height for the menu */
@@ -196,7 +203,7 @@ ul.list span.Daily {
 
 /* Index Page/Char List Styles */
 #PlayerList {
-	width                 : 350px;
+	width                 : 400px;
 	float                 : left;
 }
 #PlayerList div.listLinks {
@@ -209,6 +216,6 @@ ul.list span.Daily {
 	margin                : 5px;
 	padding               : 10px;
 	border                : 1px dotted #888;
-	margin-left           : 375px;
+	margin-left           : 405px;
 	width                 : 550px;
 }

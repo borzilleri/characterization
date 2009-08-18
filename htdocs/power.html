@@ -21,6 +21,7 @@ $i = 0;
       <div class="listLinks">
         [<a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new">new power</a>]
       </div>
+		<? if( $power_list->count() > 1 ): ?>
       <div class="listLabel">
         [ <a href="#" class="sort asc" id="power_name">Power Name</a>
         <span id="name_arr"></span> ]
@@ -31,14 +32,15 @@ $i = 0;
         [ <a href="#" class="sort desc" id="use_type">Usage</a>
         <span id="usage_arr">&uarr;</span> ]
       </div>
+		<? endif; ?>
     </li>
   <? foreach($power_list as $p): ?>
     <li class="powerItem row<?=$i;$i=($i+1)%2;?>">
       <div class="listLinks">
-        [ <a href="#" id="l<?=$p->id;?>" class="power_preview">
-          view</a>&nbsp;|
-        <a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit">
-            edit</a> ]
+        [ <a href="#" id="l<?=$p->id;?>" class="power_preview"
+					>view</a>&nbsp;|
+        <a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit"
+					>edit</a> ]
       </div>
       <div class="listLabel">
         <span class="power_name"><?=$p->name;?></span>

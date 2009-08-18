@@ -33,12 +33,6 @@
 .Daily {
 	background-color      : #3B3B3C;
 }
-.row0 {
-	background-color      : #FFFFFF;
-}
-.row1 {
-	background-color      : #D8D7C5;
-}
 
 .usage, .keywords, .actionType {
 	font-weight           : bold;
