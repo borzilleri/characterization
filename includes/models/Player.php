@@ -113,16 +113,23 @@ class Player extends BasePlayer
 
     // Character Name
     $cache['name'] = $_POST['character_name'];
-    if( empty($_POST['level']) ) {
+    if( empty($_POST['character_name']) ) {
 			$msg->add('Character name may not be blank.',
 				Message::WARNING);
 			$cache['error'][] = 'name';
 		}
 		else {
-			/**
-			 * @todo Check for uniqueness of name here
-			 */
-			$this->name = trim($_POST['character_name']);
+			$pl = Doctrine_Query::create()->select('p.id,p.name')->from('Player p')
+				->where('p.name = ?', $_POST['character_name'])
+				->andWhere('(? is null or p.id != ?)', array($this->id,$this->id))->execute();
+			if( $pl->count() > 0 ) {
+				$msg->add("Character name '{$_POST['character_name']}' already exists",
+					Message::WARNING);
+				$cache['error'][] = 'name';
+			}
+			else {
+				$this->name = trim($_POST['character_name']);
+			}
 		}
 
     // Character Level
