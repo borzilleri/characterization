@@ -6,7 +6,8 @@ var STATUS_BLOODIED = 'Bloodied';
 var notes_tmp = '';
 
 function updateCurrentHealth(health_cur) {
-	$('#health_cur').text(health_cur);
+	updateText('#health_cur', health_cur)
+	//$('#health_cur').text(health_cur);
 	var health_max = $('#health_max').text();
 	var bloodied_val = Math.floor(health_max/2);
 	
@@ -33,10 +34,12 @@ function updateCurrentHealth(health_cur) {
 }
 function updateTempHealth(health_tmp) {
 	if( health_tmp > 0 ) {
-		$('#health_tmp').text('('+health_tmp+')');
+		updateText('#health_tmp', '('+health_tmp+')');
+		//$('#health_tmp').text('('+health_tmp+')');
 	}
 	else {
-		$('#health_tmp').text('');
+		updateText('#health_tmp', '');
+		//$('#health_tmp').text('');
 	}
 }
 
@@ -55,7 +58,7 @@ function usePower(divID) {
 			var result = response[0];
 			
 			if( PROCESS_FAILURE != result ) {
-				$(powerIDstring).toggle();
+				$(powerIDstring).slideToggle();
 			}
 			
 			if( response.length > 1 ) {
@@ -78,7 +81,8 @@ function updateSurges(op) {
 			var result = response[0];
 
 			if( PROCESS_FAILURE != result ) {
-				$('#surges_cur').text(result);
+				updateText('#surges_cur', result);
+				//$('#surges_cur').text(result);
 			}
 			
 			if( response.length > 1 ) {
@@ -105,8 +109,9 @@ function spendSurge() {
 			if( PROCESS_FAILURE != result ) {
 				var info = result.split(RESULT_DELIMITER);
 				
-				$('#surge_bonus').val(0);
-				$('#surges_cur').text(info[0]);
+				$('#surge_bonus').val('');
+				updateText('#surges_cur', info[0]);
+				//$('#surges_cur').text(info[0]);
 				updateCurrentHealth(info[1]);				
 			}
 			
@@ -136,7 +141,8 @@ function updateActionPoints(op) {
 			var result = response[0];
 			
 			if( PROCESS_FAILURE != result ) {
-				$('#action_points').text(result);
+				updateText('#action_points', result);
+				//$('#action_points').text(result);
 			}
 			
 			if( response.length > 1 ) {
@@ -169,13 +175,15 @@ function doRest(restType) {
 					// Set Current Health to Maximum Health
 					updateCurrentHealth($('#health_max').text());
 					// Set Current Surges to Maximum Surges
-					$('#surges_cur').text($('#surges_max').text());
+					updateText('#surges_cur', $('#surges_max').text());
+					//$('#surges_cur').text($('#surges_max').text());
 					// Reset Action Points
-					$('#action_points').text(result);
+					updateText('#action_points', result);
+					//$('#action_points').text(result);
 				}
 				
 				// Un-hide powers
-				$('div.power div.'+divClass+' ~ div.description:hidden').show();
+				$('div.power div.'+divClass+' ~ div.description:hidden').slideDown();
 			}
 			
 			if( response.length > 1 ) {
@@ -204,7 +212,7 @@ function adjustHealth() {
 				updateCurrentHealth(info[0]);
 				// Adjust Temporary Health
 				updateTempHealth(info[1]);
-				$('#damage_value').val(0);
+				$('#damage_value').val('');
 			}
 			
 			if( response.length > 1 ) {
@@ -229,7 +237,7 @@ function addTempHealth() {
 			
 			if( PROCESS_FAILURE != result ) {
 				updateTempHealth(result);
-				$('#health').val(0);
+				$('#health').val('');
 			}
 			if( response.length > 1 ) {
 				printMessage(new Array(response[1],response[2]));
@@ -277,6 +285,13 @@ function notesDirtyCheck() {
 	if( notes_tmp != notes_cur ) {
 		$('#notes_dirty').fadeIn();
 	}
+}
+
+function updateText(id, data) {
+	$(id).fadeOut(function() {
+		$(id).text(data)
+		$(id).fadeIn();
+	});
 }
 
 $(document).ready(function() {
