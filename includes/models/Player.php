@@ -60,6 +60,7 @@ class Player extends BasePlayer
     $this->generateDerivedValues();
   }
   public function preInsert() {
+    $this->magic_item_uses = 1;
 		$this->initializeCurrentValues();
 	}
   public function generateDerivedValues() {

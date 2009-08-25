@@ -10,6 +10,7 @@ class Power extends BasePower
 	const POWER_ATWILL = '1_atwill';
 	const POWER_ENCOUNTER = '2_encounter';
 	const POWER_DAILY = '3_daily';
+	const POWER_SURGE = '4_surge';
 
   /**
    * Pre-Delete handling, we must delete our keyword associations first.
@@ -285,6 +286,7 @@ class Power extends BasePower
 			case self::POWER_ATWILL:
 			case self::POWER_ENCOUNTER:
 			case self::POWER_DAILY:
+			case self::POWER_SURGE;
 				return true;
 				break;
 			default:
@@ -306,28 +308,42 @@ class Power extends BasePower
   /**
    * Return a friendly display string for the power's usage type
    *
+   * @param bool $noSpace Strip spaces out of the returned string
    * @return string
    */
-	public function getUseTypeDisplay() {
+	public function getUseTypeDisplay($noSpace = false) {
+	  $s = '';
 		switch($this->use_type) {
+		  case self::POWER_SURGE:
+		    $s = 'Healing Surge';
 			case self::POWER_ENCOUNTER:
-				return 'Encounter';
+				$s = 'Encounter';
 				break;
 			case self::POWER_DAILY:
-				return 'Daily';
+				$s = 'Daily';
 				break;
 			case self::POWER_ATWILL:
 			default:
-				return 'At-Will';
+				$s = 'At-Will';
 				break;
 		}
+		
+		if( $noSpace ) str_replace($s, ' ', '-');
+		return $s;
 	}
 	
 	/**
 	 * Refresh the power, allowing it to be used again.
+	 *
+	 * @param bool $overrideSurge Override any healing surge requirement
 	 */ 
   public function refresh() {
-    $this->used = false;
+    if( !$overrideSurge && $this->use_type == self::POWER_SURGE ) {
+      // Spend a surge, then refresh the power.
+    }
+    else {
+      $this->used = false;
+    }
   }
   
   /**
@@ -348,10 +364,10 @@ class Power extends BasePower
   }
   
   /**
-   * Toggle a power's expended state.
+   * Toggle a power's used state.
    *
    * At-Will Powers cannot be toggled.
-   *
+   * 
    * @return bool
    */
   public function togglePower() {
@@ -485,7 +501,15 @@ class Power extends BasePower
     }
     return implode('/',$bonus_table);
   }
-
+  
+  /**
+   *
+   */
+  public function getClassDisplay() {
+    if( $this->item ) return 'Magic Item';
+    else return $this->Player->Archetype->name;
+  }
+  
   /**
    * Retrieve a cached value for a property if one exists. 
    *
@@ -548,9 +572,9 @@ class Power extends BasePower
 		
 		// TitleBar
 		$box .= '<div id="p'.$this->id.'" class="titleBar '.
-			$this->getUseTypeDisplay().'">';
+			$this->getUseTypeDisplay(true).'">';
 		// Power Class/Level
-		$box .= '<span class="powerLevel">'.$this->Player->Archetype->name.
+		$box .= '<span class="powerLevel">'.$this->getClassDisplay().
 			' '.$this->level.'</span>';
 		// Power Title
 		$box .= '<span class="powerTitle">'.$this->name.'</span>';
