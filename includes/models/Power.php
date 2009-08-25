@@ -511,6 +511,14 @@ class Power extends BasePower
   }
   
   /**
+   *
+   */
+  public function isDisabledPower() {
+    return $this->item && $this->use_type == self::POWER_DAILY && 
+      0 == $this->Player->magic_item_uses;
+  }
+  
+  /**
    * Retrieve a cached value for a property if one exists. 
    *
    * If a field is passed in that is not contained in the object,
@@ -568,7 +576,8 @@ class Power extends BasePower
 		$box = ""; $i = 0;
 		
 		// Outer div
-		$box .= '<div class="power" id="powerBox'.$this->id.'">';
+		$box .= '<div class="power'.($this->isDisabledPower()?' disabledPower':'')
+		  .'" id="powerBox'.$this->id.'">';
 		
 		// TitleBar
 		$box .= '<div id="p'.$this->id.'" class="titleBar '.
