@@ -47,6 +47,9 @@ Player:
     action_points:
         type: integer
         default: 0
+    magic_item_uses:
+        type: integer
+        default: 0
     health_cur: integer
     health_bonus:
         type: integer
@@ -92,7 +95,7 @@ Power:
     use_type: 
       type: enum
       # This is to fix sorting by use_type
-      values: ['1_atwill','2_encounter','3_daily']
+      values: ['1_atwill','2_encounter','3_daily', '4_surge']
       default: 1_atwill
     action:
       type: enum
@@ -121,6 +124,7 @@ Power:
     sustain: clob
     notes: clob
     used: boolean
+    item: boolean
     player_id:
       type: integer
       unsigned: 1

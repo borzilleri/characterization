@@ -22,6 +22,7 @@
  * @property clob $sustain
  * @property clob $notes
  * @property boolean $used
+ * @property boolean $item
  * @property integer $player_id
  * @property Player $Player
  * @property Doctrine_Collection $Keywords
@@ -58,6 +59,7 @@ abstract class BasePower extends Doctrine_Record
               0 => '1_atwill',
               1 => '2_encounter',
               2 => '3_daily',
+              3 => '4_surge',
              ),
              'default' => '1_atwill',
              ));
@@ -140,6 +142,9 @@ abstract class BasePower extends Doctrine_Record
              'type' => 'clob',
              ));
         $this->hasColumn('used', 'boolean', null, array(
+             'type' => 'boolean',
+             ));
+        $this->hasColumn('item', 'boolean', null, array(
              'type' => 'boolean',
              ));
         $this->hasColumn('player_id', 'integer', null, array(

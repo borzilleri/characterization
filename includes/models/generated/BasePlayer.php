@@ -13,6 +13,7 @@
  * @property integer $attack_weapon_off
  * @property integer $attack_implement
  * @property integer $action_points
+ * @property integer $magic_item_uses
  * @property integer $health_cur
  * @property integer $health_bonus
  * @property integer $health_tmp
@@ -73,6 +74,10 @@ abstract class BasePlayer extends Doctrine_Record
              'default' => 0,
              ));
         $this->hasColumn('action_points', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
+             ));
+        $this->hasColumn('magic_item_uses', 'integer', null, array(
              'type' => 'integer',
              'default' => 0,
              ));
