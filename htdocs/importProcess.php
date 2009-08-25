@@ -35,7 +35,7 @@ switch($action) {
     try {
 			// First, attempt to delete the old character
 			$p_list = Doctrine::getTable('Player')->findByName($char_name);
-			if( $p_list && $p_list->count > 0 ) {
+			if( $p_list && $p_list->count() > 0 ) {
 				foreach($p_list as $p) {
 					$p->delete();
 				}
