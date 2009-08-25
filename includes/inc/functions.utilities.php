@@ -3,6 +3,48 @@
  * @author Jonathan Borzilleri
  */
  
+function errorHandler(
+  $errorLevel, $errorString, $errorFile, $errorLine, $errorContext) {
+  global $msg;
+  $levelString = 'Unknown';
+  
+  // If our error_reporting value is set to 0 (typically because 
+  // the fcn call was invoced with '@', then just exit out and
+  // continue processing.
+  if( 0 == error_reporting() ) return true;
+  
+  switch($errorLevel) {
+    case E_NOTICE:
+    case E_USER_NOTICE:
+      $level = Message::NOTICE;
+      $levelString = 'Notice';
+      break;
+    case E_WARNING:
+    case E_USER_WARNING:
+      $level = Message::WARNING;
+      $levelString = 'Warning';
+      break;
+    case E_ERROR:
+    case E_USER_ERROR:
+      $level = Message::ERROR;
+      $levelString = 'Error';
+      break;
+    default:
+      break;
+  }
+
+  if( ini_get('display_errors') ) {
+    $msg->add(sprintf('%s in <strong>%s:%d</strong>', 
+      $errorString, $errorFile, $errorLine), $level);
+  }
+    
+  if( ini_get('log_errors') ) {
+    error_log(sprintf('PHP %s: %s in %s on line %d',
+      $levelString, $errorString, $errorFile, $errorLine));
+  }
+  return true;
+}
+ 
 /**
  * Dynamically load a class file on demand.
  *

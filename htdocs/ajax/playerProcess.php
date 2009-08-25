@@ -59,18 +59,22 @@ if( $success ) {
   $char->save();
 }
 else {
- $return = "FALSE"; 
+  $return = "FALSE"; 
 }
 
 $status = $msg->getHighestLevel(true);
 $msg_out = "";
-foreach($msg->messages() as $m) {
- $msg_out .= $msg->generateHTMLBlock($m['message'],$m['level']);
-}
+$messages = $msg->messages();
 $msg->clear();
 
+if( is_array($messages) ) {
+  foreach($messages as $m) {
+    $msg_out .= $msg->generateHTMLBlock($m['message'],$m['level']);
+  }
+}
+
 if( $msg_out ) {
- echo "{$return}|{$status}|{$msg_out}";
+  echo "{$return}|{$status}|{$msg_out}";
 }
 else {
   echo $return;
