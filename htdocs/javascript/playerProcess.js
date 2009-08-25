@@ -152,6 +152,36 @@ function updateActionPoints(op) {
 	);
 }
 
+function updateMagicItemUses(op) {
+	var op_string;
+	if( 'subtract' == op ) {
+		op_string = 'subtractMagicItemUse';
+	}
+	else {
+		op_string = 'addMagicItemUse';
+	}
+
+	$.post(PLAYER_PROCESS,
+		{
+			id: CHAR_ID,
+			action: op_string
+		},
+		function(data) {
+			var response = data.split(MESSSAGE_DELIMITER);
+			var result = response[0];
+			
+			if( PROCESS_FAILURE != result ) {
+				updateText('#magic_item_uses', result);
+			}
+			
+			if( response.length > 1 ) {
+				printMessage(new Array(response[1],response[2]));
+			}
+		}
+	);
+}
+
+
 function doRest(restType) {
 	var divClass = 'short'==restType?'Encounter':'titleBar';
 	
@@ -163,7 +193,7 @@ function doRest(restType) {
 		},
 		function(data) {
 			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
+			var result = response[0].split(RESULT_DELIMITER);
 			
 			if( PROCESS_FAILURE != result ) {
 				// Reset temp HP.
@@ -176,10 +206,10 @@ function doRest(restType) {
 					updateCurrentHealth($('#health_max').text());
 					// Set Current Surges to Maximum Surges
 					updateText('#surges_cur', $('#surges_max').text());
-					//$('#surges_cur').text($('#surges_max').text());
 					// Reset Action Points
-					updateText('#action_points', result);
-					//$('#action_points').text(result);
+					updateText('#action_points', result[0]);
+					// Rest Magic Item Uses
+					updateText('#magic_item_uses', result[1]);
 				}
 				
 				// Un-hide powers
@@ -312,6 +342,10 @@ $(document).ready(function() {
 	$('#apPlus').click(function() { updateActionPoints('add') });
 	$('#apMinus').click(function() { updateActionPoints('subtract') });
 
+	// Magic Item Uses
+	$('#miPlus').click(function() { updateMagicItemUses('add') });
+	$('#miMinus').click(function() { updateMagicItemUses('subtract') });
+	
 	// Rest Actions
 	$('#shortRest').click(function() { doRest('short') });
 	$('#extendedRest').click(function() { doRest('extended') });

@@ -32,6 +32,14 @@ switch($action) {
     $success = $char->subtractActionPoint();
     $return = $char->action_points;
     break;
+  case 'addMagicItemUse':
+    $success = $char->addMagicItemUse();
+    $return = $char->magic_item_uses;
+    break;
+  case 'subtractMagicItemUse':
+    $success = $char->subtractMagicItemUse();
+    $return = $char->magic_item_uses;
+    break;
   case 'togglePower':
     $p = $char->Powers->get($_POST['p_id']);
     // If we can't find our power, invalid op, just die.
@@ -40,7 +48,7 @@ switch($action) {
     break;
   case 'rest':
     $success = $char->doRest(@$_POST['rest_type']);
-    $return = $char->action_points;
+    $return = $char->action_points.':'.$char->magic_item_uses;
     break;
   case 'damage':
     $success = $char->takeDamage((int)@$_POST['health']);

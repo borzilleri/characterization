@@ -48,6 +48,16 @@ $power_list = Doctrine_Query::create()
         <a href="#" id="apMinus" class="ajaxLink">remove</a>
       </div>
     </div>
+
+    <div class="statRow">
+      <label class="statLabel" for="player_mi_uses">Item Uses:</label>
+      <div class="statInfo" id="player_mi_uses">
+        <span id="magic_item_uses"><?=$char->magic_item_uses;?></span>
+        <a href="#" id="miPlus" class="ajaxLink">add</a>&nbsp;/
+        <a href="#" id="miMinus" class="ajaxLink">remove</a>
+      </div>
+    </div>
+
     <div class="statRow">
       <label class="statLabel" for="player_rest">Rest:</label>
       <div class="statInfo" id="player_rest">

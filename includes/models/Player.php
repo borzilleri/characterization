@@ -566,6 +566,10 @@ class Player extends BasePlayer
      */
     $this->action_points = 0;
     
+    
+    // Set magic item uses to 1
+    $this->magic_item_uses = 1;
+    
     // Refresh Encounter & Daily Powers
     foreach( $this->Powers as $p ) {
       $p->refresh();
@@ -738,7 +742,7 @@ class Player extends BasePlayer
   /**
    * Add an Action Point
    *
-   * @return integer
+   * @return bool
    */
    public function addActionPoint() {
      $this->action_points = $this->action_points+1;
@@ -748,10 +752,30 @@ class Player extends BasePlayer
    /**
     * Subtract an Action Point
     * 
-    * @return integer
+    * @return bool
     */
   public function subtractActionPoint() {
     $this->action_points = max(0, $this->action_points-1);
+    return true;
+  }
+  
+  /**
+   * Add a magic item use
+   *
+   * @return bool
+   */
+  public function addMagicItemUse() {
+    $this->magic_item_uses = $this->magic_item_uses+1;
+    return true;
+  }
+  
+  /**
+   * Subtract a magic item use
+   *
+   * @return bool
+   */
+  public function subtractMagicItemUse() {
+    $this->magic_item_uses = max(0, $this->magic_item_uses-1);
     return true;
   }
   
