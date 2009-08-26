@@ -293,7 +293,7 @@ class Player extends BasePlayer
     // Update the form cache in the session if necessary.
     if( !empty($_POST['form_key']) ) {
       if( empty($cache['error']) ) {
-        unset($_SESSION[$_POST['form_cache']]);
+        unset($_SESSION[$_POST['form_key']]);
       }
       else {
         $cache['form_key'] = $_POST['form_key'];

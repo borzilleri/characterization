@@ -15,7 +15,7 @@ class Archetype extends BaseArchetype
    * @param string $selected The value of the currently selected item.
    * @return string
    */
-  public function generateSelect($name, $id = null, $selected = null) {
+  public static function generateSelect($name, $id = null, $selected = null) {
       $field = '<select name="'.$name.'"';
       $field .= !empty($id)?'id="'.$id.'"':'';
       $field .= ">";
