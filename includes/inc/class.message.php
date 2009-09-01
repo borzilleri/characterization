@@ -62,8 +62,11 @@ class Message {
     
     public function getHighestLevel($asString = false) {
       $level = self::SUCCESS;
-      foreach( $_SESSION['messages'] as $msg ) {
-        if( $msg['level'] > $level ) $level = $msg['level'];
+      if( array_key_exists('messages', $_SESSION) && 
+        is_array($_SESSION['messages']) ) {
+        foreach( $_SESSION['messages'] as $msg ) {
+          if( $msg['level'] > $level ) $level = $msg['level'];
+        }
       }
       
       return $asString ? self::$strings[$level] : $level;
