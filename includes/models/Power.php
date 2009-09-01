@@ -131,6 +131,10 @@ class Power extends BasePower
       $this->sustain = trim(@$_POST['sustain']);
     }
     
+    // Magic Item
+    $this->item = !empty($_POST['item']);
+    $cache['item'] = !empty($_POST['item']);
+    
     $this->target = trim(@$_POST['target']);
     $cache['target'] = $_POST['target'];
 

@@ -149,13 +149,19 @@ $kw_list = Doctrine_Query::create()
     <label for="level"
       class="<?=$power->hasError('level',$form_key)?'error':'';?>"
       >Level:</label>
-    <div class="field"><select name="level" id="level">
-    <? for($i=1;$i<=30;$i++): ?>
-      <option value="<?=$i;?>"
-        <?=$i==$power->getCached('level',$form_key)?
-        'selected="selected"':'';?>><?=$i;?></option>
-    <? endfor; ?>
-    </select></div>
+    <div class="field">
+      <select name="level" id="level">
+      <? for($i=1;$i<=30;$i++): ?>
+        <option value="<?=$i;?>"
+          <?=$i==$power->getCached('level',$form_key)?
+          'selected="selected"':'';?>><?=$i;?></option>
+      <? endfor; ?>
+      </select>&nbsp;&nbsp;
+      <label for="">Magic Item:</label>
+      <input type="checkbox" name="item" value="1" 
+        <?=$power->getCached('item',$form_key)?
+        'checked="checked"':'';?> />
+    </div>
   </div>
   
   <div class="formRow">
