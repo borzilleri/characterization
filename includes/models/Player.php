@@ -568,8 +568,11 @@ class Player extends BasePlayer
     $this->action_points = 0;
     
     
-    // Set magic item uses to 1
-    $this->magic_item_uses = 1;
+    // Reset magic item uses
+    // Levels  1-10 -> 1 use
+    // Levels 11-20 -> 2 uses
+    // Levels 21-30 -> 3 uses
+    $this->magic_item_uses = floor(($this->level-1)/10)+1;
     
     // Refresh Encounter & Daily Powers
     foreach( $this->Powers as $p ) {
@@ -773,11 +776,21 @@ class Player extends BasePlayer
   /**
    * Subtract a magic item use
    *
+   * @global Message
    * @return bool
    */
   public function subtractMagicItemUse() {
-    $this->magic_item_uses = max(0, $this->magic_item_uses-1);
-    return true;
+    global $msg;
+    if( $this->magic_item_uses > 0 ) {
+      $this->magic_item_uses = max(0, $this->magic_item_uses-1);
+      return true;
+    }
+    else {
+      $msg->add('You have no remaining daily magic item uses.',
+        Message::ERROR);
+      $this->magic_item_uses = 0;
+      return false;
+    }
   }
   
   /**

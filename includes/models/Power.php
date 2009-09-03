@@ -363,13 +363,20 @@ class Power extends BasePower
    * @return bool
    */
   public function usePower() {
-    if( self::POWER_ATWILL != $this->use_type ) {
+    if( self::POWER_DAILY == $this->use_type && $this->item ) {
+      // We're a magic item daily ability, so on usage we must remove a
+      // magic item usage
+      if( $this->Player->subtractMagicItemUse() ) {
+        $this->used = true;
+        return true;
+      }
+    }
+    elseif( self::POWER_ATWILL != $this->use_type ) {
       $this->used = true;
       return true;
     }
-    else {
-      return false;
-    }
+    
+    return false;
   }
   
   /**
