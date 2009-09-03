@@ -10,7 +10,7 @@ if( !$char ) {
 $power_list = Doctrine_Query::create()
   ->from('Power p')
   ->where('p.player_id = ?', $char->id)
-  ->orderBy('p.use_type, p.level')
+  ->orderBy('p.item, p.use_type, p.level')
   ->execute();
 ?>
 <div id="StatBlock">
@@ -93,17 +93,33 @@ $power_list = Doctrine_Query::create()
 </div><!-- end div#StatBlock -->
 
 <hr class="clear" />
-
-<div id="powerLeft" class="leftColumn contentColumn"><? $i = 0; 
-  foreach($power_list as $power): $i = ($i+1)%2;
-    if( $i ) echo $power->getPowerBoxDisplay(true);
-  endforeach; ?>
-</div>
-
-<div id="powerRight" class="rightColumn contentColumn"><? $i = 1;
-  foreach($power_list as $power): $i = ($i+1)%2;
-    if( $i ) echo $power->getPowerBoxDisplay(true);
-  endforeach; ?>
+<div id="PlayerPowers" class="powerColumn rightColumn">
+  <table id="PowerTable">
+    <tbody>
+    <? foreach($power_list as $p): ?>
+      <tr id="i<?=$p->id;?>" class="powerRow <?=$p->getUseTypeDisplay(true);?> <?=$p->getUsedStatus();?>">
+        <td>
+        <? if(!$p->isUseType(Power::POWER_ATWILL)): ?>
+          <span>
+            <img id="u<?=$p->id;?>" title="Use <?=$p->name;?>"
+              class="power_use <?=!$p->isUsable()?'hide':'';?>"
+              src="<?=MEDIA_URL;?>/images/icon_use.png"/>
+            <img id="r<?=$p->id;?>" title="Refresh <?=$p->name;?>"
+              class="power_refresh <?=$p->isUsable()?'hide':'';?>"
+              src="<?=MEDIA_URL;?>/images/icon_refresh.png"/>
+          </span>
+        <? endif; ?>
+        </td>
+        <td class="powerName"><?=$p->name;?></td>
+        <td class="powerClass"><?=$p->getClassDisplay();?> <?=$p->level;?></td>
+        <td>
+          <img id="v<?=$p->id;?>" class="power_view" title="View <?=$p->name;?>"
+            src="<?=MEDIA_URL;?>/images/icon_view.png"/>
+        </td>
+      </tr>
+    <? endforeach; ?>
+    </tbody>
+  </table>
 </div>
 
 <div id="PlayerNotes" class="notesColumn contentColumn">

@@ -59,6 +59,10 @@ a:active {
 	background-color      : #D8D7C5;
 }
 
+.hide {
+	display               : none;
+}
+
 /* Header Style */
 #Header {
 	/* height should be the same as the line-height for the menu */
@@ -218,6 +222,10 @@ ul.list span.Encounter {
 }
 ul.list span.Daily {
 	color                 : #3B3B3C;
+	background-color      : inherit;
+}
+ul.list span.Healing-Surge {
+	color                 : #C29024;
 	background-color      : inherit;
 }
 

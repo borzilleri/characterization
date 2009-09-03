@@ -573,7 +573,7 @@ class Player extends BasePlayer
     
     // Refresh Encounter & Daily Powers
     foreach( $this->Powers as $p ) {
-      $p->refresh();
+      $p->refresh(true);
     }
     
     return true;

@@ -11,6 +11,10 @@
 .notesColumn {
 	margin-left           : 655px;
 }
+.powerColumn {
+	width                 : 640px;
+	margin                : 0 5px;
+}
 
 #PlayerNotes textarea {
 	width                 : 100%;
@@ -78,4 +82,33 @@ a.ajaxLink:hover {
 a.ajaxLink:active {
 	text-decoration       : none;
 	color                 : #CCDDEE;
+}
+
+/* Power List in Player display */
+#PowerTable {
+	margin                : 5px auto;
+	width                 : 75%;
+	border-spacing        : 0 1px;
+}
+#PowerTable .powerClass {
+	text-align            : right;
+}
+#PowerTable img {
+	height                : 16px;
+	width                 : 16px;
+	border                : 0;
+	vertical-align        : middle;
+}
+#PowerTable .powerRow {
+	color                 : #FFFFFF;
+}
+#PowerTable td.powerName {
+	overflow              : hidden;
+	white-space           : nowrap;	
+}
+#PowerTable tr.Disabled {
+	
+}
+#PowerTable tr.Used {
+	opacity               : .5;
 }

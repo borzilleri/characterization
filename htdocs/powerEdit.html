@@ -39,9 +39,12 @@ $kw_list = Doctrine_Query::create()
       <option value="<?=Power::POWER_ENCOUNTER;?>"
         <?=Power::POWER_ENCOUNTER==$power->getCached('use_type',$form_key)?
           'selected="selected"':'';?>>Encounter</option>
-      <option value="<?=POWER::POWER_DAILY;?>"
+      <option value="<?=Power::POWER_DAILY;?>"
         <?=$power->isUseType(Power::POWER_DAILY)?
         'selected="selected"':'';?>>Daily</option>
+      <option value="<?=Power::POWER_SURGE;?>"
+        <?=$power->isUseType(Power::POWER_SURGE)?
+        'selected="selected"':'';?>>Healing Surge</option>
     </select></div>
   </div>
 

@@ -1,4 +1,5 @@
 var PLAYER_PROCESS = SITE_URL+"/ajax/playerProcess.php";
+var POWER_PREVIEW_URI = SITE_URL+'/ajax/power.php';
 var STATUS_DEAD = 'Dead';
 var STATUS_UNCONSCIOUS = 'Unconscious';
 var STATUS_BLOODIED = 'Bloodied';
@@ -43,22 +44,20 @@ function updateTempHealth(health_tmp) {
 	}
 }
 
-function usePower(divID) {
-	var id = divID.substring(1);
-	var powerIDstring = '#powerBox'+id+' .description';
-	
+function togglePower(pID, action) {
+	action = 'refresh' == action ? action : 'use';	
 	$.post(PLAYER_PROCESS,
 		{
 			id: CHAR_ID,
-			p_id: id,
-			action: 'togglePower'
+			p_id: pID,
+			action: action+'Power'
 		},
 		function(data) {
 			var response = data.split(MESSSAGE_DELIMITER);
 			var result = response[0];
 			
 			if( PROCESS_FAILURE != result ) {
-				$(powerIDstring).slideToggle();
+				animatePower(pID, action);
 			}
 			
 			if( response.length > 1 ) {
@@ -66,6 +65,28 @@ function usePower(divID) {
 			}
 		}
 	);
+}
+
+function animatePower(pID, action) {
+	var rowID = '#i'+pID;
+	var hideIcon, showIcon, rowOpacity;
+	if( 'refresh' == action ) {
+		hideIcon = '#r'+pID;
+		showIcon = '#u'+pID;
+		rowOpacity = 1;
+	}
+	else {
+		action = 'use';
+		hideIcon = '#u'+pID;
+		showIcon = '#r'+pID;
+		rowOpacity = .5;
+	}
+	
+	$(hideIcon+':visible').fadeOut('fast', function() {
+		$(rowID).fadeTo('fast', rowOpacity, function() {
+			$(showIcon).fadeIn('fast');
+		});
+	});
 }
 
 function updateSurges(op) {
@@ -211,10 +232,11 @@ function doRest(restType) {
 					// Rest Magic Item Uses
 					updateText('#magic_item_uses', result[1]);
 				}
-				
-				// Un-hide powers
-				$('div.power div.'+divClass+' ~ div.description:hidden').slideDown();
 			}
+			
+			$('img.power_refresh:visible').each(function() {
+				animatePower(this.id.substring(1), 'refresh');
+			});
 			
 			if( response.length > 1 ) {
 				printMessage(new Array(response[1],response[2]));
@@ -324,14 +346,22 @@ function updateText(id, data) {
 	});
 }
 
-$(document).ready(function() {
+$(window).load(function() {
+	// Preload Images
+	var img1 = $('<img />').attr('src', MEDIA_URL+'/images/icon_refresh.png');
+	var img2 = $('<img />').attr('src', MEDIA_URL+'/images/icon_use.png');
+	
+	
 	// Fill the notes_tmp variable
 	notes_tmp = $('#player_notes').val();
 	// Handle dirty notification for player notes
 	$('#player_notes').keyup(function(k) { notesDirtyCheck() });
 	
 	// Power Usage
-	$(".power .titleBar").click(function() { usePower(this.id); });
+	$('#PowerTable img.power_use').click(function() { 
+		togglePower(this.id.substring(1), 'use'); });
+	$('#PowerTable img.power_refresh').click(function() { 
+		togglePower(this.id.substring(1), 'refresh'); });
 	
 	// Healing Surges
 	$("#surgePlus").click(function() { updateSurges('add') });
@@ -361,4 +391,51 @@ $(document).ready(function() {
 	$('#damage_value').keyup(function(e) { if(e.keyCode==13) adjustHealth(); });
 	$('#health').keyup(function(e) { if(e.keyCode==13) addTempHealth(); });
 	$('#surge_bonus').keyup(function(e) { if(e.keyCode==13) spendSurge(); });
-});
+	
+	// Power Tooltips
+	$('img.power_view').each(function(i) {
+		var id = this.id.substring(1);
+		$(this).qtip({
+			content: {
+				url: POWER_PREVIEW_URI,
+				method: 'post',
+				data: {
+					id: CHAR_ID,
+					p_id: id
+				}
+			},
+			position: { 
+				adjust: { 
+					screen: true
+				},
+				corner: {
+					target: 'leftMiddle',
+					tooltip: 'topRight'
+				}
+			},
+			show: {
+				solo: true,
+				when: {
+					event: 'click'
+				}
+			},
+			hide: {
+				when: {
+					event: 'click'
+				}
+			},
+			style: {
+				width: 308,
+				padding: 0,
+				background: '#FFFFFF',
+				border: { 
+					width: 1,
+					radius: 3
+				}
+			},
+			api: {
+				//beforeShow: function() { $('.power_view').qtip('hide'); }
+			}
+		}); // End qTip()
+	}); //end each()
+}); //end ready()

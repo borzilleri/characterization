@@ -9,5 +9,5 @@ ob_start();
  * Start the session and do any session-related handling.
  * 
  */
-session_start();
+@session_start();
 ?>

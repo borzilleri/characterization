@@ -40,11 +40,17 @@ switch($action) {
     $success = $char->subtractMagicItemUse();
     $return = $char->magic_item_uses;
     break;
-  case 'togglePower':
+  case 'usePower':
     $p = $char->Powers->get($_POST['p_id']);
-    // If we can't find our power, invalid op, just die.
-    if( !$p->exists() ) die(false);    
-    $success = $p->togglePower();
+    // If we can't find the power, die.
+    if( !$p->exists() ) die(false);
+    $success = $p->usePower();
+    break;
+  case 'refreshPower':
+    $p = $char->Powers->get($_POST['p_id']);
+    // If we can't find the power, die.
+    if( !$p->exists() ) die(false);
+    $success = $p->refresh();
     break;
   case 'rest':
     $success = $char->doRest(@$_POST['rest_type']);

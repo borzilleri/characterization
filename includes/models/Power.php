@@ -12,6 +12,9 @@ class Power extends BasePower
 	const POWER_DAILY = '3_daily';
 	const POWER_SURGE = '4_surge';
 
+	const STATUS_USED = 'Used';
+	const STATUS_DISABLED = 'Disabled';
+
   /**
    * Pre-Delete handling, we must delete our keyword associations first.
    */
@@ -320,6 +323,7 @@ class Power extends BasePower
 		switch($this->use_type) {
 		  case self::POWER_SURGE:
 		    $s = 'Healing Surge';
+		    break;
 			case self::POWER_ENCOUNTER:
 				$s = 'Encounter';
 				break;
@@ -332,7 +336,7 @@ class Power extends BasePower
 				break;
 		}
 		
-		if( $noSpace ) str_replace($s, ' ', '-');
+		if( $noSpace ) $s = str_replace(' ', '-', $s);
 		return $s;
 	}
 	
@@ -341,12 +345,13 @@ class Power extends BasePower
 	 *
 	 * @param bool $overrideSurge Override any healing surge requirement
 	 */ 
-  public function refresh() {
-    if( !$overrideSurge && $this->use_type == self::POWER_SURGE ) {
-      // Spend a surge, then refresh the power.
+  public function refresh($overrideSurge = false) {
+    if( $this->isUseType(Power::POWER_SURGE) && !$overrideSurge ) {
+      // Do stuff to use a surge.
     }
     else {
       $this->used = false;
+      return true;
     }
   }
   
@@ -357,7 +362,7 @@ class Power extends BasePower
    *
    * @return bool
    */
-  private function usePower() {
+  public function usePower() {
     if( self::POWER_ATWILL != $this->use_type ) {
       $this->used = true;
       return true;
@@ -517,9 +522,26 @@ class Power extends BasePower
   /**
    *
    */
-  public function isDisabledPower() {
+  public function isUsable() {
+    return !$this->used && !$this->isDisabled();
+  }
+  
+  /**
+   *
+   */
+  public function isDisabled() {
     return $this->item && $this->use_type == self::POWER_DAILY && 
       0 == $this->Player->magic_item_uses;
+  }
+  
+  public function getUsedStatus() {
+    if( $this->isDisabled() ) {
+      return self::STATUS_DISABLED;
+    }
+    elseif( !$this->isUsable() ) {
+      return self::STATUS_USED;
+    }
+    return '';
   }
   
   /**
@@ -580,7 +602,7 @@ class Power extends BasePower
 		$box = ""; $i = 0;
 		
 		// Outer div
-		$box .= '<div class="power'.($this->isDisabledPower()?' disabledPower':'')
+		$box .= '<div class="powerBox'.($this->isDisabled()?' disabledPower':'')
 		  .'" id="powerBox'.$this->id.'">';
 		
 		// TitleBar
