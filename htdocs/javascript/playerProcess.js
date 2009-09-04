@@ -148,39 +148,6 @@ function animatePower(pID, action) {
 	});
 }
 
-function updateNotes() {
-	var notesText = $('#player_notes').val();
-	
-	$.post(PLAYER_PROCESS,
-		{
-			id: CHAR_ID,
-			action: 'updateNotes',
-			notes: notesText
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
-			
-			if( PROCESS_FAILURE != result ) {
-				// At this point result stores the current value of the notes field.
-				// However, since we're just dumping the content of the textarea into
-				// the field, we don't actually HAVE to push this update back out.
-				//
-				// Still, we're going to anyway, to make sure that post-update we're
-				// displaying the current content. This allows us to be sure we're
-				// correct when setting the dirty/clean notification to clean
-				$('#player_notes').val(result);
-			
-				// Now, set the dirty state to 'clean'
-				$('#notes_dirty').fadeOut();
-			}
-			
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		});
-}
-
 function notesDirtyCheck() {
 	var notes_cur = $('#player_notes').val();
 	if( notes_tmp != notes_cur ) $('#notes_dirty').fadeIn();
