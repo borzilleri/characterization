@@ -15,9 +15,9 @@ class Power extends BasePower
 	const STATUS_USED = 'Used';
 	const STATUS_DISABLED = 'Disabled';
 	
-	const ICON_USABLE = '/images/icon_use.png';
+	const ICON_USABLE = '/images/icon_zap.png';
 	const ICON_USED = '/images/icon_refresh.png';
-	const ICON_DISABLED = '/images/icon_delete.png';
+	const ICON_DISABLED = '/images/icon_skull.png';
 
   /**
    * Pre-Delete handling, we must delete our keyword associations first.
