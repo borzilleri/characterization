@@ -55,6 +55,7 @@ switch($action) {
   case 'shortRest':
     $success = $char->shortRest();
     $result['health_tmp'] = $char->health_tmp;
+    $result['refreshPowers'] = false;
     break;
   case 'extendedRest':
     $success = $char->extendedRest();
@@ -63,6 +64,7 @@ switch($action) {
     $result['surges_cur'] = $char->surges_cur;
     $result['action_points'] = $char->action_points;
     $result['magic_item_uses'] = $char->magic_item_uses;
+    $result['refreshPowers'] = true;
     break;
   case 'updateNotes':
     $char->notes = trim($data['notes']);

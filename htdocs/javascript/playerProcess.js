@@ -24,16 +24,23 @@ function playerProcessRequest(action, args) {
 	});
 }
 
-//updateTempHealth(info[1]);
 function parseProcessResult(data, textStatus) {
 	$('#surge_bonus,#damage_value,#health').val('');
 	
 	for(var k in data) {
 		switch(k) {
+			case 'refreshPowers':
+				animatePower('#PowerTable tr.Encounter');
+				if( data[k] ) {
+					animatePower('#PowerTable tr.Daily');
+					animatePower('#PowerTable tr.Healing-Surge');
+				}
+				break;
 			case 'power':
 				animatePower('#r'+data[k].pID, data[k].status);
 				break;
 			case 'player_notes':
+				notes_tmp = data[k];
 				$('#player_notes').val(data[k]);
 				$('#notes_dirty').fadeOut();
 				break;
@@ -141,7 +148,7 @@ $(window).load(function() {
 	// Preload Images
 	var img_disabld = $('<img />').attr('src', POWER_ICON_DISABLED);
 	var img_used = $('<img />').attr('src', POWER_ICON_USED);
-	var img_usable = $('<img />').attr('src', POWER_ICON);	
+	var img_usable = $('<img />').attr('src', POWER_ICON);
 	
 	// Fill the notes_tmp variable
 	notes_tmp = $('#player_notes').val();

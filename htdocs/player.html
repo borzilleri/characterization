@@ -99,7 +99,7 @@ $power_list = Doctrine_Query::create()
     <? foreach($power_list as $p): ?>
       <tr id="r<?=$p->id;?>" class="powerRow 
         <?=$p->getUseTypeDisplay(true);?> <?=$p->getUsageStatus();?>">
-        <td>
+        <td class="icon">
         <? if(!$p->isUseType(Power::POWER_ATWILL)): ?>
             <img class="power_icon" title="stuff" id="u<?=$p->id;?>"
               src="<?=MEDIA_URL.$p->getUsageIcon();?>" />
@@ -107,10 +107,8 @@ $power_list = Doctrine_Query::create()
         </td>
         <td class="powerName"><?=$p->name;?></td>
         <td class="powerClass"><?=$p->getClassDisplay();?> <?=$p->level;?></td>
-        <td>
-          <img id="v<?=$p->id;?>" class="power_view" title="View <?=$p->name;?>"
-            src="<?=MEDIA_URL;?>/images/icon_view.png"/>
-        </td>
+        <td class="icon"><img id="v<?=$p->id;?>" title="View <?=$p->name;?>"
+            class="power_view" src="<?=MEDIA_URL;?>/images/icon_view.png"/></td>
       </tr>
     <? endforeach; ?>
     </tbody>
