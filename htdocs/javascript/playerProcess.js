@@ -32,7 +32,7 @@ function parseProcessResult(data, textStatus) {
 		switch(k) {
 			case 'refreshPowers':
 				animatePower('#PowerTable tr.Encounter');
-				if( val ) {
+				if( v ) {
 					animatePower('#PowerTable tr.Daily');
 					animatePower('#PowerTable tr.Healing-Surge');
 				}
@@ -56,7 +56,7 @@ function parseProcessResult(data, textStatus) {
 				break;
 			case 'magic_item_uses':
 				animatePower('#PowerTable tr.Daily.Item:not(.Used)', (!v?'Disabled':''));
-				updateText('#'+k, v);
+				updateText('#'+k, v);				
 				break;
 			default:
 				updateText('#'+k, v);
@@ -137,6 +137,8 @@ function animatePower(row, status) {
 	
 	$(row+' img.power_icon').fadeOut('fast', function() {
 		$(this).attr('src', icon);
+		$(row).removeClass('Used Disabled');
+		$(row).addClass(status);
 		$(row).fadeTo('fast', opacity, function() {
 			$(row+' img.power_icon').fadeIn('fast');
 		});
