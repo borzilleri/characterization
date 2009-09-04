@@ -1,17 +1,8 @@
-var PLAYER_PROCESS_URI = SITE_URL+"/ajax/playerProcess.php";
-var POWER_PREVIEW_URI = SITE_URL+'/ajax/power.php';
-var STATUS_DEAD = 'Dead';
-var STATUS_UNCONSCIOUS = 'Unconscious';
-var STATUS_BLOODIED = 'Bloodied';
-var POWER_ICON = MEDIA_URL+'/images/icon_use.png';
-var POWER_ICON_USED = MEDIA_URL+'/images/icon_refresh.png';
-var POWER_ICON_DISABLED = MEDIA_URL+'/images/icon_delete.png';
-
 var notes_tmp = '';
 
 function playerProcessRequest(action, args) {
 	$.ajax({
-		url: PLAYER_PROCESS_URI,
+		url: SITE_URL+'/ajax/playerProcess.php',
 		type: "post",
 		success: parseProcessResult,
 		// error: errorHandler,
@@ -51,12 +42,12 @@ function parseProcessResult(data, textStatus) {
 			case 'health_cur':
 				updateCurrentHealth(v);
 				break;
-			case 'errors':
-				playerErrorHandler(v);
-				break;
 			case 'magic_item_uses':
 				animatePower('#PowerTable tr.Daily.Item:not(.Used)', (!v?'Disabled':''));
 				updateText('#'+k, v);				
+				break;
+			case 'errors':
+				printMessage(v);
 				break;
 			default:
 				updateText('#'+k, v);
@@ -64,19 +55,6 @@ function parseProcessResult(data, textStatus) {
 		}
 	}
 }
-
-function playerErrorHandler(errors) {
-	var msg = '';
-	var lvl;
-	for(var i in errors) {
-		if( 'level' == i ) lvl = errors[i];
-		else msg = msg+errors[i];
-	}
-	if( '' != msg ) {
-		printMessage(new Array(lvl, msg));
-	}
-}
-
 
 function updateText(id, value) {
 	$(id).fadeOut(function() {

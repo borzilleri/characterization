@@ -52,35 +52,45 @@ if( empty($form_key) || (!empty($_SESSION['form_cache']) &&
   
     <script type="text/javascript" charset="utf-8">//<![CDATA[
 // Various site 'constants'
+var CHAR_ID = <?=$char?$char->id:0;?>;
 var SITE_URL = '<?=SITE_URL;?>';
 var MEDIA_URL = '<?=MEDIA_URL;?>';
-var PROCESS_FAILURE = 'FALSE';
-var RESULT_DELIMITER = ':';
-var MESSSAGE_DELIMITER = '|';
-var CHAR_ID = <?=$char?$char->id:0;?>;
+var POWER_PREVIEW_URI = SITE_URL+'/ajax/power.php';
 
+// Icon Constants
+var POWER_ICON_DISABLED = MEDIA_URL+'<?=Power::ICON_DISABLED;?>';
+var POWER_ICON_USED = MEDIA_URL+'<?=Power::ICON_USED;?>';
+var POWER_ICON = MEDIA_URL+'<?=Power::ICON_USABLE;?>';
+
+// Player status constants
+var STATUS_UNCONSCIOUS = '<?=Player::STATUS_UNCONSCIOUS;?>';
+var STATUS_BLOODIED = '<?=Player::STATUS_BLOODIED;?>';
+var STATUS_DEAD = '<?=Player::STATUS_BLOODIED;?>';
+
+// Deprecated
+var PROCESS_FAILURE = 'FALSE';
+var MESSSAGE_DELIMITER = '|';
 
 /**
  * Retrieve new messages from the session variable.
  * If we find any, call printMessage to display them.
  */
 function getMessages() {
-  $.get(SITE_URL+'/ajax/messages.php', null,
-    function(responseText, textStatus, XMLHttpRequest) {
-      var trimResponseText = responseText.replace(/^\s+|\s+$/g,'');
-      var data = trimResponseText.split('|');
-
-      if( 'success' == textStatus && '' != trimResponseText ) {
-        printMessage(data);
-      }
-      else {
-        printMessage(new Array(
-          'An unknown error occured while retrieving messages', 
-          ''
-        ));
-      }
-    } // End callback
-  ); //end .get()
+	$.ajax({
+		url: SITE_URL+'/ajax/messages.php',
+		type: "get",
+		dataType: 'json',
+		success: printMessage,
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+		  var data = {
+		    level: 'Error',
+		    messages: {
+		      0: 'An error occured while loading messages: '+errorThrown
+		    }
+		  };
+		  printMessage(data);
+	  }
+	});
 }
 
 /**
@@ -89,9 +99,6 @@ function getMessages() {
  * @param array data
  */
 function printMessage(data) {
-  var level = data[0];
-  var message = data[1];
-  
   // Remove all classes from the outer #Messages div,
   // this strips the colored border.
   $('#Messages').removeClass();
@@ -99,19 +106,15 @@ function printMessage(data) {
   // This fades any existing messages to grey.
   $('#messageText div.new').removeClass('new');
   
-  if( '' == message ) {
-    // If we didn't get a new message, hide the div.
-    /**
-     * @todo Are we sure that's what we want to do here?
-     */
-    $('#Messages').hide();
+  // Prepend all our messages
+  for(var i in data.messages) {
+    $('#messageText').prepend(data.messages[i]);
   }
-  else {
-    // Add any new messages to the top
-    // Add the appropriate colored border
-    // Then fade in the div.
-    $('#messageText').prepend(message);
-    $('#Messages').addClass(level);
+  
+  // If we actually HAD any messages, set the appropriate border class,
+  // and show the div.
+  if( data.messages.length ) {
+    $('#Messages').addClass(data.level);
     $('#Messages').fadeIn();
   }
 }
@@ -120,12 +123,13 @@ function printMessage(data) {
  * Clear existing messages from the page.
  */
 function clearMessages() {
-  $('#Messages').hide();
-  $('#Messages').removeClass();
-  $('#messageText').text('');
+  $('#Messages').slideUp(function() {
+    $('#Messages').removeClass();
+    $('#messageText').text('');
+  });
 }
 
-$(document).ready(function() {
+$(window).load(function() {
   // Global Error display handling
   getMessages();
   $('#ClearMessages').click(function() { clearMessages() });

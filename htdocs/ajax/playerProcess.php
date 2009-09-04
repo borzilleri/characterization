@@ -93,18 +93,8 @@ if( $success ) {
 }
 
 
-$status = $msg->getHighestLevel(true);
-$msg_out = "";
-$messages = $msg->messages();
+$result['errors'] = $msg->getOutput(false);
 $msg->clear();
 
-if( is_array($messages) && !empty($messages) ) {
-  $result['errors'] = array();
-  $result['errors']['level'] = $status;
-  foreach($messages as $m) {    
-    $result['errors'][] = $msg->generateHTMLBlock($m['message'],$m['level']);
-  }
-}
-
-echo json_encode($result);
+print_r(json_encode($result));
 ?>
