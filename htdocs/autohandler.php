@@ -36,10 +36,14 @@ if( empty($form_key) || (!empty($_SESSION['form_cache']) &&
     <link rel="stylesheet" type="text/css" media="screen"
       href="<?=MEDIA_URL;?>/css/default.css" />
     <script type="text/javascript" charset="utf-8"
-      src="<?=MEDIA_URL;?>/javascript/jquery/jquery-1.3.2.min.js"></script>
+      src="<?=MEDIA_URL;?>/javascript/lib/jquery-1.3.2.min.js"></script>
     <script type="text/javascript" charset="utf-8"
-      src="<?=MEDIA_URL;?>/javascript/jquery/jquery.qtip-1.0.0-rc3.min.js">
+      src="<?=MEDIA_URL;?>/javascript/lib/jquery.qtip-1.0.0-rc3.min.js">
     </script>
+    <script type="text/javascript" charset="utf-8"
+      src="<?=MEDIA_URL;?>/javascript/lib/json2.js">
+    </script>
+
 
   <? foreach($css_include as $css): // Page-specific CSS files ?>
     <link rel="stylesheet" type="text/css" media="screen"

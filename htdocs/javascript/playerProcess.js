@@ -6,9 +6,70 @@ var STATUS_BLOODIED = 'Bloodied';
 
 var notes_tmp = '';
 
+function playerProcessRequest(action, args) {
+	$.ajax({
+		url: PLAYER_PROCESS,
+		type: "post",
+		success: parseProcessResult,
+		// error: errorHandler,
+		dataType: 'json',
+		data: {
+			action: action,
+			id: CHAR_ID,
+			data: JSON.stringify(args)
+		}
+	});
+}
+
+//updateTempHealth(info[1]);
+function parseProcessResult(data, textStatus) {
+	$('#surge_bonus,#damage_value,#health').val('');
+	
+	for(var k in data) {
+		switch(k) {
+			case 'player_notes':
+				$('#player_notes').val(data[k]);
+				$('#notes_dirty').fadeOut();
+			case 'health_tmp':
+				updateTempHealth(data[k]);
+				break;
+			case 'health_cur':
+				updateCurrentHealth(data[k]);
+				break;
+			case 'errors':
+				playerErrorHandler(data[k]);
+				break;
+			default:
+				updateText('#'+k, data[k]);
+				break;
+		}
+	}
+}
+
+function playerErrorHandler(errors) {
+	var msg = '';
+	var lvl;
+	for(var i in errors) {
+		if( 'level' == i ) lvl = errors[i];
+		else msg = msg+errors[i];
+	}
+	if( '' != msg ) {
+		printMessage(new Array(lvl, msg));
+	}
+}
+
+
+function updateText(id, value) {
+	$(id).fadeOut(function() {
+		$(id).text(value)
+		$(id).fadeIn();
+	});
+}
+
+
 function updateCurrentHealth(health_cur) {
 	updateText('#health_cur', health_cur)
-	//$('#health_cur').text(health_cur);
+
 	var health_max = $('#health_max').text();
 	var bloodied_val = Math.floor(health_max/2);
 	
@@ -36,11 +97,9 @@ function updateCurrentHealth(health_cur) {
 function updateTempHealth(health_tmp) {
 	if( health_tmp > 0 ) {
 		updateText('#health_tmp', '('+health_tmp+')');
-		//$('#health_tmp').text('('+health_tmp+')');
 	}
 	else {
 		updateText('#health_tmp', '');
-		//$('#health_tmp').text('');
 	}
 }
 
@@ -89,215 +148,6 @@ function animatePower(pID, action) {
 	});
 }
 
-function updateSurges(op) {
-	var op_string = op+'Surge';
-	
-	$.post(PLAYER_PROCESS,
-		{
-			id: CHAR_ID,
-			action: op_string
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
-
-			if( PROCESS_FAILURE != result ) {
-				updateText('#surges_cur', result);
-				//$('#surges_cur').text(result);
-			}
-			
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		}
-	);
-}
-
-function spendSurge() {
-	var surge_bonus = $('#surge_bonus').val();
-	var response;
-	
-	$.post(PLAYER_PROCESS,
-		{
-			id: CHAR_ID,
-			action: 'spendSurge',
-			surge_bonus: surge_bonus
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
-			
-			if( PROCESS_FAILURE != result ) {
-				var info = result.split(RESULT_DELIMITER);
-				
-				$('#surge_bonus').val('');
-				updateText('#surges_cur', info[0]);
-				//$('#surges_cur').text(info[0]);
-				updateCurrentHealth(info[1]);				
-			}
-			
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		}
-	);
-}
-
-function updateActionPoints(op) {
-	var op_string;
-	if( 'subtract' == op ) {
-		op_string = 'subtractActionPoint';
-	}
-	else {
-		op_string = 'addActionPoint';
-	}
-
-	$.post(PLAYER_PROCESS,
-		{
-			id: CHAR_ID,
-			action: op_string
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
-			
-			if( PROCESS_FAILURE != result ) {
-				updateText('#action_points', result);
-				//$('#action_points').text(result);
-			}
-			
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		}
-	);
-}
-
-function updateMagicItemUses(op) {
-	var op_string;
-	if( 'subtract' == op ) {
-		op_string = 'subtractMagicItemUse';
-	}
-	else {
-		op_string = 'addMagicItemUse';
-	}
-
-	$.post(PLAYER_PROCESS,
-		{
-			id: CHAR_ID,
-			action: op_string
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
-			
-			if( PROCESS_FAILURE != result ) {
-				updateText('#magic_item_uses', result);
-			}
-			
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		}
-	);
-}
-
-
-function doRest(restType) {
-	var divClass = 'short'==restType?'Encounter':'titleBar';
-	
-	$.post(PLAYER_PROCESS,
-		{
-			id: CHAR_ID,
-			action: 'rest',
-			rest_type: restType
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0].split(RESULT_DELIMITER);
-			
-			if( PROCESS_FAILURE != result ) {
-				// Reset temp HP.
-				updateTempHealth(0);
-								
-				if( 'extended' == restType ) {
-					var subText;
-					// If we're an Extended Rest,
-					// Set Current Health to Maximum Health
-					updateCurrentHealth($('#health_max').text());
-					// Set Current Surges to Maximum Surges
-					updateText('#surges_cur', $('#surges_max').text());
-					// Reset Action Points
-					updateText('#action_points', result[0]);
-					// Rest Magic Item Uses
-					updateText('#magic_item_uses', result[1]);
-				}
-			}
-			
-			$('img.power_refresh:visible').each(function() {
-				animatePower(this.id.substring(1), 'refresh');
-			});
-			
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		}
-	);
-}
-
-function adjustHealth() {
-	var damage = $('#damage_value').val();
-	
-	$.post(PLAYER_PROCESS,
-		{
-			id: CHAR_ID,
-			action: 'damage',
-			health: damage
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
-			
-			if( PROCESS_FAILURE != result ) {
-				var info = result.split(RESULT_DELIMITER);
-				// Adjust Current Health
-				updateCurrentHealth(info[0]);
-				// Adjust Temporary Health
-				updateTempHealth(info[1]);
-				$('#damage_value').val('');
-			}
-			
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		}
-	);
-}
-
-function addTempHealth() {
-	var health = $('#health').val();
-	
-	$.post(PLAYER_PROCESS,
-		{
-			id: CHAR_ID,
-			action: 'tempHealth',
-			health: health
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
-			
-			if( PROCESS_FAILURE != result ) {
-				updateTempHealth(result);
-				$('#health').val('');
-			}
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		}
-	);
-}
-
 function updateNotes() {
 	var notesText = $('#player_notes').val();
 	
@@ -332,18 +182,9 @@ function updateNotes() {
 }
 
 function notesDirtyCheck() {
-	var notes_cur = $('#player_notes').val()
-	
-	if( notes_tmp != notes_cur ) {
-		$('#notes_dirty').fadeIn();
-	}
-}
-
-function updateText(id, data) {
-	$(id).fadeOut(function() {
-		$(id).text(data)
-		$(id).fadeIn();
-	});
+	var notes_cur = $('#player_notes').val();
+	if( notes_tmp != notes_cur ) $('#notes_dirty').fadeIn();
+	else $('#notes_dirty').fadeOut();
 }
 
 $(window).load(function() {
@@ -357,40 +198,47 @@ $(window).load(function() {
 	// Handle dirty notification for player notes
 	$('#player_notes').keyup(function(k) { notesDirtyCheck() });
 	
+	// Healing Surges
+	$('#surgePlus').click(function(){ playerProcessRequest('addSurge'); });
+	$('#surgeMinus').click(function(){ playerProcessRequest('subtractSurge'); });
+	$('#spendSurge').click(function(){ playerProcessRequest('spendSurge', {
+		surge_bonus: $('#surge_bonus').val() }); });
+	// Enable Enter/Return activating the click fcn.
+	$('#surge_bonus').keyup(function(e){ if(e.keyCode==13) $('#spendSurge').click(); });
+	
+	// Taking Damage
+	$('#takeDamage').click(function(){ playerProcessRequest('damage', {
+		health: $('#damage_value').val() }); });
+	// Enable Enter/Return activating the click fcn.
+	$('#damage_value').keyup(function(e){ if(e.keyCode==13) $('#takeDamage').click(); });
+	
+	// Temporary Health
+	$('#tempHealth').click(function(){ playerProcessRequest('tempHealth', {
+		health: $('#health').val() }); });
+	// Enable Enter/Return activating the click fcn.
+	$('#health').keyup(function(e){ if(e.keyCode==13) $('#tempHealth').click(); });
+
+	// Action Points
+	$('#apPlus').click(function(){ playerProcessRequest('addActionPoint') });
+	$('#apMinus').click(function(){ playerProcessRequest('subtractActionPoint') });
+
+	// Magic Item Uses
+	$('#miPlus').click(function(){ playerProcessRequest('addMagicItemUse') });
+	$('#miMinus').click(function(){ playerProcessRequest('subtractMagicItemUse') });
+	
+	// Rest Actions
+	$('#shortRest').click(function(){ playerProcessRequest('shortRest') });
+	$('#extendedRest').click(function(){ playerProcessRequest('extendedRest') });	
+	
+	// Player notes
+	$('#updateNotes').click(function() { playerProcessRequest('updateNotes', {
+		notes: $('#player_notes').val() }); });
+	
 	// Power Usage
 	$('#PowerTable img.power_use').click(function() { 
 		togglePower(this.id.substring(1), 'use'); });
 	$('#PowerTable img.power_refresh').click(function() { 
 		togglePower(this.id.substring(1), 'refresh'); });
-	
-	// Healing Surges
-	$("#surgePlus").click(function() { updateSurges('add') });
-	$("#surgeMinus").click(function() { updateSurges('subtract') });
-	$("#spendSurge").click(function() { spendSurge() });
-
-	// Action Points
-	$('#apPlus').click(function() { updateActionPoints('add') });
-	$('#apMinus').click(function() { updateActionPoints('subtract') });
-
-	// Magic Item Uses
-	$('#miPlus').click(function() { updateMagicItemUses('add') });
-	$('#miMinus').click(function() { updateMagicItemUses('subtract') });
-	
-	// Rest Actions
-	$('#shortRest').click(function() { doRest('short') });
-	$('#extendedRest').click(function() { doRest('extended') });
-	
-	// Damage/Health/Temp Health
-	$('#takeDamage').click(function() { adjustHealth() });
-	$('#tempHealth').click(function() { addTempHealth() });
-	
-	// Player notes
-	$('#updateNotes').click(function() { updateNotes() });
-	
-	// Enable form fields on pressing enter/return
-	$('#damage_value').keyup(function(e) { if(e.keyCode==13) adjustHealth(); });
-	$('#health').keyup(function(e) { if(e.keyCode==13) addTempHealth(); });
-	$('#surge_bonus').keyup(function(e) { if(e.keyCode==13) spendSurge(); });
 	
 	// Power Tooltips
 	$('img.power_view').each(function(i) {

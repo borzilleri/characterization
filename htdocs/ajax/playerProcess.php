@@ -9,37 +9,66 @@ if( !$char || !$char->exists() ) {
 }
 
 $success = true;
-$return = true;
+
+$data = empty($_POST['data'])?array():json_decode($_POST['data'],true);
+$result = array();
 
 switch($action) {
-  case 'subtractSurge':
-    $success = $char->subtractSurge();
-    $return = $char->surges_cur;
-    break;
   case 'addSurge':
     $success = $char->addSurge();
-    $return = $char->surges_cur;
+    $result['surges_cur'] = $char->surges_cur;
+    break;
+  case 'subtractSurge':
+    $success = $char->subtractSurge();
+    $result['surges_cur'] = $char->surges_cur;
     break;
   case 'spendSurge':
-    $success = $char->useSurge((int)@$_POST['surge_bonus']);
-    $return = $char->surges_cur.':'.$char->health_cur;
+    $success = $char->useSurge((int)@$data['surge_bonus']);
+    $result['surges_cur'] = $char->surges_cur;
+    $result['health_cur'] = $char->health_cur;    
+    break;
+  case 'damage':
+    $success = $char->takeDamage((int)@$data['health']);
+    $result['health_cur'] = $char->health_cur;
+    $result['health_tmp'] = $char->health_tmp;
+    break;
+  case 'tempHealth':
+    $success = $char->addTempHealth((int)@$data['health']);
+    $result['health_tmp'] = $char->health_tmp;
     break;
   case 'addActionPoint':
     $success = $char->addActionPoint();
-    $return = $char->action_points;
+    $result['action_points'] = $char->action_points;
     break;
   case 'subtractActionPoint':
     $success = $char->subtractActionPoint();
-    $return = $char->action_points;
+    $result['action_points'] = $char->action_points;
     break;
   case 'addMagicItemUse':
     $success = $char->addMagicItemUse();
-    $return = $char->magic_item_uses;
+    $result['magic_item_uses'] = $char->magic_item_uses;
     break;
   case 'subtractMagicItemUse':
     $success = $char->subtractMagicItemUse();
-    $return = $char->magic_item_uses;
+    $result['magic_item_uses'] = $char->magic_item_uses;
     break;
+  case 'shortRest':
+    $success = $char->shortRest();
+    $result['health_tmp'] = $char->health_tmp;
+    break;
+  case 'extendedRest':
+    $success = $char->extendedRest();
+    $result['health_cur'] = $char->health_cur;
+    $result['health_tmp'] = $char->health_tmp;
+    $result['surges_cur'] = $char->surges_cur;
+    $result['action_points'] = $char->action_points;
+    $result['magic_item_uses'] = $char->magic_item_uses;
+    break;
+  case 'updateNotes':
+    $char->notes = trim($data['notes']);
+    $result['player_notes'] = $char->notes;
+    break;
+//------------------------------------------------------------------------------
   case 'usePower':
     $p = $char->Powers->get($_POST['p_id']);
     // If we can't find the power, die.
@@ -52,45 +81,25 @@ switch($action) {
     if( !$p->exists() ) die(false);
     $success = $p->refresh();
     break;
-  case 'rest':
-    $success = $char->doRest(@$_POST['rest_type']);
-    $return = $char->action_points.':'.$char->magic_item_uses;
-    break;
-  case 'damage':
-    $success = $char->takeDamage((int)@$_POST['health']);
-    $return = $char->health_cur.':'.$char->health_tmp;
-    break;
-  case 'tempHealth':
-    $success = $char->addTempHealth((int)@$_POST['health']);
-    $return = $char->health_tmp;
-    break;
-  case 'updateNotes':
-    $char->notes = trim($_POST['notes']);
-    $return = $char->notes;
 }
 
 if( $success ) {
   $char->save();
 }
-else {
-  $return = "FALSE"; 
-}
+
 
 $status = $msg->getHighestLevel(true);
 $msg_out = "";
 $messages = $msg->messages();
 $msg->clear();
 
-if( is_array($messages) ) {
-  foreach($messages as $m) {
-    $msg_out .= $msg->generateHTMLBlock($m['message'],$m['level']);
+if( is_array($messages) && !empty($messages) ) {
+  $result['errors'] = array();
+  $result['errors']['level'] = $status;
+  foreach($messages as $m) {    
+    $result['errors'][] = $msg->generateHTMLBlock($m['message'],$m['level']);
   }
 }
 
-if( $msg_out ) {
-  echo "{$return}|{$status}|{$msg_out}";
-}
-else {
-  echo $return;
-}
+echo json_encode($result);
 ?>
