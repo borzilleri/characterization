@@ -30,6 +30,13 @@ a:active {
 	text-decoration       : none;
 }
 
+img.icon {
+	height                : 16px;
+	width                 : 16px;
+	border                : 0;
+	vertical-align        : middle;
+}
+
 /* Clearfix "hack" */
 .clearfix:after {
 	visibility            : hidden;

@@ -37,10 +37,12 @@ $i = 0;
   <? foreach($power_list as $p): ?>
     <li class="powerItem clearfix row<?=$i;$i=($i+1)%2;?>">
       <div class="listLinks">
-        [ <a href="#" id="l<?=$p->id;?>" class="power_preview"
-          >view</a>&nbsp;|
+        <img height="20" width="20" alt="[view]" 
+          class="power_view icon" id="v<?=$p->id;?>" 
+          src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" />
         <a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit"
-          >edit</a> ]
+          ><img height="20" width="20" alt="[edit]" class="icon"
+          src="<?=MEDIA_URL;?>/images/icon_gear2.png" /></a>
       </div>
       <div class="listLabel">
         <span class="power_name"><?=$p->name;?></span>

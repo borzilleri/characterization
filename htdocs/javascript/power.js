@@ -4,30 +4,6 @@ jQuery.fn.sort = function() {
 	return this.pushStack( [].sort.apply( this, arguments ), []);
 }
 
-function previewPower(id) {
-	var p_id = id.substring(1);			
-	$.post(POWER_URL,
-		{
-			id: CHAR_ID,
-			p_id: p_id
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
-			if( PROCESS_FAILURE != result ) {
-				$('#PowerPreview').slideUp(function() {
-					$('#PowerPreview').html(result);
-					$('#PowerPreview').slideDown();
-				});
-			}
-			
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		}
-	);
-}
-
 function getSortableUsage(usage) {
 	switch(usage) {
 		case 'At-Will':
@@ -204,7 +180,45 @@ function sortPowerList(link) {
 	});
 }
 
-$(document).ready(function() {
-	$('.power_preview').click(function() { previewPower(this.id) });	
+$(window).load(function() {
+	$('img.power_view').each(function(i) {
+		var id = this.id.substring(1);
+		$(this).qtip({
+			content: {
+				url: POWER_PREVIEW_URI,
+				method: 'post',
+				data: {
+					id: CHAR_ID,
+					p_id: id
+				}
+			},
+			position: { 
+				adjust: { 
+					screen: true
+				},
+			},
+			show: {
+				solo: true,
+				when: {
+					event: 'click'
+				}
+			},
+			hide: {
+				when: {
+					event: 'click'
+				}
+			},
+			style: {
+				width: 308,
+				padding: 0,
+				background: '#FFFFFF',
+				border: { 
+					width: 1,
+					radius: 3
+				}
+			}
+		}); // End qTip()
+	}); //end each()
+
 	$('.sort').click(function() { sortPowerList(this) });
 });
