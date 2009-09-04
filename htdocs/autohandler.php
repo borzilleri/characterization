@@ -67,10 +67,6 @@ var STATUS_UNCONSCIOUS = '<?=Player::STATUS_UNCONSCIOUS;?>';
 var STATUS_BLOODIED = '<?=Player::STATUS_BLOODIED;?>';
 var STATUS_DEAD = '<?=Player::STATUS_BLOODIED;?>';
 
-// Deprecated
-var PROCESS_FAILURE = 'FALSE';
-var MESSSAGE_DELIMITER = '|';
-
 /**
  * Retrieve new messages from the session variable.
  * If we find any, call printMessage to display them.
