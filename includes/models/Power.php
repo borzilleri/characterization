@@ -14,6 +14,10 @@ class Power extends BasePower
 
 	const STATUS_USED = 'Used';
 	const STATUS_DISABLED = 'Disabled';
+	
+	const ICON_USABLE = '/images/icon_use.png';
+	const ICON_USED = '/images/icon_refresh.png';
+	const ICON_DISABLED = '/images/icon_delete.png';
 
   /**
    * Pre-Delete handling, we must delete our keyword associations first.
@@ -343,11 +347,15 @@ class Power extends BasePower
 	/**
 	 * Refresh the power, allowing it to be used again.
 	 *
-	 * @param bool $overrideSurge Override any healing surge requirement
+	 * @param bool $overrideCost Override any healing surge requirement
+	 * @return bool
 	 */ 
-  public function refresh($overrideSurge = false) {
-    if( $this->isUseType(Power::POWER_SURGE) && !$overrideSurge ) {
-      // Do stuff to use a surge.
+  public function refresh($overrideCost = false) {
+    if( $this->isUseType(Power::POWER_SURGE) && !$overrideCost ) {
+      if( $this->Player->subtractSurge() ) {
+        $this->used = false;
+        return true;
+      }
     }
     else {
       $this->used = false;
@@ -360,12 +368,14 @@ class Power extends BasePower
    *
    * At-Will Powers cannot be expended.
    *
+   * @param bool #overrideCost Override any cost for using the power.
    * @return bool
    */
-  public function usePower() {
-    if( self::POWER_DAILY == $this->use_type && $this->item ) {
-      // We're a magic item daily ability, so on usage we must remove a
-      // magic item usage
+  public function usePower($overrideCost = false) {
+    if( !$overrideCost && $this->item &&
+        self::POWER_DAILY == $this->use_type ) {
+      // We're a magic item daily ability, 
+      // so on use we must remove a magic item usage
       if( $this->Player->subtractMagicItemUse() ) {
         $this->used = true;
         return true;
@@ -384,17 +394,12 @@ class Power extends BasePower
    *
    * At-Will Powers cannot be toggled.
    * 
+   * @param bool $overrideCost Override any cost for using/refreshing the power
    * @return bool
    */
-  public function togglePower() {
-    if( self::POWER_ATWILL == $this->use_type ) {
-      $this->used = false;
-      return false;
-    }
-    else {
-      $this->used = !$this->used;
-      return true;
-    }
+  public function togglePower($overrideCost = false) {
+    if( $this->used ) return $this->refresh($overrideCost);
+    else return $this->usePower($overrideCost);
   }
   
   /**
@@ -530,7 +535,7 @@ class Power extends BasePower
    *
    */
   public function isUsable() {
-    return !$this->used && !$this->isDisabled();
+    return !$this->used;
   }
   
   /**
@@ -541,14 +546,26 @@ class Power extends BasePower
       0 == $this->Player->magic_item_uses;
   }
   
-  public function getUsedStatus() {
-    if( $this->isDisabled() ) {
-      return self::STATUS_DISABLED;
-    }
-    elseif( !$this->isUsable() ) {
+  public function getUsageStatus() {
+    if( $this->used ) {
       return self::STATUS_USED;
     }
+    elseif( $this->isDisabled() ) {
+      return self::STATUS_DISABLED;
+    }
     return '';
+  }
+  
+  public function getUsageIcon() {
+    if( $this->used ) {
+      return self::ICON_USED;
+    }
+    elseif( $this->isDisabled() ) {
+      return self::ICON_DISABLED;
+    }
+    else {
+      return self::ICON_USABLE;
+    }
   }
   
   /**

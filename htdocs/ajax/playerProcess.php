@@ -68,18 +68,21 @@ switch($action) {
     $char->notes = trim($data['notes']);
     $result['player_notes'] = $char->notes;
     break;
-//------------------------------------------------------------------------------
-  case 'usePower':
-    $p = $char->Powers->get($_POST['p_id']);
-    // If we can't find the power, die.
-    if( !$p->exists() ) die(false);
-    $success = $p->usePower();
-    break;
-  case 'refreshPower':
-    $p = $char->Powers->get($_POST['p_id']);
-    // If we can't find the power, die.
-    if( !$p->exists() ) die(false);
-    $success = $p->refresh();
+  case 'togglePower':
+    $surges = $char->surges_cur;
+    $mi_use = $char->magic_item_uses;
+    $p = $char->Powers->get($data['p_id']);
+    if( !$p->exists() ) {
+      $msg->add('Unable to find Power "'.$data['p_id'].'".', Message::ERROR);
+    }
+    else {
+      $success = $p->togglePower();
+    }
+    $result['power'] = array('pID' => $p->id, 'status' => $p->getUsageStatus());
+    if( $mi_use != $char->magic_item_uses ) 
+      $result['magic_item_uses'] = $char->magic_item_uses;
+    if( $surges != $char->surges_cur )
+      $result['surges_cur'] = $char->surges_cur;
     break;
 }
 

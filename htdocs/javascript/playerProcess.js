@@ -1,14 +1,17 @@
-var PLAYER_PROCESS = SITE_URL+"/ajax/playerProcess.php";
+var PLAYER_PROCESS_URI = SITE_URL+"/ajax/playerProcess.php";
 var POWER_PREVIEW_URI = SITE_URL+'/ajax/power.php';
 var STATUS_DEAD = 'Dead';
 var STATUS_UNCONSCIOUS = 'Unconscious';
 var STATUS_BLOODIED = 'Bloodied';
+var POWER_ICON = MEDIA_URL+'/images/icon_use.png';
+var POWER_ICON_USED = MEDIA_URL+'/images/icon_refresh.png';
+var POWER_ICON_DISABLED = MEDIA_URL+'/images/icon_delete.png';
 
 var notes_tmp = '';
 
 function playerProcessRequest(action, args) {
 	$.ajax({
-		url: PLAYER_PROCESS,
+		url: PLAYER_PROCESS_URI,
 		type: "post",
 		success: parseProcessResult,
 		// error: errorHandler,
@@ -27,9 +30,13 @@ function parseProcessResult(data, textStatus) {
 	
 	for(var k in data) {
 		switch(k) {
+			case 'power':
+				animatePower('#r'+data[k].pID, data[k].status);
+				break;
 			case 'player_notes':
 				$('#player_notes').val(data[k]);
 				$('#notes_dirty').fadeOut();
+				break;
 			case 'health_tmp':
 				updateTempHealth(data[k]);
 				break;
@@ -103,47 +110,23 @@ function updateTempHealth(health_tmp) {
 	}
 }
 
-function togglePower(pID, action) {
-	action = 'refresh' == action ? action : 'use';	
-	$.post(PLAYER_PROCESS,
-		{
-			id: CHAR_ID,
-			p_id: pID,
-			action: action+'Power'
-		},
-		function(data) {
-			var response = data.split(MESSSAGE_DELIMITER);
-			var result = response[0];
-			
-			if( PROCESS_FAILURE != result ) {
-				animatePower(pID, action);
-			}
-			
-			if( response.length > 1 ) {
-				printMessage(new Array(response[1],response[2]));
-			}
-		}
-	);
-}
-
-function animatePower(pID, action) {
-	var rowID = '#i'+pID;
-	var hideIcon, showIcon, rowOpacity;
-	if( 'refresh' == action ) {
-		hideIcon = '#r'+pID;
-		showIcon = '#u'+pID;
-		rowOpacity = 1;
-	}
-	else {
-		action = 'use';
-		hideIcon = '#u'+pID;
-		showIcon = '#r'+pID;
-		rowOpacity = .5;
+function animatePower(row, status) {
+	var icon = POWER_ICON;
+	var opacity = 1;
+	switch(status) {
+		case 'Used':
+			icon = POWER_ICON_USED;
+			opacity = .5;
+			break;
+		case 'Disabled':
+			icon = POWER_ICON_DISABLED;
+			break;
 	}
 	
-	$(hideIcon+':visible').fadeOut('fast', function() {
-		$(rowID).fadeTo('fast', rowOpacity, function() {
-			$(showIcon).fadeIn('fast');
+	$(row+' img.power_icon').fadeOut('fast', function() {
+		$(this).attr('src', icon);
+		$(row).fadeTo('fast', opacity, function() {
+			$(row+' img.power_icon').fadeIn('fast');
 		});
 	});
 }
@@ -156,9 +139,9 @@ function notesDirtyCheck() {
 
 $(window).load(function() {
 	// Preload Images
-	var img1 = $('<img />').attr('src', MEDIA_URL+'/images/icon_refresh.png');
-	var img2 = $('<img />').attr('src', MEDIA_URL+'/images/icon_use.png');
-	
+	var img_disabld = $('<img />').attr('src', POWER_ICON_DISABLED);
+	var img_used = $('<img />').attr('src', POWER_ICON_USED);
+	var img_usable = $('<img />').attr('src', POWER_ICON);	
 	
 	// Fill the notes_tmp variable
 	notes_tmp = $('#player_notes').val();
@@ -202,11 +185,9 @@ $(window).load(function() {
 		notes: $('#player_notes').val() }); });
 	
 	// Power Usage
-	$('#PowerTable img.power_use').click(function() { 
-		togglePower(this.id.substring(1), 'use'); });
-	$('#PowerTable img.power_refresh').click(function() { 
-		togglePower(this.id.substring(1), 'refresh'); });
-	
+	$('#PowerTable img.power_icon').click(function() {
+		playerProcessRequest('togglePower', {p_id: this.id.substring(1)}) });
+		
 	// Power Tooltips
 	$('img.power_view').each(function(i) {
 		var id = this.id.substring(1);
@@ -247,9 +228,6 @@ $(window).load(function() {
 					width: 1,
 					radius: 3
 				}
-			},
-			api: {
-				//beforeShow: function() { $('.power_view').qtip('hide'); }
 			}
 		}); // End qTip()
 	}); //end each()

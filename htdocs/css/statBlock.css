@@ -93,21 +93,23 @@ a.ajaxLink:active {
 #PowerTable .powerClass {
 	text-align            : right;
 }
-#PowerTable img {
+
+#PowerTable .powerRow {
+	color                 : #FFFFFF;
+	height                : 20px;
+}
+tr.powerRow img {
 	height                : 16px;
 	width                 : 16px;
 	border                : 0;
 	vertical-align        : middle;
 }
-#PowerTable .powerRow {
-	color                 : #FFFFFF;
-}
+
 #PowerTable td.powerName {
 	overflow              : hidden;
 	white-space           : nowrap;	
 }
 #PowerTable tr.Disabled {
-	
 }
 #PowerTable tr.Used {
 	opacity               : .5;

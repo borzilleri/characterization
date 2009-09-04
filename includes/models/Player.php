@@ -787,7 +787,7 @@ class Player extends BasePlayer
     }
     else {
       $msg->add('You have no remaining daily magic item uses.',
-        Message::ERROR);
+        Message::WARNING);
       $this->magic_item_uses = 0;
       return false;
     }
