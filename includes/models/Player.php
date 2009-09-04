@@ -756,11 +756,20 @@ class Player extends BasePlayer
    /**
     * Subtract an Action Point
     * 
+    * @global Message
     * @return bool
     */
   public function subtractActionPoint() {
-    $this->action_points = max(0, $this->action_points-1);
-    return true;
+    global $msg;
+    if( $this->action_points > 0 ) {
+      $this->action_points = max(0, $this->action_points-1);
+      return true;
+    }
+    else {
+      $msg->add('You have no action points remaining.', Message::WARNING);
+      $this->action_points = 0;
+      return false;
+    }
   }
   
   /**
@@ -786,7 +795,7 @@ class Player extends BasePlayer
       return true;
     }
     else {
-      $msg->add('You have no remaining daily magic item uses.',
+      $msg->add('You have no daily magic item uses remaining.',
         Message::WARNING);
       $this->magic_item_uses = 0;
       return false;

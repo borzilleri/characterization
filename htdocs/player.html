@@ -97,7 +97,7 @@ $power_list = Doctrine_Query::create()
   <table id="PowerTable">
     <tbody>
     <? foreach($power_list as $p): ?>
-      <tr id="r<?=$p->id;?>" class="powerRow 
+      <tr id="r<?=$p->id;?>" class="powerRow <?=$p->item?'Item':'';?>
         <?=$p->getUseTypeDisplay(true);?> <?=$p->getUsageStatus();?>">
         <td class="icon">
         <? if(!$p->isUseType(Power::POWER_ATWILL)): ?>

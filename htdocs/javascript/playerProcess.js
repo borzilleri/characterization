@@ -28,33 +28,38 @@ function parseProcessResult(data, textStatus) {
 	$('#surge_bonus,#damage_value,#health').val('');
 	
 	for(var k in data) {
+		var v = data[k];
 		switch(k) {
 			case 'refreshPowers':
 				animatePower('#PowerTable tr.Encounter');
-				if( data[k] ) {
+				if( val ) {
 					animatePower('#PowerTable tr.Daily');
 					animatePower('#PowerTable tr.Healing-Surge');
 				}
 				break;
 			case 'power':
-				animatePower('#r'+data[k].pID, data[k].status);
+				animatePower('#r'+v.pID, v.status);
 				break;
 			case 'player_notes':
-				notes_tmp = data[k];
-				$('#player_notes').val(data[k]);
+				notes_tmp = v;
+				$('#player_notes').val(v);
 				$('#notes_dirty').fadeOut();
 				break;
 			case 'health_tmp':
-				updateTempHealth(data[k]);
+				updateTempHealth(v);
 				break;
 			case 'health_cur':
-				updateCurrentHealth(data[k]);
+				updateCurrentHealth(v);
 				break;
 			case 'errors':
-				playerErrorHandler(data[k]);
+				playerErrorHandler(v);
+				break;
+			case 'magic_item_uses':
+				animatePower('#PowerTable tr.Daily.Item:not(.Used)', (!v?'Disabled':''));
+				updateText('#'+k, v);
 				break;
 			default:
-				updateText('#'+k, data[k]);
+				updateText('#'+k, v);
 				break;
 		}
 	}
