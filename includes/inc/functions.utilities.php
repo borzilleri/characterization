@@ -34,8 +34,10 @@ function errorHandler(
   }
 
   if( ini_get('display_errors') ) {
-    $msg->add(sprintf('%s in <strong>%s:%d</strong>', 
-      $errorString, $errorFile, $errorLine), $level);
+    printf('<strong>%s:</strong> %s in <strong>%s:%d</strong>', 
+      $levelString, $errorString, $errorFile, $errorLine);
+    #$msg->add(sprintf('%s in <strong>%s:%d</strong>', 
+    #  $errorString, $errorFile, $errorLine), $level);
   }
     
   if( ini_get('log_errors') ) {

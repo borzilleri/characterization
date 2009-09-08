@@ -22,14 +22,14 @@ class Power extends BasePower
   /**
    * Pre-Delete handling, we must delete our keyword associations first.
    */
-	public function preDelete() {
+	public function preDelete($event) {
 		$this->PowerKeywords->delete();
 	}
 	
 	/**
 	 * Post-save handling, update our keywords appropriately.
 	 */
-	public function postSave() {
+	public function postSave($event) {
 		// After saving the Power, we need to go through the $tmp_keywords array
 		// and update any objects there with our ID, and save them.
 		foreach($this->tmp_keywords as $k) {
