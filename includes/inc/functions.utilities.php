@@ -5,7 +5,6 @@
  
 function errorHandler(
   $errorLevel, $errorString, $errorFile, $errorLine, $errorContext) {
-  global $msg;
   $levelString = 'Unknown';
   
   // If our error_reporting value is set to 0 (typically because 
@@ -34,10 +33,14 @@ function errorHandler(
   }
 
   if( ini_get('display_errors') ) {
-    printf('<strong>%s:</strong> %s in <strong>%s:%d</strong>', 
-      $levelString, $errorString, $errorFile, $errorLine);
-    #$msg->add(sprintf('%s in <strong>%s:%d</strong>', 
-    #  $errorString, $errorFile, $errorLine), $level);
+    if( !empty($GLOBALS['msg']) ) {
+      $GLOBALS['msg']->add(sprintf('%s in <strong>%s:%d</strong>', 
+        $errorString, $errorFile, $errorLine), $level);
+    }
+    else {
+      printf('<strong>%s:</strong> %s in <strong>%s:%d</strong>', 
+        $levelString, $errorString, $errorFile, $errorLine);
+    }
   }
     
   if( ini_get('log_errors') ) {

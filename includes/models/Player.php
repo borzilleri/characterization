@@ -56,10 +56,10 @@ class Player extends BasePlayer
   /**
    * Re-initialize derived values after saving
    */
-  public function postSave() {
+  public function postSave($event) {
     $this->generateDerivedValues();
   }
-  public function preInsert() {
+  public function preInsert($event) {
     $this->magic_item_uses = 1;
 		$this->initializeCurrentValues();
 	}
@@ -77,7 +77,7 @@ class Player extends BasePlayer
   /**
    * Before deleting our Player, we have to delete all our powers first.
    */
-  public function preDelete() {
+  public function preDelete($event) {
 		$this->Powers->delete();
 	}
 

@@ -43,7 +43,7 @@ Archetype:
     name: Paladin
     health_first: 15
     health_level: 6
-    surges: 9
+    surges: 10
   10:
     name: Ranger
     health_first: 12
