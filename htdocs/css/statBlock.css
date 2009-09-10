@@ -9,10 +9,10 @@
 	float                 : left;
 }
 .notesColumn {
-	margin-left           : 655px;
+	margin-left           : 525px;
 }
 .powerColumn {
-	width                 : 640px;
+	width                 : 500px;
 	margin                : 0 5px;
 }
 
@@ -24,7 +24,6 @@
 
 #notes_dirty {
 	color                : maroon;
-	float                : right;
 	display              : none;
 }
 #updateNotes {
@@ -87,7 +86,7 @@ a.ajaxLink:active {
 /* Power List in Player display */
 #PowerTable {
 	margin                : 5px auto;
-	width                 : 75%;
+	width                 : 100%;
 	border-spacing        : 0 1px;
 }
 #PowerTable .powerClass {

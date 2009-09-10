@@ -209,7 +209,7 @@ $(window).load(function() {
 			},
 			hide: {
 				when: {
-					event: 'click'
+					event: 'unfocus'
 				}
 			},
 			style: {

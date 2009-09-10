@@ -23,11 +23,11 @@ function getSortableUsage(usage) {
 
 function sortByUsage(a, b, asc) {
 	var a_usage = getSortableUsage($(a).find('span.use_type').text());
-	var a_level = $(a).find('span.level').text();
+	var a_level = parseInt($(a).find('span.level').text());
 	var a_name = $(a).find('span.power_name').text();
 	
 	var b_usage = getSortableUsage($(b).find('span.use_type').text());
-	var b_level = $(b).find('span.level').text();
+	var b_level = parseInt($(b).find('span.level').text());
 	var b_name = $(b).find('span.power_name').text();
 	
 	if( a_usage == b_usage ) {
@@ -55,11 +55,11 @@ function sortByUsageDesc(a, b) {
 
 function sortByLevel(a, b, asc) {
 	var a_usage = getSortableUsage($(a).find('span.use_type').text());
-	var a_level = $(a).find('span.level').text();
+	var a_level = parseInt($(a).find('span.level').text());
 	var a_name = $(a).find('span.power_name').text();
 	
 	var b_usage = getSortableUsage($(b).find('span.use_type').text());
-	var b_level = $(b).find('span.level').text();
+	var b_level = parseInt($(b).find('span.level').text());
 	var b_name = $(b).find('span.power_name').text();
 	
 	if( a_level == b_level ) {
@@ -205,7 +205,7 @@ $(window).load(function() {
 			},
 			hide: {
 				when: {
-					event: 'click'
+					event: 'unfocus'
 				}
 			},
 			style: {

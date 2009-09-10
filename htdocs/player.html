@@ -93,6 +93,7 @@ $power_list = Doctrine_Query::create()
 </div><!-- end div#StatBlock -->
 
 <hr class="clear" />
+
 <div id="PlayerPowers" class="powerColumn rightColumn">
   <table id="PowerTable">
     <tbody>
@@ -118,9 +119,9 @@ $power_list = Doctrine_Query::create()
 
 <div id="PlayerNotes" class="notesColumn contentColumn">
   <div>
+    <a href="#" id="updateNotes" class="ajaxLink">save notes</a>
     <span id="notes_dirty" 
       title="Unsaved changes, click 'save notes' to save">*</span>
-    <a href="#" id="updateNotes" class="ajaxLink">save notes</a>
   </div>
   <textarea name="notes" id="player_notes" 
     cols="25" rows="5"><?=$char->notes;?></textarea>
