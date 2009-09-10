@@ -16,7 +16,7 @@ class Race extends BaseRace {
    */
   public static function generateSelect($name, $id = null, $selected = null) {
       $field = '<select name="'.$name.'"';
-      $field .= !empty($id)?'id="'.$id.'"':'';
+      $field .= !empty($id)?' id="'.$id.'"':'';
       $field .= ">";
       
       $q = Doctrine_Query::create()
