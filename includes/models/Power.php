@@ -448,6 +448,12 @@ class Power extends BasePower
     $out = nl2br($out);
     
     switch($field) {
+      case 'power_range':
+        $out = preg_replace('/(melee)/i', '<label>$1</label>',$out);
+        $out = preg_replace('/(ranged)/i', '<label>$1</label>',$out);
+        $out = preg_replace('/(area)/i', '<label>$1</label>',$out);
+        $out = preg_replace('/(close)/i', '<label>$1</label>',$out);
+        $out = preg_replace('/(personal)/i', '<label>$1</label>',$out);
       case 'hit':
         // Secondary Attack
         $out = preg_replace('/(secondary attack:)/i','<label>$1</label>',$out);

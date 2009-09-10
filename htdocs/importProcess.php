@@ -23,7 +23,7 @@ switch($action) {
    
 		// Pull the player name out of the file.
 		$c = file_get_contents(IMPORT_PATH.$_POST['file_name']);
-		preg_match('/Player:\s+\w+:\s+name: "?(.*?)"?\s/', $c, $m);
+		preg_match('/Player:\s+\w+:\s+name: "?(.*?)"?[ \t]*\n/', $c, $m);
 		$char_name = $m[1];
 
     /**
