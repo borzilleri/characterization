@@ -73,6 +73,10 @@ span.help {
 	cursor                : help;
 }
 
+label.disabled {
+	color                 : #888;
+}
+
 #PowerBox {
 	margin-left           : 300px;
 }

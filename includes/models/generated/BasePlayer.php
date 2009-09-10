@@ -8,10 +8,19 @@
  * @property integer $id
  * @property string $name
  * @property integer $level
- * @property integer $attack_general
- * @property integer $attack_weapon_main
- * @property integer $attack_weapon_off
- * @property integer $attack_implement
+ * @property integer $general_attack
+ * @property string $weapon_main_name
+ * @property integer $weapon_main_attack
+ * @property integer $weapon_main_damage
+ * @property string $weapon_main_dice
+ * @property string $weapon_off_name
+ * @property boolean $weapon_off_enabled
+ * @property integer $weapon_off_attack
+ * @property integer $weapon_off_damage
+ * @property string $weapon_off_dice
+ * @property string $implement_name
+ * @property integer $implement_attack
+ * @property integer $implement_damage
  * @property integer $action_points
  * @property integer $magic_item_uses
  * @property integer $health_cur
@@ -57,19 +66,55 @@ abstract class BasePlayer extends Doctrine_Record
         $this->hasColumn('level', 'integer', null, array(
              'type' => 'integer',
              ));
-        $this->hasColumn('attack_general', 'integer', null, array(
+        $this->hasColumn('general_attack', 'integer', null, array(
              'type' => 'integer',
              'default' => 0,
              ));
-        $this->hasColumn('attack_weapon_main', 'integer', null, array(
+        $this->hasColumn('weapon_main_name', 'string', 50, array(
+             'type' => 'string',
+             'length' => '50',
+             ));
+        $this->hasColumn('weapon_main_attack', 'integer', null, array(
              'type' => 'integer',
              'default' => 0,
              ));
-        $this->hasColumn('attack_weapon_off', 'integer', null, array(
+        $this->hasColumn('weapon_main_damage', 'integer', null, array(
              'type' => 'integer',
              'default' => 0,
              ));
-        $this->hasColumn('attack_implement', 'integer', null, array(
+        $this->hasColumn('weapon_main_dice', 'string', 25, array(
+             'type' => 'string',
+             'length' => '25',
+             ));
+        $this->hasColumn('weapon_off_name', 'string', 50, array(
+             'type' => 'string',
+             'length' => '50',
+             ));
+        $this->hasColumn('weapon_off_enabled', 'boolean', null, array(
+             'type' => 'boolean',
+             'default' => false,
+             ));
+        $this->hasColumn('weapon_off_attack', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
+             ));
+        $this->hasColumn('weapon_off_damage', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
+             ));
+        $this->hasColumn('weapon_off_dice', 'string', 25, array(
+             'type' => 'string',
+             'length' => '25',
+             ));
+        $this->hasColumn('implement_name', 'string', 50, array(
+             'type' => 'string',
+             'length' => '50',
+             ));
+        $this->hasColumn('implement_attack', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
+             ));
+        $this->hasColumn('implement_damage', 'integer', null, array(
              'type' => 'integer',
              'default' => 0,
              ));

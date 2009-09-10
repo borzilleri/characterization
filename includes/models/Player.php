@@ -207,52 +207,137 @@ class Player extends BasePlayer
     }
     
     // General Attack Bonus
-    $cache['attack_general'] = $_POST['attack_general'];
-    if( !is_numeric($_POST['attack_general']) || 
-        (int)$_POST['attack_general'] < 0 ) {
+    $cache['general_attack'] = $_POST['general_attack'];
+    if( !is_numeric($_POST['general_attack']) || 
+        (int)$_POST['general_attack'] < 0 ) {
       $msg->add('General Attack Bonus must be a non-negative integer.', 
         Message::WARNING);
-      $cache['error'][] = 'attack_general';
+      $cache['error'][] = 'general_attack';
     }
     else {
-      $this->attack_general = (int)$_POST['attack_general'];
+      $this->general_attack = (int)$_POST['general_attack'];
     }
+    
+    // Implement Name
+    $cache['implement_name'] = $_POST['implement_name'];
+    $this->implement_name = trim($_POST['implement_name']);
 
     // Implement Attack Bonus
-    $cache['attack_implement'] = $_POST['attack_implement'];
-    if( !is_numeric($_POST['attack_implement']) ||
-        (int)$_POST['attack_implement'] < 0 ) {
+    $cache['implement_attack'] = $_POST['implement_attack'];
+    if( !is_numeric($_POST['implement_attack']) ||
+        (int)$_POST['implement_attack'] < 0 ) {
       $msg->add('Implement Attack Bonus must be a non-negative integer.', 
         Message::WARNING);
-      $cache['error'][] = 'attack_implement';
+      $cache['error'][] = 'implement_attack';
     }
     else {
-      $this->attack_implement = (int)$_POST['attack_implement'];
+      $this->implement_attack = (int)$_POST['implement_attack'];
     }
-
-    // Main Hand Weapon Bonus
-    $cache['attack_weapon_main'] = $_POST['attack_weapon_main'];
-    if( !is_numeric($_POST['attack_weapon_main']) ||
-        (int)$_POST['attack_weapon_main'] < 0 ) {
+    // Implement Damage Bonus
+    $cache['implement_damage'] = $_POST['implement_damage'];
+    if( !is_numeric($_POST['implement_damage']) ||
+        (int)$_POST['implement_damage'] < 0 ) {
+      $msg->add('Implement Damage Bonus must be a non-negative integer.', 
+        Message::WARNING);
+      $cache['error'][] = 'implement_damage';
+    }
+    else {
+      $this->implement_damage = (int)$_POST['implement_damage'];
+    }
+    
+    // Main Hand Weapon Info
+    // Weapon name
+    $cache['weapon_main_name'] = $_POST['weapon_main_name'];
+    $this->weapon_main_name = trim($_POST['weapon_main_name']);
+        
+    // Weapon Attack Bonus
+    $cache['weapon_main_attack'] = $_POST['weapon_main_attack'];
+    if( !is_numeric($_POST['weapon_main_attack']) ||
+        (int)$_POST['weapon_main_attack'] < 0 ) {
       $msg->add('Main Hand Weapon Attack Bonus must be a non-negative integer.', 
         Message::WARNING);
-      $cache['error'][] = 'attack_weapon_main';
+      $cache['error'][] = 'weapon_main_attack';
     }
     else {
-      $this->attack_weapon_main = (int)$_POST['attack_weapon_main'];
+      $this->weapon_main_attack = (int)$_POST['weapon_main_attack'];
+    }
+    // Weapon Damage Bonus
+    $cache['weapon_main_damage'] = $_POST['weapon_main_damage'];
+    if( !is_numeric($_POST['weapon_main_damage']) ||
+        (int)$_POST['weapon_main_damage'] < 0 ) {
+      $msg->add('Main Hand Weapon Damage Bonus must be a non-negative integer.', 
+        Message::WARNING);
+      $cache['error'][] = 'weapon_main_damage';
+    }
+    else {
+      $this->weapon_main_damage = (int)$_POST['weapon_main_damage'];
+    }
+    // Weapon Damage Dice
+    $cache['weapon_main_dice'] = $_POST['weapon_main_dice'];
+    if( !empty($_POST['weapon_main_dice']) ) {
+      if( FALSE === $this->parseDiceString(@$_POST['weapon_main_dice']) ) {
+        $msg->add('Weapon Damage Dice must be in the form "XdY"',
+          Message::WARNING);
+        $cache['error'][] = 'weapon_main_dice';
+      }
+      else {
+        $this->weapon_main_dice = $_POST['weapon_main_dice'];
+      }
+    }
+    else {
+      $this->weapon_main_dice = '1d4';
+    }
+    
+    // Off Hand Weapon Info
+    $this->weapon_off_enabled = !empty($_POST['weapon_off_enabled']);
+    $cache['weapon_off_enabled'] = !empty($_POST['weapon_off_enabled']);
+    if( !empty($_POST['weapon_off_enabled']) ) {
+      // Weapon Name
+      $cache['weapon_off_name'] = $_POST['weapon_off_name'];
+      $this->weapon_off_name = trim($_POST['weapon_off_name']);
+    
+      // Weapon Attack Bonus
+      $cache['weapon_off_attack'] = $_POST['weapon_off_attack'];
+      if( !is_numeric($_POST['weapon_off_attack']) ||
+          (int)$_POST['weapon_off_attack'] < 0 ) {
+        $msg->add(
+          'Off Hand Weapon Attack Bonus must be a non-negative integer.', 
+          Message::WARNING);
+        $cache['error'][] = 'weapon_off_attack';
+      }
+      else {
+        $this->weapon_off_attack = (int)$_POST['weapon_off_attack'];
+      }
+    
+      // Weapon Damage Bonus
+      $cache['weapon_off_damage'] = $_POST['weapon_off_damage'];
+      if( !is_numeric($_POST['weapon_off_damage']) ||
+          (int)$_POST['weapon_off_damage'] < 0 ) {
+        $msg->add(
+          'Off Hand Weapon Damage Bonus must be a non-negative integer.', 
+          Message::WARNING);
+        $cache['error'][] = 'weapon_off_damage';
+      }
+      else {
+        $this->weapon_off_damage = (int)$_POST['weapon_off_damage'];
+      }
+      // Weapon Damage Dice
+      $cache['weapon_off_dice'] = $_POST['weapon_off_dice'];
+      if( !empty($_POST['weapon_off_dice']) ) {
+        if( FALSE === $this->parseDiceString(@$_POST['weapon_off_dice']) ) {
+          $msg->add('Weapon Damage Dice must be in the form "XdY"',
+            Message::WARNING);
+          $cache['error'][] = 'weapon_off_dice';
+        }
+        else {
+          $this->weapon_off_dice = trim($_POST['weapon_off_dice']);
+        }
+      }
+      else {
+        $this->weapon_off_dice = '1d4';
+      }
     }
 
-    // Off Hand Weapon Attack Bonus
-    $cache['attack_weapon_off'] = $_POST['attack_weapon_off'];
-    if( !is_numeric($_POST['attack_weapon_off']) ||
-        (int)$_POST['attack_weapon_off'] < 0 ) {
-      $msg->add('Off Hand Weapon Attack Bonus must be a non-negative integer.', 
-        Message::WARNING);
-      $cache['error'][] = 'attack_weapon_off';
-    }
-    else {
-      $this->attack_weapon_off = (int)$_POST['attack_weapon_off'];
-    }
         
     // Bonus Health
     $cache['health_bonus'] = $_POST['health_bonus'];
@@ -462,6 +547,31 @@ class Player extends BasePlayer
     else {
       return 0;
     }
+  }
+  
+  /**
+   *
+   * @param int $num Number of dice
+   * @param int $size Size of the die
+   * @return string
+   */
+  public function generateDiceString($num, $size) {
+    return $num.'d'.$size;    
+  }
+  
+  /**
+   * Parses a dice string, generates an error if it cannot be parsed.
+   *
+   * @param string $string The dice string to parse
+   * @return mixed Returns an array if sucessful, FALSE otherwise
+   */
+  public function parseDiceString($string) {
+    $matches = array();
+    if( preg_match('/(\d+)[Dd](\d+)/i', $string, $matches) ) {
+      $dice = array('num' => $matches[1], 'size' => $matches[2]);
+      return $dice;
+    }
+    return FALSE;
   }
   
   /**
@@ -810,17 +920,19 @@ class Player extends BasePlayer
    * @return array
    */
   public function getAttackBonus($accessory = null, $power_bonus = null) {
-    $base_bonus = floor($this->level/2) + $this->attack_general;
+    $base_bonus = floor($this->level/2) + $this->general_attack;
     $base_bonus += (int)$power_bonus;
     $bonus = array();
 
     switch($accessory) {
       case self::ATTACK_WEAPON:
-        $bonus[] = $base_bonus + $this->attack_weapon_main;
-        $bonus[] = $base_bonus + $this->attack_weapon_off;
+        $bonus[] = $base_bonus + $this->weapon_main_attack;
+        if( $this->weapon_off_enabled ) {
+          $bonus[] = $base_bonus + $this->weapon_off_attack;
+        }
         break;
       case self::ATTACK_IMPLEMENT:
-        $bonus[] = $base_bonus + $this->attack_implement;
+        $bonus[] = $base_bonus + $this->implement_attack;
         break;
       default:
         $bonus[] = $base_bonus;

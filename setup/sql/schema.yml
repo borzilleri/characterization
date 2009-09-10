@@ -32,28 +32,50 @@ Player:
       unsigned: 1
     name: string(50)
     level: integer
-    attack_general:
-        type: integer
-        default: 0
-    attack_weapon_main:
-        type: integer
-        default: 0
-    attack_weapon_off:
-        type: integer
-        default: 0
-    attack_implement:
-        type: integer
-        default: 0
+    general_attack:
+      type: integer
+      default: 0
+    weapon_main_name:
+      type: string(50)
+    weapon_main_attack:
+      type: integer
+      default: 0
+    weapon_main_damage:
+      type: integer
+      default: 0
+    weapon_main_dice:
+      type: string(25)
+    weapon_off_name:
+      type: string(50)
+    weapon_off_enabled:
+      type: boolean
+      default: false
+    weapon_off_attack:
+      type: integer
+      default: 0
+    weapon_off_damage:
+      type: integer
+      default: 0
+    weapon_off_dice:
+      type: string(25)
+    implement_name:
+      type: string(50)
+    implement_attack:
+      type: integer
+      default: 0
+    implement_damage:
+      type: integer
+      default: 0
     action_points:
-        type: integer
-        default: 0
+      type: integer
+      default: 0
     magic_item_uses:
-        type: integer
-        default: 0
+      type: integer
+      default: 0
     health_cur: integer
     health_bonus:
-        type: integer
-        default: 0
+      type: integer
+      default: 0
     health_tmp:
       type: integer
       default: 0

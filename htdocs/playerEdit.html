@@ -1,6 +1,7 @@
 <?php
 $form_key = 'player_edit_'.(empty($_REQUEST['id'])?0:$_REQUEST['id']);
 $css_include = array('forms.css');
+$js_include = array('form.js');
 include('autohandler.php');
 
 if( 'add' == $action ) {
@@ -69,63 +70,43 @@ if( 'add' == $action ) {
       </select>
     </div>
   </div>
-  
-  <div class="formRow">
-    <label for="attack_general"
-      class="<?=$char->hasError('attack_general',$form_key)?'error':'';?>"
-      >General Atk Bonus: <span class="help" title="General Attack Bonus: Any bonuses that would apply to ALL your attacks should be set here. (DO NOT count level or ability bonuses.)">?</span>
-    </label>
-    <div class="field">
-      <input type="text" size="3" maxlength="3" 
-        id="attack_general" name="attack_general"
-        value="<?=$char->getCached('attack_general',$form_key);?>" />
-    </div>
-  </div>
 
-  <div class="formRow">
-    <label for="attack_implement"
-      class="<?=$char->hasError('attack_implement',$form_key)?'error':'';?>"
-      >Implement Atk Bonus: <span class="help" title="Implement Attack Bonus: Any bonuses that apply to your Implmenet powers (from a magic implement, feat, etc) should be set here.">?</span>
+  <div class="formRow optional">
+    <label for="surges_bonus"
+      class="<?=$char->hasError('surges_bonus',$form_key)?'error':'';?>"
+      >Bonus Surges: <span class="help" title="Bonus Surges: Optional. If you have an ability that grants additional surges, enter the total extra surges you have here.">?</span>
     </label>
     <div class="field">
-      <input type="text" size="3" maxlength="3"
-        id="attack_implement" name="attack_implement"
-        value="<?=$char->getCached('attack_implement', $form_key);?>" />
-    </div>
-  </div>
-
-  <div class="formRow">
-    <label for="attack_weapon_main">Weapon Atk Bonus:
-      <span class="help" title="Weapon Attack Bonus: Any bonuses that apply to your Weapon powers (from a magic weapon, feat, etc) should be set here. You may set main hand and off hand bonuses separately.">?</span>
-    </label>
-    <div class="field">
-      <label for="attack_weapon_main"
-        class="<?=$char->hasError('attack_weapon_main',$form_key)?'error':'';?>"
-        >Main:</label>
-      <input type="text" size="3" maxlength="3"
-        id="attack_weapon_main" name="attack_weapon_main"
-        value="<?=$char->getCached('attack_weapon_main',$form_key);?>" />&nbsp;/
-      <label for="attack_weapon_off"
-        class="<?=$char->hasError('attack_weapon_off',$form_key)?'error':'';?>"
-        >Off:</label>
-      <input type="text" size="3" maxlength="3"
-        id="attack_weapon_off" name="attack_weapon_off"
-        value="<?=$char->getCached('attack_weapon_off', $form_key);?>" />
+      <input type="text" id="surges_bonus" name="surges_bonus"
+        size="4" maxlength="3" 
+        value="<?=$char->getCached('surges_bonus', $form_key);?>" />
     </div>
   </div>
 
   <div class="formRow optional">
-    <label for="health_bonus"
-      class="<?=$char->hasError('health_bonus',$form_key)?'error':'';?>"
-      >Bonus Health: <span class="help" title="Bonus Health: Optional. If you have an ability that grants additional health (e.g. Toughness), enter the total extra health you get here.">?</span>
+    <label for="surge_value_bonus"
+      class="<?=$char->hasError('surge_value_bonus',$form_key)?'error':'';?>"
+      >Bonus Surge Value: <span class="help" title="Bonus Surge Value: Optional. If you have an ability that grants bonus surge value (e.g. Draconic Heritage), enter the extra surge value you get here.">?</span>
     </label>
     <div class="field">
-      <input type="text" size="5" maxlength="4" 
-        id="health_bonus" name="health_bonus" 
-        value="<?=$char->getCached('health_bonus', $form_key);?>" />
+      <input type="text" id="surge_value_bonus" name="surge_value_bonus"
+        size="4" maxlength="3" 
+        value="<?=$char->getCached('surge_value_bonus', $form_key);?>" />
+    </div>
+  </div>  
+
+  <div class="formRow">
+    <label for="general_attack"
+      class="<?=$char->hasError('general_attack',$form_key)?'error':'';?>"
+      >General Atk Bonus: <span class="help" title="General Attack Bonus: Any bonuses that would apply to ALL your attacks should be set here. (DO NOT count level or ability bonuses.)">?</span>
+    </label>
+    <div class="field">
+      <input type="text" size="3" maxlength="3" 
+        id="general_attack" name="general_attack"
+        value="<?=$char->getCached('general_attack',$form_key);?>" />
     </div>
   </div>
-
+  
 </div><!-- end div.leftColumn -->
 
 <div class="formColumn rightColumn">
@@ -185,28 +166,161 @@ if( 'add' == $action ) {
         value="<?=$char->getCached('charisma', $form_key);?>" />
     </div>
   </div>
-  
+
   <div class="formRow optional">
-    <label for="surges_bonus"
-      class="<?=$char->hasError('surges_bonus',$form_key)?'error':'';?>"
-      >Bonus Surges: <span class="help" title="Bonus Surges: Optional. If you have an ability that grants additional surges, enter the total extra surges you have here.">?</span>
+    <label for="health_bonus"
+      class="<?=$char->hasError('health_bonus',$form_key)?'error':'';?>"
+      >Bonus Health: <span class="help" title="Bonus Health: Optional. If you have an ability that grants additional health (e.g. Toughness), enter the total extra health you get here.">?</span>
     </label>
     <div class="field">
-      <input type="text" id="surges_bonus" name="surges_bonus"
-        size="4" maxlength="3" 
-        value="<?=$char->getCached('surges_bonus', $form_key);?>" />
+      <input type="text" size="5" maxlength="4" 
+        id="health_bonus" name="health_bonus" 
+        value="<?=$char->getCached('health_bonus', $form_key);?>" />
+    </div>
+  </div>
+  
+</div><!-- end div.rightColumn -->
+
+<div class="clear"></div>
+
+<!--
+main hand name
+main hand attack/damage bonus
+main hand dice
+
+off hand name
+off hand attack/damage bonus
+off hand dice
+
+implement name
+implement attack/damage bonus
+-->
+
+<div class="formColumn leftColumn">
+  
+  <div class="formRow">
+    <label for="implement_name">Implement Name:</label>
+    <div class="field">
+      <input type="text" class="text" size="20" maxlength="255"
+        id="implement_name" name="implement_name"
+        value="<?=$char->getCached('implement_name',$form_key);?>" />
+    </div>
+  </div>
+  
+  <div class="formRow">
+    <label for="weapon_main_name">Main Hand Name:</label>
+    <div class="field">
+      <input type="text" class="text" size="29" maxlength="255"
+        id="weapon_main_name" name="weapon_main_name"
+        value="<?=$char->getCached('weapon_main_name', $form_key);?>" />
+    </div>  
+  </div>
+  
+  <div class="formRow">
+    <label for="weapon_main_attack">Main Hand Bonuses:</label>
+    <div class="field">
+      <label for="weapon_main_attack" 
+        class="<?=$char->hasError('weapon_main_attack',$form_key)?'error':'';?>"
+        >Attack: <span class="help" title="Main Hand Weapon Attack Bonus: Any attack bonuses that apply to your main hand weapon (proficiency, enhancement, feat, etc).">?</span></label>
+      <input type="text" size="3" maxlength="3"
+        name="weapon_main_attack" id="weapon_main_attack"
+        value="<?=$char->getCached('weapon_main_attack', $form_key);?>" />
+      /&nbsp;<label for="weapon_main_damage"
+        class="<?=$char->hasError('weapon_main_damage',$form_key)?'error':'';?>"
+        >Damage: <span class="help" title="Main Hand Weapon Damage Bonus: Any damage bonuses that apply to your main hand weapon (enhancement, feat, etc; NOT ability modifiers).">?</span></label>
+      <input type="text" size="3" maxlength="3"
+        id="weapon_main_damage" name="weapon_main_damage"
+        value="<?=$char->getCached('weapon_main_damage',$form_key);?>" />
+    </div>
+  </div>
+  
+  <div class="formRow">
+    <label for="weapon_main_dice"
+      class="<?=$char->hasError('weapon_main_dice',$form_key)?'error':'';?>"
+      >Main Weapon Dice: <span class="help" title="Main Hand Weapon Dice: The damage dice your main hand weapon deals. In 'XdY' format.">?</span></label>
+    <div class="field">
+      <input type="text" size="10" maxlength="8"
+        id="weapon_main_dice" name="weapon_main_dice"
+        value="<?=$char->getCached('weapon_main_dice', $form_key);?>" />
+    </div>
+  </div>
+</div><!-- end div.leftColumn -->
+
+<div class="formColumn rightColumn">
+
+  <div class="formRow">
+    <label for="implement_attack">Implement Bonuses:</label>
+    <div class="field">
+      <label for="implement_attack"
+        class="<?=$char->hasError('implement_attack',$form_key)?'error':'';?>"
+        >Attack: <span class="help" title="Implement Attack Bonus: Any bonuses that apply to your implement powers (from a magic implement, feat, etc).">?</span></label>
+      <input type="text" size="3" maxlength="3"
+        name="implement_attack" id="implement_attack"
+        value="<?=$char->getCached('implement_attack', $form_key);?>" />&nbsp;/
+      <label for="implement_damage"
+        class="<?=$char->hasError('implement_damage',$form_key)?'error':'';?>"
+        >Damage: <span class="help" title="Implement Damage Bonus: Any damage bonuses that apply to your implement powers (from a magic implement, feat, etc; NOT from ability modifiers).">?</span></label>
+      <input type="text" size="3" maxlength="3"
+        name="implement_damage" id="implement_damage"
+        value="<?=$char->getCached('implement_damage', $form_key);?>" />
     </div>
   </div>
 
-  <div class="formRow optional">
-    <label for="surge_value_bonus"
-      class="<?=$char->hasError('surge_value_bonus',$form_key)?'error':'';?>"
-      >Bonus Surge Value: <span class="help" title="Bonus Surge Value: Optional. If you have an ability that grants bonus surge value (e.g. Draconic Heritage), enter the extra surge value you get here.">?</span>
-    </label>
+  <div class="formRow">
+    <label for="weapon_off_name" id="weapon_off_name_label"
+      class="<?=$char->getCached('weapon_off_enabled',$form_key)?''
+      :'disabled';?>">Off Hand Name:</label>
     <div class="field">
-      <input type="text" id="surge_value_bonus" name="surge_value_bonus"
-        size="4" maxlength="3" 
-        value="<?=$char->getCached('surge_value_bonus', $form_key);?>" />
+      <input type="text" class="text" size="29" maxlength="255"
+        id="weapon_off_name" name="weapon_off_name"
+        <?=$char->getCached('weapon_off_enabled',$form_key)?
+          '':'disabled="disabled"';?>
+        value="<?=$char->getCached('weapon_off_name', $form_key);?>" />
+    </div>  
+  </div>
+  
+  <div class="formRow">
+    <label for="weapon_off_attack" id="weapon_off_bonus_label"
+      class="<?=$char->getCached('weapon_off_enabled',$form_key)?
+      '':'disabled';?>">Off Hand Bonuses:</label>
+    <div class="field">
+      <label for="weapon_off_attack" id="weapon_off_attack_label"
+        class="<?=$char->getCached('weapon_off_enabled',$form_key)?
+        ($char->hasError('weapon_off_attack',$form_key)?'error':'')
+        :'disabled';?>">Attack: <span class="help" title="Off Hand Weapon Attack Bonus: Any attack bonuses that apply to your off hand weapon (proficiency, enhancement, feat, etc).">?</span></label>
+      <input type="text" size="3" maxlength="3"
+        name="weapon_off_attack" id="weapon_off_attack"
+        <?=$char->getCached('weapon_off_enabled',$form_key)?
+          '':'disabled="disabled"';?>
+        value="<?=$char->getCached('weapon_off_attack', $form_key);?>" />
+      /&nbsp;<label for="weapon_off_damage" id="weapon_off_damage_label"
+        class="<?=$char->getCached('weapon_off_enabled',$form_key)?
+        ($char->hasError('weapon_off_damage',$form_key)?'error':'')
+        :'disabled';?>">Damage: <span class="help" title="Off Hand Weapon Damage Bonus: Any damage bonuses that apply to your off hand weapon (enhancement, feat, etc; NOT ability modifiers).">?</span></label>
+      <input type="text" size="3" maxlength="3"
+        id="weapon_off_damage" name="weapon_off_damage"
+        <?=$char->getCached('weapon_off_enabled',$form_key)?
+          '':'disabled="disabled"';?>
+        value="<?=$char->getCached('weapon_off_damage',$form_key);?>" />
+    </div>
+  </div>
+  
+  <div class="formRow">
+    <label for="weapon_off_dice" id="weapon_off_dice_label"
+      class="<?=$char->getCached('weapon_off_enabled',$form_key)?
+      ($char->hasError('weapon_off_dice',$form_key)?'error':'')
+      :'disabled';?>">Off Weapon Dice: <span class="help" title="Off Hand Weapon Dice: The damage dice your off hand weapon deals. In 'XdY' format.">?</span></label>
+    <div class="field">
+      <input type="text" size="10" maxlength="8"
+        id="weapon_off_dice" name="weapon_off_dice"
+        <?=$char->getCached('weapon_off_enabled',$form_key)?
+          '':'disabled="disabled"';?>
+        value="<?=$char->getCached('weapon_off_dice', $form_key);?>" />
+      &nbsp;<label for="weapon_off_enabled"
+        >Enabled: <span class="help" title="Enable Off Hand: Check this to enable off hand weapon fields.">?</span></label>
+      <input type="checkbox" name="weapon_off_enabled" id="weapon_off_enabled" 
+        value="1" <?=$char->getCached('weapon_off_enabled',$form_key)?
+        'checked="checked"':'';?> />
     </div>
   </div>
 </div><!-- end div.rightColumn -->
@@ -219,6 +333,15 @@ if( 'add' == $action ) {
   <input type="submit" value="Submit" />
 </div>
 </form>
+
+<script type="text/javascript" charset="utf-8">
+  $(window).load(function() {
+  	$('#weapon_off_enabled').change(function() {
+  	  toggleWeaponOffFields(this.checked);
+  	});	
+  });
+</script>
+
 <? endif; ?>
 
 <?php include('footer.php'); ?>
