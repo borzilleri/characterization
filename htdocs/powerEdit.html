@@ -160,8 +160,8 @@ $kw_list = Doctrine_Query::create()
           'selected="selected"':'';?>><?=$i;?></option>
       <? endfor; ?>
       </select>&nbsp;&nbsp;
-      <label for="">Magic Item:</label>
-      <input type="checkbox" name="item" value="1" 
+      <label for="item">Magic Item:</label>
+      <input type="checkbox" name="item" id="item" value="1" 
         <?=$power->getCached('item',$form_key)?
         'checked="checked"':'';?> />
     </div>
