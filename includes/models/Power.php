@@ -797,6 +797,18 @@ class Power extends BasePower
         $result = $this->Player->implement_damage;
         $result = $result * $multiplier;
         break;
+      case 'surge':
+        $result = $this->Player->surge_value;
+        $result = $result * $multiplier;
+        break;
+      case 'lvl':
+        $result = $this->Player->level;
+        $result = $result * $multiplier;
+        break;
+      case 'hlvl':
+        $result = floor($this->Player->level/2);
+        $result = $result * $multiplier;
+        break;
     }
     return $result;
   }
