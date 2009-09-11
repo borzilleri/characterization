@@ -139,7 +139,7 @@ class Power extends BasePower
     }
     
     // Magic Item
-    $this->item = !empty($_POST['item']);
+    $this->item = !empty($_POST['item'])?1:0;
     $cache['item'] = !empty($_POST['item']);
     
     $this->target = trim(@$_POST['target']);
@@ -705,35 +705,45 @@ class Power extends BasePower
 		if( !empty($this->hit) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'hit">'; $i+=1;
 			$box .= '<label>Hit: </label>';
-			$box .= '<span>'.$this->getTextFieldDisplay('hit').'</span></div>';
+			$box .= '<span>'
+			  .$this->scanAndParseText($this->getTextFieldDisplay('hit'))
+			  .'</span></div>';
 		}
 
 		// Miss
 		if( !empty($this->miss) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'miss">'; $i+=1;
-			$box .= '<label>Miss: </label>';
-			$box .= '<span>'.$this->getTextFieldDisplay('miss').'</span></div>';
+			$box .= '<label>Miss: </label><span>';
+			$box .= '<span>'
+			  .$this->scanAndParseText($this->getTextFieldDisplay('miss'))
+			  .'</span></div>';
 		}
 		
 		// Effect
 		if( !empty($this->effect) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'effect">'; $i+=1;
 			$box .= '<label>Effect: </label>';
-			$box .= '<span>'.$this->getTextFieldDisplay('effect').'</span></div>';
+			$box .= '<span>'
+			  .$this->scanAndParseText($this->getTextFieldDisplay('effect'))
+			  .'</span></div>';
 		}
 
 		// Sustain
 		if( 'none'!=$this->sustain_action ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'sustain">'; $i+=1;
 			$box .= '<label>Sustain '.$this->sustain_action.': </label>';
-			$box .= '<span>'.$this->getTextFieldDisplay('sustain').'</span></div>';
+			$box .= '<span>'
+			  .$this->scanAndParseText($this->getTextFieldDisplay('sustain'))
+			  .'</span></div>';
 		}
 		
 		// Notes
 		if( !empty($this->notes) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'notes">'; $i+=1;
 			$box .= '<label>Notes: </label>';
-			$box .= '<span>'.$this->getTextFieldDisplay('notes').'</span></div>';
+			$box .= '<span>'
+			  .$this->scanAndParseText($this->getTextFieldDisplay('notes'))
+			  .'</span></div>';
 		}
 		
 		// End Description
@@ -745,5 +755,114 @@ class Power extends BasePower
 		if( $echo ) echo $box;
 		return $box;		
 	}
+	
+	/**
+   *
+   */
+  public function getStringReplacement($string, $multiplier = 1) {
+    $result = '';
+    switch(strtolower($string)) {
+      // Main Hand Base Weapon Damage
+      case 'mw':
+        $dice = $this->Player->parseDiceString($this->Player->weapon_main_dice);
+        $result = ($dice['num']*$multiplier).'d'.$dice['size'];
+        break;
+      // Off Hand Base Weapon Damage
+      case 'ow':
+        $dice = $this->Player->parseDiceString($this->Player->weapon_off_dice);
+        $result = ($dice['num']*$multiplier).'d'.$dice['size'];
+        break;
+      // Ability Modifier tags
+      case 'str':
+      case 'con':
+      case 'dex':
+      case 'int':
+      case 'wis':
+      case 'cha':
+        $result = $this->Player->getMod($string);
+        $result = $result * $multiplier;
+        break;
+      // Main Hand Bonus Damage
+      case 'mdam':
+        $result = $this->Player->weapon_main_damage;
+        $result = $result * $multiplier;
+        break;
+      // Off Hand Bonus Damage
+      case 'odam':
+        $result = $this->Player->weapon_off_damage;
+        $result = $result * $multiplier;
+        break;
+      // Implement Bonus Damage
+      case 'idam':
+        $result = $this->Player->implement_damage;
+        $result = $result * $multiplier;
+        break;
+    }
+    return $result;
+  }
+
+  
+  /**
+   *
+   */
+  public function parseTag($tag) {
+    $result = '';
+    $inner_tag = substr($tag, 1, -1);
+    preg_match_all('/[\+\-]?\d*\w*/i', $inner_tag, $matches);
+    foreach($matches[0] as $k => $s) {
+      // Don't operate on 'empty' strings
+      if( !empty($s) ) {
+        // Figure out what operation we're doing
+        // Addition (+) or subtraction (-);
+        $op = substr($s,0,1);
+        if( '+' == $op || '-' == $op ) {
+          $textString = substr($s, 1);
+        }
+        else {
+          $textString = $s;
+          $op = '+';
+        }
+        // Separate our multiplier or constant from the text string
+        preg_match('/(\d*)(\w*)/i', $textString, $parts);
+        $multiplier = empty($parts[1])?1:$parts[1];
+        $textString = $parts[2];
+        
+        // Grab the replaced string
+        if( empty($textString) ) {
+          $temp_result = $multiplier;
+        }
+        else {
+          $temp_result = $this->getStringReplacement(
+            $textString, $multiplier);
+        }
+        
+        // Integrate this string with the overall tag result
+        // If we're the first one, just set the result
+        if( 0 == $k ) {
+          $result = $temp_result;
+        }
+        elseif( is_numeric($result) ) {
+          // Otherwise, if we're numeric, add or subtract it appropriately
+          if( '+' == $op ) {
+            $result += $temp_result;
+          }
+          elseif( '-' == $op ) {
+            $result -= $temp_result;
+          }
+        }
+      } // End if(empty($s))
+    } // endforeach
+    return $result;
+  }
+  
+  public function scanAndParseText($text) {
+    $result = $text;
+    if( preg_match_all('/(\[.*?\])/i', $text, $matches) ) {
+      foreach($matches[1] as $tag) {
+        $result = str_replace($tag, $this->parseTag($tag), $result);
+      }
+    }
+    return $result;
+  }
 }
 ?>

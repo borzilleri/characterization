@@ -12,7 +12,7 @@ if( !$char || !$char->exists() ) {
 }
 
 
-$p = $char->Powers->get($_POST['p_id']);
+$p = $char->Powers->get($_REQUEST['p_id']);
 if( $p->exists() ) {
   $return = $p->getPowerBoxDisplay();  
 }
