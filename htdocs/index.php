@@ -16,7 +16,10 @@ $i = 0;
   <? foreach($char_list as $c): ?>
     <li class="row<?=$i;$i=($i+1)%2;?>">
       <div class="listLinks">
-        [ <a href="<?=SITE_URL;?>/<?=$c->id;?>">view</a> ]
+        <a href="<?=SITE_URL;?>/<?=$c->id;?>"><img class="icon" 
+          src="<?=SITE_URL;?>/images/icon_magnifying-glass.png" /></a>
+        <a href="<?=SITE_URL;?>/<?=$c->id;?>/edit"><img class="icon"
+          src="<?=SITE_URL;?>/images/icon_gear.png"/></a>
       </div>
       <div class="listLabel">
         <?=$c->name;?>
