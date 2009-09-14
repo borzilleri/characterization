@@ -10,7 +10,7 @@ if( !$char ) {
 $power_list = Doctrine_Query::create()
   ->from('Power p')
   ->where('p.player_id = ?', $char->id)
-  ->orderBy('p.item, p.use_type, p.level')
+  ->orderBy('p.item, p.use_type, p.level, p.name')
   ->execute();
 ?>
 <div id="StatBlock">

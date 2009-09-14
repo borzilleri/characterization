@@ -15,49 +15,37 @@ $power_list = Doctrine_Query::create()
 
 $i = 0;
 ?>
-<div id="PowerList">
-  <ul class="list">
-    <li class="clearfix row<?=$i;$i=($i+1)%2;?>">
-      <div class="listLinks">
-        [<a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new">new</a>]
-      </div>
-		<? if( $power_list->count() > 1 ): ?>
-      <div class="listLabel">
-        [ <a href="#" class="sort asc" id="power_name">Power Name</a>
-        <span id="name_arr"></span> ]
-      </div>
-      <div class="listInfo">
-        [ <a href="#" class="sort asc" id="level">Level</a>
-        <span id="level_arr"></span> ]
-        [ <a href="#" class="sort desc" id="use_type">Usage</a>
-        <span id="usage_arr">&uarr;</span> ]
-      </div>
-		<? endif; ?>
-    </li>
+
+<table id="PowerTable">
+  <tbody>
+    <tr class="row<?=$i;$i=($i+1)%2;?>">
+      <th><a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new"><img 
+        class="icon" alt="new" title="New Power" 
+        src="<?=MEDIA_URL;?>/images/icon_medical.png" /></th>
+      <th><a href="#" class="sort asc" id="power_name">Power Name</a>
+        <span id="name_arrow">&nbsp;</span></th>
+      <th><a href="#" class="sort desc" id="use_type">Usage</a>
+        <span id="usage_arrow">&uarr;</span></th>
+      <th><a href="#" class="sort asc" id="level">Level</a>
+        <span id="level_arrow">&nbsp;</span></th>
+      <th>&nbsp;</th>
+    </tr>
   <? foreach($power_list as $p): ?>
-    <li class="powerItem clearfix row<?=$i;$i=($i+1)%2;?>">
-      <div class="listLinks">
-        <img height="20" width="20" alt="[view]" 
-          class="power_view icon" id="v<?=$p->id;?>" 
-          src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" />
-        <a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit"
-          ><img height="20" width="20" alt="[edit]" class="icon"
-          src="<?=MEDIA_URL;?>/images/icon_gear.png" /></a>
-      </div>
-      <div class="listLabel">
-        <span class="power_name"><?=$p->name;?></span>
-      </div>
-      <div class="listInfo">
-        <span class="<?=$p->getUseTypeDisplay(true);?>">
-          Level <span class="level"><?=$p->level;?></span>
-          <span class="use_type"><?=$p->getUseTypeDisplay();?></span>
-        </span>
-      </div>
-      <div class="clear"></div>
-    </li>
+    <tr class="powerItem row<?=$i;$i=($i+1)%2;?>">
+      <td><a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit"
+        ><img alt="edit" title="Edit Powr" class="icon"
+        src="<?=MEDIA_URL;?>/images/icon_gear.png" /></a></td>
+      <td class="powerName"><span class="power_name"><?=$p->name;?></span></td>
+      <td class="powerusage"><span class="use_type"
+        ><?=$p->getUseTypeDisplay();?></a></td>
+      <td class="powerLevel"><span class="level"><?=$p->level;?></span></td>
+      <td class="icon"><img alt="view" title="View Power" 
+        class="power_view icon" id="v<?=$p->id;?>" 
+        src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" /></td>
+    </tr>
   <? endforeach; ?>
-  </ul>
-</div><!-- end div#PowerList -->
+  </tbody>
+</table>
 
 <div id="PowerPreview"></div>
 

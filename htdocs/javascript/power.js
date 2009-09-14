@@ -101,48 +101,48 @@ function updateSortLinks(sortBy, asc) {
 	// Name sort link
 	if( 'level' == sortBy || 'use_type' == sortBy ) {
 		$('#power_name').removeClass('desc').addClass('asc');
-		$('#name_arr').html('');
+		$('#name_arrow').html('&nbsp;');
 	}
 	else if( 'power_name' == sortBy ) {
 		if( asc ) {
 			$('#power_name').removeClass('asc').addClass('desc');
-			$('#name_arr').html('&uarr;');
+			$('#name_arrow').html('&uarr;');
 		}
 		else {
 			$('#power_name').removeClass('desc').addClass('asc');
-			$('#name_arr').html('&darr;');
+			$('#name_arrow').html('&darr;');
 		}
 	}
 	
 	// Level Sort link
 	if( 'power_name' == sortBy || 'use_type' == sortBy ) {
 		$('#level').removeClass('desc').addClass('asc');
-		$('#level_arr').html('');
+		$('#level_arrow').html('&nbsp;');
 	}
 	else if( 'level' == sortBy ) {
 		if( asc ) {
 			$('#level').removeClass('asc').addClass('desc');
-			$('#level_arr').html('&uarr;');
+			$('#level_arrow').html('&uarr;');
 		}
 		else {
 			$('#level').removeClass('desc').addClass('asc');
-			$('#level_arr').html('&darr;');
+			$('#level_arrow').html('&darr;');
 		}
 	}
 	
 	// Usage Sort Link
 	if( 'power_name' == sortBy || 'level' == sortBy ) {
 		$('#use_type').removeClass('desc').addClass('asc');
-		$('#usage_arr').html('');
+		$('#usage_arrow').html('&nbsp;');
 	}
 	else if( 'use_type' == sortBy ) {
 		if( asc ) {
 			$('#use_type').removeClass('asc').addClass('desc');
-			$('#usage_arr').html('&uarr;');
+			$('#usage_arrow').html('&uarr;');
 		}
 		else {
 			$('#use_type').removeClass('desc').addClass('asc');
-			$('#usage_arr').html('&darr;');
+			$('#usage_arrow').html('&darr;');
 		}
 	}
 }
@@ -153,27 +153,27 @@ function sortPowerList(link) {
 	
 	switch(sortBy) {
 		case 'power_name':
-			if( asc ) $('li.powerItem').sort(sortByNameAsc).appendTo('ul.list');
-			else $('li.powerItem').sort(sortByNameDesc).appendTo('ul.list');
+			if( asc ) $('#PowerTable tr.powerItem').sort(sortByNameAsc).appendTo('#PowerTable tbody');
+			else $('#PowerTable tr.powerItem').sort(sortByNameDesc).appendTo('#PowerTable tbody');
 			updateSortLinks(sortBy, asc)
 			break;
 		case 'level':
-			if( asc ) $('li.powerItem').sort(sortByLevelAsc).appendTo('ul.list');
-			else $('li.powerItem').sort(sortByLevelDesc).appendTo('ul.list');
+			if( asc ) $('#PowerTable tr.powerItem').sort(sortByLevelAsc).appendTo('#PowerTable tbody');
+			else $('#PowerTable tr.powerItem').sort(sortByLevelDesc).appendTo('#PowerTable tbody');
 			updateSortLinks(sortBy, asc)
 			break;
 		case 'use_type':
-			if( asc ) $('li.powerItem').sort(sortByUsageAsc).appendTo('ul.list');
-			else $('li.powerItem').sort(sortByUsageDesc).appendTo('ul.list');
+			if( asc ) $('#PowerTable tr.powerItem').sort(sortByUsageAsc).appendTo('#PowerTable tbody');
+			else $('#PowerTable tr.powerItem').sort(sortByUsageDesc).appendTo('#PowerTable tbody');
 			updateSortLinks(sortBy, asc)
 			break;
 	}
 	
 	var i = 1;
-	$('li.powerItem').removeClass('row0');
-	$('li.powerItem').removeClass('row1');
+	$('#PowerTable tr.powerItem').removeClass('row0');
+	$('#PowerTable tr.powerItem').removeClass('row1');
 
-	$('li.powerItem').each(function() {
+	$('#PowerTable tr.powerItem').each(function() {
 		var rowColor = "row"+i;
 		i = (i+1)%2;
 		$(this).addClass(rowColor);
@@ -196,6 +196,10 @@ $(window).load(function() {
 				adjust: { 
 					screen: true
 				},
+				corner: {
+					target: 'leftMiddle',
+					tooltip: 'topRight'
+				}
 			},
 			show: {
 				solo: true,

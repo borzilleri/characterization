@@ -88,7 +88,6 @@ a.ajaxLink:active {
 #PowerTable {
 	margin                : 5px auto;
 	width                 : 100%;
-	border-spacing        : 0 1px;
 }
 #PowerTable .powerClass {
 	text-align            : right;

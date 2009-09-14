@@ -250,3 +250,13 @@ ul.list span.Healing-Surge {
 	margin-left           : 405px;
 	width                 : 550px;
 }
+
+#PowerTable {
+	border-spacing        : 0 1px;
+}
+#PowerTable th {
+	text-align            : left;
+}
+#PowerTable td.powerLevel {
+	text-align            : right;
+}
