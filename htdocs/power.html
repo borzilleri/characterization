@@ -16,7 +16,7 @@ $power_list = Doctrine_Query::create()
 $i = 0;
 ?>
 
-<table id="PowerTable">
+<table id="PowerList">
   <tbody>
     <tr class="row<?=$i;$i=($i+1)%2;?>">
       <th><a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new"><img 
@@ -26,17 +26,17 @@ $i = 0;
         <span id="name_arrow">&nbsp;</span></th>
       <th><a href="#" class="sort desc" id="use_type">Usage</a>
         <span id="usage_arrow">&uarr;</span></th>
-      <th><a href="#" class="sort asc" id="level">Level</a>
+      <th colspan="2"><a href="#" class="sort asc" id="level">Level</a>
         <span id="level_arrow">&nbsp;</span></th>
-      <th>&nbsp;</th>
     </tr>
   <? foreach($power_list as $p): ?>
     <tr class="powerItem row<?=$i;$i=($i+1)%2;?>">
       <td><a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit"
-        ><img alt="edit" title="Edit Powr" class="icon"
+        ><img alt="edit" title="Edit Power" class="icon"
         src="<?=MEDIA_URL;?>/images/icon_gear.png" /></a></td>
       <td class="powerName"><span class="power_name"><?=$p->name;?></span></td>
-      <td class="powerusage"><span class="use_type"
+      <td class="powerUsage">
+        <span class="use_type <?=$p->getUseTypeDisplay();?>"
         ><?=$p->getUseTypeDisplay();?></a></td>
       <td class="powerLevel"><span class="level"><?=$p->level;?></span></td>
       <td class="icon"><img alt="view" title="View Power" 

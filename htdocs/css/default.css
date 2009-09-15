@@ -198,40 +198,6 @@ li.noCheck div.listLabel {
 	margin-left           : 25px;
 }
 
-/* Power List styles */
-#PowerList {
-	width                 : 475px;
-	float                 : left;
-}
-#PowerList div.listLinks {
-	width                 : 70px;
-}
-#PowerList div.listLabel {
-	width                 : 225px;
-}
-#PowerPreview {
-	margin-left           : 575px;
-	margin-top            : 20px;
-	width                 : 310px;
-	display               : none;
-}
-ul.list span.At-Will {
-	color                 : #528855;
-	background-color      : inherit;
-}
-ul.list span.Encounter {
-	color                 : #7E012A;
-	background-color      : inherit;
-}
-ul.list span.Daily {
-	color                 : #3B3B3C;
-	background-color      : inherit;
-}
-ul.list span.Healing-Surge {
-	color                 : #C29024;
-	background-color      : inherit;
-}
-
 /* Index Page/Char List Styles */
 #PlayerList {
 	width                 : 400px;
@@ -251,12 +217,33 @@ ul.list span.Healing-Surge {
 	width                 : 550px;
 }
 
-#PowerTable {
+#PowerList {
 	border-spacing        : 0 1px;
 }
-#PowerTable th {
+#PowerList th {
 	text-align            : left;
 }
-#PowerTable td.powerLevel {
+#PowerList td.powerLevel {
 	text-align            : right;
+}
+
+#PowerList td, #PowerList th {
+	padding                : 1px 4px;
+}
+
+#PowerList span.At-Will {
+	color                 : #528855;
+	background-color      : inherit;
+}
+#PowerList span.Encounter {
+	color                 : #7E012A;
+	background-color      : inherit;
+}
+#PowerList span.Daily {
+	color                 : #3B3B3C;
+	background-color      : inherit;
+}
+#PowerList span.Healing-Surge {
+	color                 : #C29024;
+	background-color      : inherit;
 }

@@ -15,6 +15,9 @@ function getSortableUsage(usage) {
 		case 'Daily':
 			return '3_'+usage;
 			break;
+		case 'Healing-Surge':
+			return '4_'+usage;
+			break;
 		default:
 			return usage;
 			break;
@@ -153,27 +156,27 @@ function sortPowerList(link) {
 	
 	switch(sortBy) {
 		case 'power_name':
-			if( asc ) $('#PowerTable tr.powerItem').sort(sortByNameAsc).appendTo('#PowerTable tbody');
-			else $('#PowerTable tr.powerItem').sort(sortByNameDesc).appendTo('#PowerTable tbody');
+			if( asc ) $('#PowerList tr.powerItem').sort(sortByNameAsc).appendTo('#PowerList tbody');
+			else $('#PowerList tr.powerItem').sort(sortByNameDesc).appendTo('#PowerList tbody');
 			updateSortLinks(sortBy, asc)
 			break;
 		case 'level':
-			if( asc ) $('#PowerTable tr.powerItem').sort(sortByLevelAsc).appendTo('#PowerTable tbody');
-			else $('#PowerTable tr.powerItem').sort(sortByLevelDesc).appendTo('#PowerTable tbody');
+			if( asc ) $('#PowerList tr.powerItem').sort(sortByLevelAsc).appendTo('#PowerList tbody');
+			else $('#PowerList tr.powerItem').sort(sortByLevelDesc).appendTo('#PowerList tbody');
 			updateSortLinks(sortBy, asc)
 			break;
 		case 'use_type':
-			if( asc ) $('#PowerTable tr.powerItem').sort(sortByUsageAsc).appendTo('#PowerTable tbody');
-			else $('#PowerTable tr.powerItem').sort(sortByUsageDesc).appendTo('#PowerTable tbody');
+			if( asc ) $('#PowerList tr.powerItem').sort(sortByUsageAsc).appendTo('#PowerList tbody');
+			else $('#PowerList tr.powerItem').sort(sortByUsageDesc).appendTo('#PowerList tbody');
 			updateSortLinks(sortBy, asc)
 			break;
 	}
 	
 	var i = 1;
-	$('#PowerTable tr.powerItem').removeClass('row0');
-	$('#PowerTable tr.powerItem').removeClass('row1');
+	$('#PowerList tr.powerItem').removeClass('row0');
+	$('#PowerList tr.powerItem').removeClass('row1');
 
-	$('#PowerTable tr.powerItem').each(function() {
+	$('#PowerList tr.powerItem').each(function() {
 		var rowColor = "row"+i;
 		i = (i+1)%2;
 		$(this).addClass(rowColor);
