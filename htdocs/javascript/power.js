@@ -150,33 +150,33 @@ function updateSortLinks(sortBy, asc) {
 	}
 }
 
-function sortPowerList(link) {
+function sortPowerTable(link) {
 	var sortBy = link.id;
 	var asc = $(link).hasClass('asc');
 	
 	switch(sortBy) {
 		case 'power_name':
-			if( asc ) $('#PowerList tr.powerItem').sort(sortByNameAsc).appendTo('#PowerList tbody');
-			else $('#PowerList tr.powerItem').sort(sortByNameDesc).appendTo('#PowerList tbody');
+			if( asc ) $('#PowerTable tr.powerRow').sort(sortByNameAsc).appendTo('#PowerTable tbody');
+			else $('#PowerTable tr.powerRow').sort(sortByNameDesc).appendTo('#PowerTable tbody');
 			updateSortLinks(sortBy, asc)
 			break;
 		case 'level':
-			if( asc ) $('#PowerList tr.powerItem').sort(sortByLevelAsc).appendTo('#PowerList tbody');
-			else $('#PowerList tr.powerItem').sort(sortByLevelDesc).appendTo('#PowerList tbody');
+			if( asc ) $('#PowerTable tr.powerRow').sort(sortByLevelAsc).appendTo('#PowerTable tbody');
+			else $('#PowerTable tr.powerRow').sort(sortByLevelDesc).appendTo('#PowerTable tbody');
 			updateSortLinks(sortBy, asc)
 			break;
 		case 'use_type':
-			if( asc ) $('#PowerList tr.powerItem').sort(sortByUsageAsc).appendTo('#PowerList tbody');
-			else $('#PowerList tr.powerItem').sort(sortByUsageDesc).appendTo('#PowerList tbody');
+			if( asc ) $('#PowerTable tr.powerRow').sort(sortByUsageAsc).appendTo('#PowerTable tbody');
+			else $('#PowerTable tr.powerRow').sort(sortByUsageDesc).appendTo('#PowerTable tbody');
 			updateSortLinks(sortBy, asc)
 			break;
 	}
 	
 	var i = 1;
-	$('#PowerList tr.powerItem').removeClass('row0');
-	$('#PowerList tr.powerItem').removeClass('row1');
+	$('#PowerTable tr.powerRow').removeClass('row0');
+	$('#PowerTable tr.powerRow').removeClass('row1');
 
-	$('#PowerList tr.powerItem').each(function() {
+	$('#PowerTable tr.powerRow').each(function() {
 		var rowColor = "row"+i;
 		i = (i+1)%2;
 		$(this).addClass(rowColor);
@@ -227,5 +227,5 @@ $(window).load(function() {
 		}); // End qTip()
 	}); //end each()
 
-	$('.sort').click(function() { sortPowerList(this) });
+	$('.sort').click(function() { sortPowerTable(this) });
 });

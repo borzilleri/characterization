@@ -24,19 +24,6 @@
 	font-weight           : bold;
 }
 
-.At-Will {
-	background-color      : #528855;
-}
-.Encounter {
-	background-color      : #7E012A;
-}
-.Daily {
-	background-color      : #3B3B3C;
-}
-.Healing-Surge {
-	background-color      : #C29024;
-}
-
 .usage, .keywords, .actionType {
 	font-weight           : bold;
 }

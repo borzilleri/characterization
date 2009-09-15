@@ -36,6 +36,9 @@ img.icon {
 	border                : 0;
 	vertical-align        : middle;
 }
+td.icon,th.icon {
+	width                 : 20px;
+}
 
 /* Clearfix "hack" */
 .clearfix:after {
@@ -198,6 +201,42 @@ li.noCheck div.listLabel {
 	margin-left           : 25px;
 }
 
+/* Usage-based coloring */
+.At-Will-bg {
+	color                 : #FFFFFF;
+	background-color      : #528855;
+}
+.Encounter-bg {
+	color                 : #FFFFFF;
+	background-color      : #7E012A;
+}
+.Daily-bg {
+	color                 : #FFFFFF;
+	background-color      : #3B3B3C;
+}
+.Healing-Surge-bg {
+	color                 : #FFFFFF;
+	background-color      : #C29024;
+}
+
+.At-Will-text {
+	color                 : #528855;
+	background-color      : inherit;
+}
+.Encounter-text {
+	color                 : #7E012A;
+	background-color      : inherit;
+}
+.Daily-text {
+	color                 : #3B3B3C;
+	background-color      : inherit;
+}
+.Healing-Surge-text {
+	color                 : #C29024;
+	background-color      : inherit;
+}
+
+
 /* Index Page/Char List Styles */
 #PlayerList {
 	width                 : 400px;
@@ -217,33 +256,34 @@ li.noCheck div.listLabel {
 	width                 : 550px;
 }
 
-#PowerList {
+
+/* Power Table styles */
+#PowerTable {
+	width: 475px;
+	margin                : 5px 0;
 	border-spacing        : 0 1px;
 }
-#PowerList th {
+#PowerTable th {
 	text-align            : left;
 }
-#PowerList td.powerLevel {
-	text-align            : right;
-}
-
-#PowerList td, #PowerList th {
+#PowerTable td, #PowerTable th {
 	padding                : 1px 4px;
 }
 
-#PowerList span.At-Will {
-	color                 : #528855;
-	background-color      : inherit;
+
+#PowerTable td.powerLevel {
+	text-align            : right;
 }
-#PowerList span.Encounter {
-	color                 : #7E012A;
-	background-color      : inherit;
+#PowerTable td.powerClass {
+	text-align            : right;
 }
-#PowerList span.Daily {
-	color                 : #3B3B3C;
-	background-color      : inherit;
+
+#PowerTable .powerRow {
+	height                : 20px;
 }
-#PowerList span.Healing-Surge {
-	color                 : #C29024;
-	background-color      : inherit;
+
+#PowerTable tr.Disabled {
+}
+#PowerTable tr.Used {
+	opacity               : .5;
 }

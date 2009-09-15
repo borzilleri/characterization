@@ -43,7 +43,7 @@ function parseProcessResult(data, textStatus) {
 				updateCurrentHealth(v);
 				break;
 			case 'magic_item_uses':
-				animatePower('#PowerTable tr.Daily.Item:not(.Used)', (!v?'Disabled':''));
+				animatePower('#PowerTable tr.Daily-bg.Item:not(.Used)', (!v?'Disabled':''));
 				updateText('#'+k, v);				
 				break;
 			case 'errors':

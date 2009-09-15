@@ -83,31 +83,3 @@ a.ajaxLink:active {
 	text-decoration       : none;
 	color                 : #CCDDEE;
 }
-
-/* Power List in Player display */
-#PowerTable {
-	margin                : 5px auto;
-	width                 : 100%;
-	border-spacing        : 0 1px;
-}
-#PowerTable .powerClass {
-	text-align            : right;
-}
-
-#PowerTable .powerRow {
-	color                 : #FFFFFF;
-	height                : 20px;
-}
-td.icon {
-	width                 : 20px;	
-}
-
-#PowerTable td.powerName {
-	overflow              : hidden;
-	white-space           : nowrap;	
-}
-#PowerTable tr.Disabled {
-}
-#PowerTable tr.Used {
-	opacity               : .5;
-}

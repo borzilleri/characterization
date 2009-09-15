@@ -190,13 +190,13 @@ $kw_list = Doctrine_Query::create()
     <label for="hit">Hit:
       <span class="help" title="Any on-hit effects, such as secondary attacks, aftereffects, etc, should be included here.">?</span>
     </label>
-    <div class="field"><textarea id="hit" name="hit" cols="25" rows="4"
+    <div class="field"><textarea id="hit" name="hit" cols="25" rows="6"
       ><?=$power->getCached('hit',$form_key);?></textarea></div>
   </div>
 
   <div class="formRow">
     <label for="miss">Miss:</label>
-    <div class="field"><textarea id="miss" name="miss" cols="25" rows="4"
+    <div class="field"><textarea id="miss" name="miss" cols="25" rows="6"
       ><?=$power->getCached('miss',$form_key);?></textarea></div>
   </div>
 
@@ -225,7 +225,7 @@ $kw_list = Doctrine_Query::create()
 <div class="formColumn rightColumn">
   <div class="formRow">
     <label for="effect">Effect:</label>
-    <div class="field"><textarea id="effect" name="effect" cols="25" rows="4"
+    <div class="field"><textarea id="effect" name="effect" cols="25" rows="6"
       ><?=$power->getCached('effect',$form_key);?></textarea></div>
   </div>
   
@@ -233,7 +233,7 @@ $kw_list = Doctrine_Query::create()
     <label for="notes">Notes:
       <span class="help" title="Any additional ability details, information, or notes may be included here.">?</span>
     </label>
-    <div class="field"><textarea id="notes" name="notes" cols="25" rows="4"
+    <div class="field"><textarea id="notes" name="notes" cols="25" rows="6"
       ><?=$power->getCached('notes',$form_key);?></textarea></div>
   </div>
 

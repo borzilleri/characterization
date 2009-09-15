@@ -54,6 +54,7 @@ textarea, select, input[type="text"] {
 }
 textarea, input.text {
 	width                 : 200px;
+	resize                : none;
 }
 
 select#keywords {
