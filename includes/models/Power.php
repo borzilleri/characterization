@@ -637,7 +637,7 @@ class Power extends BasePower
 		
 		// TitleBar
 		$box .= '<div id="p'.$this->id.'" class="titleBar '.
-			$this->getUseTypeDisplay(true).'">';
+			$this->getUseTypeDisplay(true).'-bg">';
 		// Power Class/Level
 		$box .= '<span class="powerLevel">'.$this->getClassDisplay().
 			' '.$this->level.'</span>';
