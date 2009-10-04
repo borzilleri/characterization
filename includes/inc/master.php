@@ -12,7 +12,7 @@ require('Doctrine/lib/Doctrine.php');
 spl_autoload_register(array('Doctrine', 'autoload'));
 $manager = Doctrine_Manager::getInstance();
 $manager->setAttribute(Doctrine::ATTR_MODEL_LOADING, 
-  Doctrine::MODEL_LOADING_CONSERVATIVE);
+	Doctrine::MODEL_LOADING_CONSERVATIVE);
 $manager->setAttribute(Doctrine::ATTR_VALIDATE, Doctrine::VALIDATE_ALL);
 $manager->setAttribute(Doctrine::ATTR_EXPORT, Doctrine::EXPORT_ALL);
 $manager->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);

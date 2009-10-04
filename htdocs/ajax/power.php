@@ -8,17 +8,17 @@ $return = true;
 
 $char = Doctrine::getTable('Player')->findOneById(@$_REQUEST['id']);
 if( !$char || !$char->exists() ) {
-  die(false);
+	die(false);
 }
 
 
 $p = $char->Powers->get($_REQUEST['p_id']);
 if( $p->exists() ) {
-  $return = $p->getPowerBoxDisplay();  
+	$return = $p->getPowerBoxDisplay();	 
 }
 else {
-  $msg->add("Unknown power with id '{$_POST['p_id']}'.", Message::ERROR);
-  $return = "FALSE";
+	$msg->add("Unknown power with id '{$_POST['p_id']}'.", Message::ERROR);
+	$return = "FALSE";
 }
 
 
@@ -33,6 +33,6 @@ if( $msg_out ) {
  echo "{$return}|{$status}|{$msg_out}";
 }
 else {
-  echo $return;
+	echo $return;
 }
 ?>

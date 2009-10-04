@@ -6,31 +6,31 @@ $file_list = scandir(IMPORT_PATH);
 $yml_files = array();
 
 foreach($file_list as $f) {
-  if( '.' != substr($f,0,1) && 
-      ('.yml' == substr($f, -4) || '.yaml' == substr($f, -5)) ) {
-    $yml_files[] = $f;
-  }
+	if( '.' != substr($f,0,1) && 
+			('.yml' == substr($f, -4) || '.yaml' == substr($f, -5)) ) {
+		$yml_files[] = $f;
+	}
 }
 ?>
 <form method="post" action="<?=SITE_URL;?>/upload">
 <div class"formColumn leftColumn">
-  <div class="formRow">
-    <label for="file_name">Character Files:
-      <span class="help" title="Existing characters with the same name as an imported character will be overwritten.">?</label>
-    <div class="field">
-      <select id="file_name" name="file_name">
-      <? foreach($yml_files as $f): ?>
-        <option value="<?=$f;?>"><?=$f;?></option>
-      <? endforeach; ?>
-      </select>
-    </div>
-  </div>
-  <div class="formRow">
-    <label>&nbsp;</label>
-    <div class="field">
-      <input type="submit" value="Import Character" />
-    </div>
-  </div>
+	<div class="formRow">
+		<label for="file_name">Character Files:
+			<span class="help" title="Existing characters with the same name as an imported character will be overwritten.">?</label>
+		<div class="field">
+			<select id="file_name" name="file_name">
+			<? foreach($yml_files as $f): ?>
+				<option value="<?=$f;?>"><?=$f;?></option>
+			<? endforeach; ?>
+			</select>
+		</div>
+	</div>
+	<div class="formRow">
+		<label>&nbsp;</label>
+		<div class="field">
+			<input type="submit" value="Import Character" />
+		</div>
+	</div>
 </div>
 </form>
 <?php include('footer.php'); ?>

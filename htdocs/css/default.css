@@ -1,55 +1,55 @@
 /* General Styles */
 body {
-	font-size	            : 100%; /* Assume 1em is 16px */
-	line-height           : 1.1em;
-  font-family           : helvetica, verdana, arial, sans-serif;
-  color                 : black;
-  background-color      : white;
-  margin                : 0px;
-  padding               : 0px;
+	font-size							: 100%; /* Assume 1em is 16px */
+	line-height						: 1.1em;
+	font-family						: helvetica, verdana, arial, sans-serif;
+	color									: black;
+	background-color			: white;
+	margin								: 0px;
+	padding								: 0px;
 }
 
 body div, input, textarea, select {
-	font-size             : 1em;
+	font-size							: 1em;
 }
 
 abbr, acronym {
-	border-bottom         : 1px dotted #888;
-	cursor                : help;
+	border-bottom					: 1px dotted #888;
+	cursor								: help;
 }
 
 a {
-	text-decoration       : none;
-	color                 : #334499;
+	text-decoration				: none;
+	color									: #334499;
 }
 a:hover {
-	text-decoration       : underline;
+	text-decoration				: underline;
 }
 a:active {
-	color                 : #CDE;
-	text-decoration       : none;
+	color									: #CDE;
+	text-decoration				: none;
 }
 
 img.icon {
-	height                : 16px;
-	width                 : 16px;
-	border                : 0;
-	vertical-align        : middle;
+	height								: 16px;
+	width									: 16px;
+	border								: 0;
+	vertical-align				: middle;
 }
 td.icon,th.icon {
-	width                 : 20px;
+	width									: 20px;
 }
 th, li.header {
-	font-weight           : bold;
+	font-weight						: bold;
 }
 
 /* Clearfix "hack" */
 .clearfix:after {
-	visibility            : hidden;
-	display               : block;
-	font-size             : 0;
-	content               : " ";
-	height                : 0;
+	visibility						: hidden;
+	display								: block;
+	font-size							: 0;
+	content								: " ";
+	height								: 0;
 }
 .clearfix { display: inline-block; }
 /* start commented backslash hack \*/
@@ -59,267 +59,267 @@ th, li.header {
 /* End Clearfix */
 
 .clear {
-	clear                 : both;
+	clear									: both;
 }
 .clearLeft {
-	clear                 : left;
+	clear									: left;
 }
 
 .row0 {
-	background-color      : #FFFFFF;
+	background-color			: #FFFFFF;
 }
 .row1 {
-	background-color      : #D8D7C5;
+	background-color			: #D8D7C5;
 }
 
 
 /* Header Style */
 #Header {
 	/* height should be the same as the line-height for the menu */
-	height                : 1.5em;
-	background-color      : #CCDDEE;
-	border-bottom         : 1px dotted #445566;
+	height								: 1.5em;
+	background-color			: #CCDDEE;
+	border-bottom					: 1px dotted #445566;
 }
 
 /* Menu Bar Styles */
 #MenuBar {
-	position              : absolute;
+	position							: absolute;
 }
 #MenuBar div.menu_text, #MenuBar ul {
-	background-color      : #CCDDEE;
-	line-height           : 1.5em;
-	margin                : 0 9px;
-	padding               : 0px;
-	float                 : left;
+	background-color			: #CCDDEE;
+	line-height						: 1.5em;
+	margin								: 0 9px;
+	padding								: 0px;
+	float									: left;
 }
 #MenuBar ul {
-	list-style            : none;
-	border-left           : 1px solid #CCDDEE;
-	margin                : 0 9px;
-	padding               : 0px;
-	width                 : 10em;
-	overflow              : hidden;
-	white-space           : nowrap;
+	list-style						: none;
+	border-left						: 1px solid #CCDDEE;
+	margin								: 0 9px;
+	padding								: 0px;
+	width									: 10em;
+	overflow							: hidden;
+	white-space						: nowrap;
 }
 #MenuBar ul li {
-	padding               : 0 2px;
+	padding								: 0 2px;
 }
 #MenuBar ul .item {
-	padding               : 1px 5px;
-	display               : none;
+	padding								: 1px 5px;
+	display								: none;
 }
 #MenuBar ul:hover .item {
-	border-bottom         : 1px solid #CCDDEE;
-	display               : block;
+	border-bottom					: 1px solid #CCDDEE;
+	display								: block;
 }
 #MenuBar ul .item:hover,
 #MenuBar ul .top:hover {
-	background-color      : #DDEEFF;
+	background-color			: #DDEEFF;
 }
 #MenuBar ul:hover {
-	border-left           : 1px solid #445566;
-	border-bottom         : 1px solid #445566;
+	border-left						: 1px solid #445566;
+	border-bottom					: 1px solid #445566;
 }
 #MenuBar div.menu_text label {
-	font-weight           : bold;
+	font-weight						: bold;
 }
 #MenuBar div.menu_text {
-	font-size             : .875em;
+	font-size							: .875em;
 }
 #MenuBar a {
-	color                 : #000;
-	text-decoration       : none;
+	color									: #000;
+	text-decoration				: none;
 }
 
 /* Main Content Styles */
 #Content {
-	padding               : 10px;
+	padding								: 10px;
 }
 
 /* Message notification area styles */
 #Messages {
-	margin                : 5px auto;
-	width                 : 75%;
-	display               : none;
+	margin								: 5px auto;
+	width									: 75%;
+	display								: none;
 }
 #Messages label {
-	font-weight           : bold;
+	font-weight						: bold;
 }
 #messageText {
-	margin                : 10px 20px;
+	margin								: 10px 20px;
 }
 #messageText > div {
-	color                 : #888;
+	color									: #888;
 }
 #messageText > div.new {
-	color                 : #000;
+	color									: #000;
 }
 #clearLink {
-	font-size             : .625em;
-	line-height           : .875em;
-	float                 : left;
+	font-size							: .625em;
+	line-height						: .875em;
+	float									: left;
 }
 div.Success {
-	border                : 2px solid #87CEEB; /* blue */
+	border								: 2px solid #87CEEB; /* blue */
 }
 div.Notice {
-	border                : 2px solid #888; /* grey */
+	border								: 2px solid #888; /* grey */
 }
 div.Warning {
-	border                : 2px solid #FFA500; /* orange */
+	border								: 2px solid #FFA500; /* orange */
 }
 div.Error {
-	border                : 2px solid #F00; /* red */
+	border								: 2px solid #F00; /* red */
 }
 
 /* Footer Style */
 #Footer {
-	font-size             : .625em; /* 10px = 16px * .625em */
-  text-align            : center;
-  color                 : #777;
-	border-top            : 1px dotted black;
-	margin                : 10px;
+	font-size							: .625em; /* 10px = 16px * .625em */
+	text-align						: center;
+	color									: #777;
+	border-top						: 1px dotted black;
+	margin								: 10px;
 }
 
 /* list Styles */
 ul.list {
-	list-style            : none;
-	margin                : 0 0 10px 10px;
-	padding               : 0;
+	list-style						: none;
+	margin								: 0 0 10px 10px;
+	padding								: 0;
 }
 ul.list li {
-	clear                 : both;
-	margin                : 0;
-	padding               : 2px 0;
+	clear									: both;
+	margin								: 0;
+	padding								: 2px 0;
 }
 div.listLinks {
-	font-size             : .75em;
-	float                 : left;
-	margin                : 0;
-	padding               : 0;
+	font-size							: .75em;
+	float									: left;
+	margin								: 0;
+	padding								: 0;
 }
 div.listLabel {
-	float                 : left;
+	float									: left;
 }
 li.noCheck div.listLabel {
-	margin-left           : 25px;
+	margin-left						: 25px;
 }
 
 /* Usage-based coloring */
 .At-Will-bg {
-	color                 : #FFFFFF;
-	background-color      : #528855;
+	color									: #FFFFFF;
+	background-color			: #528855;
 }
 .Encounter-bg {
-	color                 : #FFFFFF;
-	background-color      : #7E012A;
+	color									: #FFFFFF;
+	background-color			: #7E012A;
 }
 .Daily-bg {
-	color                 : #FFFFFF;
-	background-color      : #3B3B3C;
+	color									: #FFFFFF;
+	background-color			: #3B3B3C;
 }
 .Healing-Surge-bg {
-	color                 : #FFFFFF;
-	background-color      : #C29024;
+	color									: #FFFFFF;
+	background-color			: #C29024;
 }
 
 .At-Will-text {
-	color                 : #528855;
-	background-color      : inherit;
+	color									: #528855;
+	background-color			: inherit;
 }
 .Encounter-text {
-	color                 : #7E012A;
-	background-color      : inherit;
+	color									: #7E012A;
+	background-color			: inherit;
 }
 .Daily-text {
-	color                 : #3B3B3C;
-	background-color      : inherit;
+	color									: #3B3B3C;
+	background-color			: inherit;
 }
 .Healing-Surge-text {
-	color                 : #C29024;
-	background-color      : inherit;
+	color									: #C29024;
+	background-color			: inherit;
 }
 
 
 /* Index Page/Char List Styles */
 #PlayerList {
-	width                 : 400px;
-	float                 : left;
+	width									: 400px;
+	float									: left;
 }
 #PlayerList div.listLinks {
-	width                 : 45px;
+	width									: 45px;
 }
 #PlayerList div.listLabel {
-	width                 : 150px;
+	width									: 150px;
 }
 #MDInfo {
-	margin                : 5px;
-	padding               : 10px;
-	border                : 1px dotted #888;
-	margin-left           : 405px;
-	width                 : 550px;
+	margin								: 5px;
+	padding								: 10px;
+	border								: 1px dotted #888;
+	margin-left						: 405px;
+	width									: 550px;
 }
 
 
 /* Power Table styles */
 #PowerTable {
 	width: 475px;
-	margin                : 5px 0;
-	border-spacing        : 0 1px;
+	margin								: 5px 0;
+	border-spacing				: 0 1px;
 }
 #PowerTable th {
-	text-align            : left;
+	text-align						: left;
 }
 #PowerTable td, #PowerTable th {
-	padding                : 1px 4px;
+	padding								 : 1px 4px;
 }
 
 
 #PowerTable td.powerLevel {
-	text-align            : right;
+	text-align						: right;
 }
 #PowerTable td.powerClass {
-	text-align            : right;
+	text-align						: right;
 }
 
 #PowerTable .powerRow {
-	height                : 20px;
+	height								: 20px;
 }
 
 #PowerTable tr.Disabled {
 }
 #PowerTable tr.Used {
-	opacity               : .5;
+	opacity								: .5;
 }
 
 #SkillTable {
-	width                 : 175px;
-	margin                : 0 5px;
-	margin                : 0px;
-	border-spacing        : 0;
+	width									: 175px;
+	margin								: 0 5px;
+	margin								: 0px;
+	border-spacing				: 0;
 }
 #SkillTable tr {
-	margin                : 0;
-	padding               : 0;
-	height                : 20px;
+	margin								: 0;
+	padding								: 0;
+	height								: 20px;
 }
 #SkillTable td.totalBonus {
-	width                 : 20px;
-	padding-right         : 10px;
-	text-align            : right;
+	width									: 20px;
+	padding-right					: 10px;
+	text-align						: right;
 }
 #SkillTable th {
-	text-align            : left;
+	text-align						: left;
 }
 #FeatList {
-	width                 : 275px;
-	padding               : 0;
-	margin                : 0 5px;
+	width									: 275px;
+	padding								: 0;
+	margin								: 0 5px;
 }
 #FeatList li {
-	list-style-type       : none;
-	margin                : 0;
-	padding               : 0;
-	padding-left          : 10px;
-	height                : 20px;
+	list-style-type				: none;
+	margin								: 0;
+	padding								: 0;
+	padding-left					: 10px;
+	height								: 20px;
 }

@@ -4,15 +4,15 @@ $css_include = array('forms.css', 'powerBox.css');
 include('autohandler.php');
 
 if( !$char || !$char->exists() ) {
-  loadPage('/');
+	loadPage('/');
 }
 $power = $char->Powers->get(@$_REQUEST['p_id']);
 
 $kw_list = Doctrine_Query::create()
-  ->select('k.id, k.name')
-  ->from('Keyword k')
-  ->orderBy('k.id ASC')
-  ->execute();
+	->select('k.id, k.name')
+	->from('Keyword k')
+	->orderBy('k.id ASC')
+	->execute();
 ?>
 <? if( $power->exists() ): ?>
 <div id="PowerBox"><?=$power->getPowerBoxDisplay();?></div>
@@ -20,236 +20,236 @@ $kw_list = Doctrine_Query::create()
 
 <form method="post" action="<?=SITE_URL;?>/<?=$char->id;?>/power/save">
 <div class="formColumn leftColumn">
-  <div class="formRow">
-    <label for="power_name"
-      class="<?=$power->hasError('name',$form_key)?'error':'';?>"
-      >Name:</label>
-    <div class="field"><input type="text" id="power_name" name="power_name"
-      class="text" size="20" maxlength="255" 
-      value="<?=$power->getCached('name', $form_key);?>" /></div>
-  </div>
-      
-  <div class="formRow">
-    <label for="use_type"
-      class="<?=$power->hasError('use_type',$form_key)?'error':'';?>"
-      >Usage:</label>
-    <div class="field"><select name="use_type" id="use_type">
-      <option value="<?=Power::POWER_ATWILL;?>" 
-        selected="selected">At-Will</option>
-      <option value="<?=Power::POWER_ENCOUNTER;?>"
-        <?=Power::POWER_ENCOUNTER==$power->getCached('use_type',$form_key)?
-          'selected="selected"':'';?>>Encounter</option>
-      <option value="<?=Power::POWER_DAILY;?>"
-        <?=$power->isUseType(Power::POWER_DAILY)?
-        'selected="selected"':'';?>>Daily</option>
-      <option value="<?=Power::POWER_SURGE;?>"
-        <?=$power->isUseType(Power::POWER_SURGE)?
-        'selected="selected"':'';?>>Healing Surge</option>
-    </select></div>
-  </div>
+	<div class="formRow">
+		<label for="power_name"
+			class="<?=$power->hasError('name',$form_key)?'error':'';?>"
+			>Name:</label>
+		<div class="field"><input type="text" id="power_name" name="power_name"
+			class="text" size="20" maxlength="255" 
+			value="<?=$power->getCached('name', $form_key);?>" /></div>
+	</div>
+			
+	<div class="formRow">
+		<label for="use_type"
+			class="<?=$power->hasError('use_type',$form_key)?'error':'';?>"
+			>Usage:</label>
+		<div class="field"><select name="use_type" id="use_type">
+			<option value="<?=Power::POWER_ATWILL;?>" 
+				selected="selected">At-Will</option>
+			<option value="<?=Power::POWER_ENCOUNTER;?>"
+				<?=Power::POWER_ENCOUNTER==$power->getCached('use_type',$form_key)?
+					'selected="selected"':'';?>>Encounter</option>
+			<option value="<?=Power::POWER_DAILY;?>"
+				<?=$power->isUseType(Power::POWER_DAILY)?
+				'selected="selected"':'';?>>Daily</option>
+			<option value="<?=Power::POWER_SURGE;?>"
+				<?=$power->isUseType(Power::POWER_SURGE)?
+				'selected="selected"':'';?>>Healing Surge</option>
+		</select></div>
+	</div>
 
-  <div class="formRow">
-    <label for="action_type"
-      class="<?=$power->hasError('action_type',$form_key)?'error':'';?>"
-      >Action Type:</label>
-    <div class="field"><select name="action_type" id="action_type">
-      <option value="standard" selected="selected">Standard</option>
-      <option value="move"
-        <?=$power->getCached('action',$form_key)=='move'?
-        'selected="selected"':'';?>>Move</option>
-      <option value="minor"
-        <?=$power->getCached('action',$form_key)=='minor'?
-        'selected="selected"':'';?>>Minor</option>
-      <option value="free"
-        <?=$power->getCached('action',$form_key)=='free'?
-        'selected="selected"':'';?>>Free</option>
-      <option value="interrupt"
-        <?=$power->getCached('action',$form_key)=='interrupt'?
-        'selected="selected"':'';?>>Immediate Interrupt</option>
-      <option value="reaction"
-        <?=$power->getCached('action',$form_key)=='reaction'?
-        'selected="selected"':'';?>>Immediate Reaction</option>
-      <option value="none" 
-        <?=$power->getCached('action',$form_key)=='none'?
-        'selected="selected"':'';?>>No Action</option>
-    </select></div>
-  </div>
+	<div class="formRow">
+		<label for="action_type"
+			class="<?=$power->hasError('action_type',$form_key)?'error':'';?>"
+			>Action Type:</label>
+		<div class="field"><select name="action_type" id="action_type">
+			<option value="standard" selected="selected">Standard</option>
+			<option value="move"
+				<?=$power->getCached('action',$form_key)=='move'?
+				'selected="selected"':'';?>>Move</option>
+			<option value="minor"
+				<?=$power->getCached('action',$form_key)=='minor'?
+				'selected="selected"':'';?>>Minor</option>
+			<option value="free"
+				<?=$power->getCached('action',$form_key)=='free'?
+				'selected="selected"':'';?>>Free</option>
+			<option value="interrupt"
+				<?=$power->getCached('action',$form_key)=='interrupt'?
+				'selected="selected"':'';?>>Immediate Interrupt</option>
+			<option value="reaction"
+				<?=$power->getCached('action',$form_key)=='reaction'?
+				'selected="selected"':'';?>>Immediate Reaction</option>
+			<option value="none" 
+				<?=$power->getCached('action',$form_key)=='none'?
+				'selected="selected"':'';?>>No Action</option>
+		</select></div>
+	</div>
 
-  <div class="formRow">
-    <label for="target">Target:</label>
-    <div class="field">
-      <input type="text" name="target" id="target" class="text"
-        size="20" maxlength="255" 
-        value="<?=$power->getCached('target',$form_key);?>" />
-    </div>
-  </div>
+	<div class="formRow">
+		<label for="target">Target:</label>
+		<div class="field">
+			<input type="text" name="target" id="target" class="text"
+				size="20" maxlength="255" 
+				value="<?=$power->getCached('target',$form_key);?>" />
+		</div>
+	</div>
 
-  <div class="formRow">
-    <label for="power_range">Range:</label>
-    <div class="field">
-      <input type="text" name="power_range" id="power_range" class="text"
-        size="20" maxlength="255" 
-        value="<?=$power->getCached('power_range',$form_key);?>" />
-    </div>
-  </div>
+	<div class="formRow">
+		<label for="power_range">Range:</label>
+		<div class="field">
+			<input type="text" name="power_range" id="power_range" class="text"
+				size="20" maxlength="255" 
+				value="<?=$power->getCached('power_range',$form_key);?>" />
+		</div>
+	</div>
 
-  <div class="formRow">
-    <label for="attack_ability"
-      class="<?=$power->hasError('attack_ability',$form_key)?'error':'';?>"
-      >Attack:</label>
-    <div class="field">
-      <select name="attack_ability" id="attack_ability">
-        <option value="none">none</option>
-        <option value="Str"
-          <?='Str'==$power->getCached('attack_ability',$form_key)?
-          'selected="selected"':'';?>>Strength</option>
-        <option value="Con"
-          <?='Con'==$power->getCached('attack_ability',$form_key)?
-          'selected="selected"':'';?>>Constitution</option>
-        <option value="Dex"
-          <?='Dex'==$power->getCached('attack_ability',$form_key)?
-          'selected="selected"':'';?>>Dexterity</option>
-        <option value="Int"
-          <?='Int'==$power->getCached('attack_ability',$form_key)?
-          'selected="selected"':'';?>>Intelligence</option>
-        <option value="Wis"
-          <?='Wis'==$power->getCached('attack_ability',$form_key)?
-          'selected="selected"':'';?>>Wisdom</option>
-        <option value="Cha"
-          <?='Cha'==$power->getCached('attack_ability',$form_key)?
-          'selected="selected"':'';?>>Charisma</option>
-      </select>
-      <label for="attack_bonus"
-        class="<?=$power->hasError('attack_bonus',$form_key)?'error':'';?>"
-        >Bonus: <span class="help" title="Attack Bonus: Any bonus to hit that applies specifically to this power.">?</span></label>
-      +<input type="text" name="attack_bonus" id="attack_bonus" class="number"
-        size="3" maxlength="3" 
-        value="<?=$power->getCached('attack_bonus',$form_key);?>" />
-    </div>
-  </div> 
-  
-  <div class="formRow">
-    <label for="defense"
-      class="<?=$power->hasError('defense',$form_key)?'error':'';?>"
-      >vs. Defense:</label>
-    <div class="field"><select name="defense" id="defense">
-      <option value="AC">Armor Class</option>
-      <option value="Fort"
-        <?='Fort'==$power->getCached('defense',$form_key)?
-        'selected="selected"':'';?>>Fortitude</option>
-      <option value="Ref"
-        <?='Ref'==$power->getCached('defense',$form_key)?
-        'selected="selected"':'';?>>Reflex</option>
-      <option value="Will"
-        <?='Will'==$power->getCached('defense',$form_key)?
-        'selected="selected"':'';?>>Willpower</option>
-    </select></div>
-  </div>
+	<div class="formRow">
+		<label for="attack_ability"
+			class="<?=$power->hasError('attack_ability',$form_key)?'error':'';?>"
+			>Attack:</label>
+		<div class="field">
+			<select name="attack_ability" id="attack_ability">
+				<option value="none">none</option>
+				<option value="Str"
+					<?='Str'==$power->getCached('attack_ability',$form_key)?
+					'selected="selected"':'';?>>Strength</option>
+				<option value="Con"
+					<?='Con'==$power->getCached('attack_ability',$form_key)?
+					'selected="selected"':'';?>>Constitution</option>
+				<option value="Dex"
+					<?='Dex'==$power->getCached('attack_ability',$form_key)?
+					'selected="selected"':'';?>>Dexterity</option>
+				<option value="Int"
+					<?='Int'==$power->getCached('attack_ability',$form_key)?
+					'selected="selected"':'';?>>Intelligence</option>
+				<option value="Wis"
+					<?='Wis'==$power->getCached('attack_ability',$form_key)?
+					'selected="selected"':'';?>>Wisdom</option>
+				<option value="Cha"
+					<?='Cha'==$power->getCached('attack_ability',$form_key)?
+					'selected="selected"':'';?>>Charisma</option>
+			</select>
+			<label for="attack_bonus"
+				class="<?=$power->hasError('attack_bonus',$form_key)?'error':'';?>"
+				>Bonus: <span class="help" title="Attack Bonus: Any bonus to hit that applies specifically to this power.">?</span></label>
+			+<input type="text" name="attack_bonus" id="attack_bonus" class="number"
+				size="3" maxlength="3" 
+				value="<?=$power->getCached('attack_bonus',$form_key);?>" />
+		</div>
+	</div> 
+	
+	<div class="formRow">
+		<label for="defense"
+			class="<?=$power->hasError('defense',$form_key)?'error':'';?>"
+			>vs. Defense:</label>
+		<div class="field"><select name="defense" id="defense">
+			<option value="AC">Armor Class</option>
+			<option value="Fort"
+				<?='Fort'==$power->getCached('defense',$form_key)?
+				'selected="selected"':'';?>>Fortitude</option>
+			<option value="Ref"
+				<?='Ref'==$power->getCached('defense',$form_key)?
+				'selected="selected"':'';?>>Reflex</option>
+			<option value="Will"
+				<?='Will'==$power->getCached('defense',$form_key)?
+				'selected="selected"':'';?>>Willpower</option>
+		</select></div>
+	</div>
 </div><!-- end div.leftColumn -->
 
 <div class="formColumn rightColumn">
-  <div class="formRow">
-    <label for="level"
-      class="<?=$power->hasError('level',$form_key)?'error':'';?>"
-      >Level:</label>
-    <div class="field">
-      <select name="level" id="level">
-      <? for($i=1;$i<=30;$i++): ?>
-        <option value="<?=$i;?>"
-          <?=$i==$power->getCached('level',$form_key)?
-          'selected="selected"':'';?>><?=$i;?></option>
-      <? endfor; ?>
-      </select>&nbsp;&nbsp;
-      <label for="item">Magic Item:</label>
-      <input type="checkbox" name="item" id="item" value="1" 
-        <?=$power->getCached('item',$form_key)?
-        'checked="checked"':'';?> />
-    </div>
-  </div>
-  
-  <div class="formRow">
-    <label for="keywords">Keywords:
-      <span class="help" title="Hold Control (Win/Linux) or Command (OS X) to select multiple keywords.">?</span>
-    </label>
-    <div class="field">
-      <select name="keywords[]" id="keywords" multiple="multiple">
-        <? foreach($kw_list as $kw): ?>
-        <option value="<?=$kw->id;?>"
-          <?=$power->hasCachedKeyword($kw->id, $form_key)?
-            'selected="selected"':'';?>><?=$kw->name;?></option>
-        <? endforeach; ?>
-      </select>
-    </div>
-  </div>
+	<div class="formRow">
+		<label for="level"
+			class="<?=$power->hasError('level',$form_key)?'error':'';?>"
+			>Level:</label>
+		<div class="field">
+			<select name="level" id="level">
+			<? for($i=1;$i<=30;$i++): ?>
+				<option value="<?=$i;?>"
+					<?=$i==$power->getCached('level',$form_key)?
+					'selected="selected"':'';?>><?=$i;?></option>
+			<? endfor; ?>
+			</select>&nbsp;&nbsp;
+			<label for="item">Magic Item:</label>
+			<input type="checkbox" name="item" id="item" value="1" 
+				<?=$power->getCached('item',$form_key)?
+				'checked="checked"':'';?> />
+		</div>
+	</div>
+	
+	<div class="formRow">
+		<label for="keywords">Keywords:
+			<span class="help" title="Hold Control (Win/Linux) or Command (OS X) to select multiple keywords.">?</span>
+		</label>
+		<div class="field">
+			<select name="keywords[]" id="keywords" multiple="multiple">
+				<? foreach($kw_list as $kw): ?>
+				<option value="<?=$kw->id;?>"
+					<?=$power->hasCachedKeyword($kw->id, $form_key)?
+						'selected="selected"':'';?>><?=$kw->name;?></option>
+				<? endforeach; ?>
+			</select>
+		</div>
+	</div>
 </div><!-- End div.rightColumn -->
-  
+	
 <div class="clear"></div>
 
 <div class="formColumn leftColumn">
-  <div class="formRow">
-    <label for="hit">Hit:
-      <span class="help" title="Any on-hit effects, such as secondary attacks, aftereffects, etc, should be included here.">?</span>
-    </label>
-    <div class="field"><textarea id="hit" name="hit" cols="25" rows="6"
-      ><?=$power->getCached('hit',$form_key);?></textarea></div>
-  </div>
+	<div class="formRow">
+		<label for="hit">Hit:
+			<span class="help" title="Any on-hit effects, such as secondary attacks, aftereffects, etc, should be included here.">?</span>
+		</label>
+		<div class="field"><textarea id="hit" name="hit" cols="25" rows="6"
+			><?=$power->getCached('hit',$form_key);?></textarea></div>
+	</div>
 
-  <div class="formRow">
-    <label for="miss">Miss:</label>
-    <div class="field"><textarea id="miss" name="miss" cols="25" rows="6"
-      ><?=$power->getCached('miss',$form_key);?></textarea></div>
-  </div>
+	<div class="formRow">
+		<label for="miss">Miss:</label>
+		<div class="field"><textarea id="miss" name="miss" cols="25" rows="6"
+			><?=$power->getCached('miss',$form_key);?></textarea></div>
+	</div>
 
-  <div class="formRow">
-    <label for="sustain_action"
-      class="<?=$power->hasError('sustain_action',$form_key)?'error':'';?>"
-      >Sustain:</label>
-    <div class="field"><select id="sustain_action" name="sustain_action">
-      <option value="none">none</option>
-      <option value="Standard"
-        <?='Standard'==$power->getCached('sustain_action',$form_key)?
-        'selected="selected"':'';?>>Standard Action</option>
-      <option value="Move"
-        <?='Move'==$power->getCached('sustain_action',$form_key)?
-        'selected="selected"':'';?>>Move Action</option>
-      <option value="Minor"
-        <?='Minor'==$power->getCached('sustain_action',$form_key)?
-        'selected="selected"':'';?>>Minor Action</option>
-      <option value="Free"
-        <?='Free'==$power->getCached('sustain_action',$form_key)?
-        'selected="selected"':'';?>>Free Action</option>
-    </select></div>
-  </div>
+	<div class="formRow">
+		<label for="sustain_action"
+			class="<?=$power->hasError('sustain_action',$form_key)?'error':'';?>"
+			>Sustain:</label>
+		<div class="field"><select id="sustain_action" name="sustain_action">
+			<option value="none">none</option>
+			<option value="Standard"
+				<?='Standard'==$power->getCached('sustain_action',$form_key)?
+				'selected="selected"':'';?>>Standard Action</option>
+			<option value="Move"
+				<?='Move'==$power->getCached('sustain_action',$form_key)?
+				'selected="selected"':'';?>>Move Action</option>
+			<option value="Minor"
+				<?='Minor'==$power->getCached('sustain_action',$form_key)?
+				'selected="selected"':'';?>>Minor Action</option>
+			<option value="Free"
+				<?='Free'==$power->getCached('sustain_action',$form_key)?
+				'selected="selected"':'';?>>Free Action</option>
+		</select></div>
+	</div>
 </div><!-- end div.leftColumn -->
 
 <div class="formColumn rightColumn">
-  <div class="formRow">
-    <label for="effect">Effect:</label>
-    <div class="field"><textarea id="effect" name="effect" cols="25" rows="6"
-      ><?=$power->getCached('effect',$form_key);?></textarea></div>
-  </div>
-  
-  <div class="formRow">
-    <label for="notes">Notes:
-      <span class="help" title="Any additional ability details, information, or notes may be included here.">?</span>
-    </label>
-    <div class="field"><textarea id="notes" name="notes" cols="25" rows="6"
-      ><?=$power->getCached('notes',$form_key);?></textarea></div>
-  </div>
+	<div class="formRow">
+		<label for="effect">Effect:</label>
+		<div class="field"><textarea id="effect" name="effect" cols="25" rows="6"
+			><?=$power->getCached('effect',$form_key);?></textarea></div>
+	</div>
+	
+	<div class="formRow">
+		<label for="notes">Notes:
+			<span class="help" title="Any additional ability details, information, or notes may be included here.">?</span>
+		</label>
+		<div class="field"><textarea id="notes" name="notes" cols="25" rows="6"
+			><?=$power->getCached('notes',$form_key);?></textarea></div>
+	</div>
 
-  <div class="formRow">
-    <label for="sustain">Sustain Effect:</label>
-    <div class="field"><textarea id="sustain" name="sustain" cols="25" rows="2"
-      ><?=$power->getCached('sustain',$form_key);?></textarea></div>
-  </div>
+	<div class="formRow">
+		<label for="sustain">Sustain Effect:</label>
+		<div class="field"><textarea id="sustain" name="sustain" cols="25" rows="2"
+			><?=$power->getCached('sustain',$form_key);?></textarea></div>
+	</div>
 </div><!-- End div.rightColumn -->
 
 <div id="SubmitButton" class="clear">
-  <input type="hidden" name="form_key" value="<?=$form_key;?>" />
-  <? if( $power->exists() ): ?>
-  <input type="hidden" name="p_id" value="<?=$power->id;?>" />
-  <? endif; ?>
-  <input type="submit" value="Submit" />
+	<input type="hidden" name="form_key" value="<?=$form_key;?>" />
+	<? if( $power->exists() ): ?>
+	<input type="hidden" name="p_id" value="<?=$power->id;?>" />
+	<? endif; ?>
+	<input type="submit" value="Submit" />
 </div>
 </form>
 

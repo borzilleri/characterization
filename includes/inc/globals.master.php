@@ -1,6 +1,6 @@
 <?php
 /**
- * @author     Jonathan Borzilleri
+ * @author		 Jonathan Borzilleri
  */
 
 /**
@@ -8,7 +8,7 @@
  * 
  * eg:
  * Doctrine::getTable('TableName')->setAttribute(
- *    Doctrine::ATTR_COL_KEY,'colName');
+ *		Doctrine::ATTR_COL_KEY,'colName');
  */
 Doctrine::getTable('Power')->setAttribute(Doctrine::ATTR_COLL_KEY,'id');
 Doctrine::getTable('Keyword')->setAttribute(Doctrine::ATTR_COLL_KEY,'id');

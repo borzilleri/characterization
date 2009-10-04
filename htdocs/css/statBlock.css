@@ -6,8 +6,8 @@
 	margin								: 0 5px;
 }
 .shortStatColumn {
-	width                 : 120px;
-	margin                : 0 5px;
+	width									: 120px;
+	margin								: 0 5px;
 }
 .notesColumn {
 	width									: 315px;
@@ -19,8 +19,8 @@
 	margin								: 0 5px;
 }
 .skillColumn {
-	width                 : 500px;
-	margin                : 0 5px;
+	width									: 500px;
+	margin								: 0 5px;
 }
 
 #PlayerNotes textarea {
@@ -101,32 +101,32 @@ a.ajaxLink:active {
 	margin-top						: 5px;
 	padding								: 0;
 	text-align						: center;
-	margin-bottom         : 1px;
+	margin-bottom					: 1px;
 }
 #PlayerTabs li {
 	list-style-type				: none;
 	display								: inline;
-	border                : 1px solid #999;
-	border-bottom         : none;
+	border								: 1px solid #999;
+	border-bottom					: none;
 	padding								: 3px 10px 0px 10px;
 	margin								: 0 3px;
-	background-color      : #dfdfdf;
+	background-color			: #dfdfdf;
 }
 #PlayerTabs li.selectedTab {
-	background-color      : inherit;
-	border-bottom         : 1px solid #fff;
+	background-color			: inherit;
+	border-bottom					: 1px solid #fff;
 }
 #PlayerTabs li a {
-	text-decoration       : none;
+	text-decoration				: none;
 }
 
 #PlayerSkillsFeats {
-	display               : none;
+	display								: none;
 }
 
 #SkillTable {
-	float                 : left;
+	float									: left;
 }
 #FeatList {
-	float                 : left;
+	float									: left;
 }

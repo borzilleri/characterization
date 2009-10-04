@@ -4,48 +4,48 @@ $js_include = array('power.js');
 include('autohandler.php');
 
 if( !$char || !$char->exists() ) {
-  loadPage('/');
+	loadPage('/');
 }
 
 $power_list = Doctrine_Query::create()
-  ->from('Power p')
-  ->where('p.player_id = ?', $char->id)
-  ->orderBy('p.use_type, p.level, p.name')
-  ->execute();
+	->from('Power p')
+	->where('p.player_id = ?', $char->id)
+	->orderBy('p.use_type, p.level, p.name')
+	->execute();
 
 $i = 0;
 ?>
 
 <table id="PowerTable" class="rowBorder">
-  <tbody>
-    <tr class="row<?=$i;$i=($i+1)%2;?>">
-      <th><a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new"><img 
-        class="icon" alt="new" title="New Power" 
-        src="<?=MEDIA_URL;?>/images/icon_medical.png" /></th>
-      <th><a href="#" class="sort asc" id="power_name">Power Name</a>
-        <span id="name_arrow">&nbsp;</span></th>
-      <th><a href="#" class="sort desc" id="use_type">Usage</a>
-        <span id="usage_arrow">&uarr;</span></th>
-      <th colspan="2"><a href="#" class="sort asc" id="level">Level</a>
-        <span id="level_arrow">&nbsp;</span></th>
-    </tr>
-  <? foreach($power_list as $p): ?>
-    <tr class="powerRow row<?=$i;$i=($i+1)%2;?>">
-      <td class="icon"><a 
-        href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit"><img 
-        alt="edit" title="Edit Power" class="icon"
-        src="<?=MEDIA_URL;?>/images/icon_gear.png" /></a></td>
-      <td class="powerName"><span class="power_name"><?=$p->name;?></span></td>
-      <td class="powerUsage">
-        <span class="use_type <?=$p->getUseTypeDisplay();?>-text"
-        ><?=$p->getUseTypeDisplay();?></a></td>
-      <td class="powerLevel"><span class="level"><?=$p->level;?></span></td>
-      <td><img alt="view" title="View Power" 
-        class="power_view icon" id="v<?=$p->id;?>" 
-        src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" /></td>
-    </tr>
-  <? endforeach; ?>
-  </tbody>
+	<tbody>
+		<tr class="row<?=$i;$i=($i+1)%2;?>">
+			<th><a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new"><img 
+				class="icon" alt="new" title="New Power" 
+				src="<?=MEDIA_URL;?>/images/icon_medical.png" /></th>
+			<th><a href="#" class="sort asc" id="power_name">Power Name</a>
+				<span id="name_arrow">&nbsp;</span></th>
+			<th><a href="#" class="sort desc" id="use_type">Usage</a>
+				<span id="usage_arrow">&uarr;</span></th>
+			<th colspan="2"><a href="#" class="sort asc" id="level">Level</a>
+				<span id="level_arrow">&nbsp;</span></th>
+		</tr>
+	<? foreach($power_list as $p): ?>
+		<tr class="powerRow row<?=$i;$i=($i+1)%2;?>">
+			<td class="icon"><a 
+				href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit"><img 
+				alt="edit" title="Edit Power" class="icon"
+				src="<?=MEDIA_URL;?>/images/icon_gear.png" /></a></td>
+			<td class="powerName"><span class="power_name"><?=$p->name;?></span></td>
+			<td class="powerUsage">
+				<span class="use_type <?=$p->getUseTypeDisplay();?>-text"
+				><?=$p->getUseTypeDisplay();?></a></td>
+			<td class="powerLevel"><span class="level"><?=$p->level;?></span></td>
+			<td><img alt="view" title="View Power" 
+				class="power_view icon" id="v<?=$p->id;?>" 
+				src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" /></td>
+		</tr>
+	<? endforeach; ?>
+	</tbody>
 </table>
 
 <div id="PowerPreview"></div>

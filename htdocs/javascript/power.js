@@ -78,7 +78,7 @@ function sortByLevel(a, b, asc) {
 	else {
 		if( asc ) return a_level > b_level ? 1 : -1;
 		else return a_level < b_level ? 1 : -1;		
-	}	
+	} 
 }
 function sortByLevelAsc(a, b) {
 	return sortByLevel(a, b, true);
