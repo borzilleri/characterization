@@ -89,7 +89,7 @@ function updateCurrentHealth(health_cur) {
 		$('#health_cur').addClass(STATUS_BLOODIED);
 		$('#health_status').addClass(STATUS_BLOODIED);
 		$('#health_status').text(STATUS_BLOODIED);
-	}	
+	} 
 }
 function updateTempHealth(health_tmp) {
 	if( health_tmp > 0 ) {
@@ -170,7 +170,7 @@ $(window).load(function() {
 	
 	// Rest Actions
 	$('#shortRest').click(function(){ playerProcessRequest('shortRest') });
-	$('#extendedRest').click(function(){ playerProcessRequest('extendedRest') });	
+	$('#extendedRest').click(function(){ playerProcessRequest('extendedRest') }); 
 	
 	// Player notes
 	$('#updateNotes').click(function() { playerProcessRequest('updateNotes', {
@@ -179,7 +179,21 @@ $(window).load(function() {
 	// Power Usage
 	$('#PowerTable img.power_icon').click(function() {
 		playerProcessRequest('togglePower', {p_id: this.id.substring(1)}) });
-		
+	
+	// Tab Show/Hide
+	$('#powerTabLink').click(function() {
+		$('#PlayerPowers').show();
+		$('#PlayerSkillsFeats').hide();
+		$('#PlayerTabs li.selectedTab').removeClass('selectedTab');
+		$('#powerTab').addClass('selectedTab');
+	});
+	$('#skillTabLink').click(function() {
+		$('#PlayerPowers').hide();
+		$('#PlayerSkillsFeats').show();
+		$('#PlayerTabs li.selectedTab').removeClass('selectedTab');
+		$('#skillTab').addClass('selectedTab');
+	});
+	
 	// Power Tooltips
 	$('img.power_view').each(function(i) {
 		var id = this.id.substring(1);

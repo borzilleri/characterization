@@ -35,17 +35,24 @@
  * @property integer $intelligence
  * @property integer $wisdom
  * @property integer $charisma
+ * @property integer $ac
+ * @property boolean $ac_heavy
+ * @property integer $fort
+ * @property integer $ref
+ * @property integer $will
  * @property integer $race_id
  * @property integer $archetype_id
  * @property clob $notes
  * @property Race $Race
  * @property Archetype $Archetype
  * @property Doctrine_Collection $Powers
+ * @property Doctrine_Collection $Skills
+ * @property Doctrine_Collection $Feats
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
  * @author     ##NAME## <##EMAIL##>
- * @version    SVN: $Id: Builder.php 5845 2009-06-09 07:36:57Z jwage $
+ * @version    SVN: $Id: Builder.php 6401 2009-09-24 16:12:04Z guilhermeblanco $
  */
 abstract class BasePlayer extends Doctrine_Record
 {
@@ -166,6 +173,26 @@ abstract class BasePlayer extends Doctrine_Record
         $this->hasColumn('charisma', 'integer', null, array(
              'type' => 'integer',
              ));
+        $this->hasColumn('ac', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
+             ));
+        $this->hasColumn('ac_heavy', 'boolean', null, array(
+             'type' => 'boolean',
+             'default' => false,
+             ));
+        $this->hasColumn('fort', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
+             ));
+        $this->hasColumn('ref', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
+             ));
+        $this->hasColumn('will', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
+             ));
         $this->hasColumn('race_id', 'integer', 8, array(
              'type' => 'integer',
              'unsigned' => '1',
@@ -186,7 +213,8 @@ abstract class BasePlayer extends Doctrine_Record
 
     public function setUp()
     {
-        $this->hasOne('Race', array(
+        parent::setUp();
+    $this->hasOne('Race', array(
              'local' => 'race_id',
              'foreign' => 'id'));
 
@@ -195,6 +223,14 @@ abstract class BasePlayer extends Doctrine_Record
              'foreign' => 'id'));
 
         $this->hasMany('Power as Powers', array(
+             'local' => 'id',
+             'foreign' => 'player_id'));
+
+        $this->hasMany('Skill as Skills', array(
+             'local' => 'id',
+             'foreign' => 'player_id'));
+
+        $this->hasMany('Feat as Feats', array(
              'local' => 'id',
              'foreign' => 'player_id'));
     }

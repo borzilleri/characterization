@@ -12,7 +12,7 @@ $char_list = Doctrine_Query::create()
 $i = 0;
 ?>
 <div id="PlayerList">
-  <ul class="list">
+  <ul class="list rowBorder">
   <? foreach($char_list as $c): ?>
     <li class="row<?=$i;$i=($i+1)%2;?>">
       <div class="listLinks">

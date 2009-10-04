@@ -13,7 +13,7 @@
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
  * @author     ##NAME## <##EMAIL##>
- * @version    SVN: $Id: Builder.php 5845 2009-06-09 07:36:57Z jwage $
+ * @version    SVN: $Id: Builder.php 6401 2009-09-24 16:12:04Z guilhermeblanco $
  */
 abstract class BaseKeyword extends Doctrine_Record
 {
@@ -38,7 +38,8 @@ abstract class BaseKeyword extends Doctrine_Record
 
     public function setUp()
     {
-        $this->hasMany('Power as Powers', array(
+        parent::setUp();
+    $this->hasMany('Power as Powers', array(
              'refClass' => 'PowerKeyword',
              'local' => 'keyword_id',
              'foreign' => 'power_id'));

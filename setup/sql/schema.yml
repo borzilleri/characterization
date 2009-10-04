@@ -22,6 +22,15 @@ Archetype:
     health_first: integer
     health_level: integer
     surges: integer
+    fort:
+      type: integer
+      default: 0
+    ref:
+      type: integer
+      default: 0
+    will: 
+      type: integer
+      default: 0
     
 Player:
   columns:
@@ -92,6 +101,21 @@ Player:
     intelligence: integer
     wisdom: integer
     charisma: integer
+    ac:
+      type: integer
+      default: 0
+    ac_heavy:
+      type: boolean
+      default: false
+    fort: 
+      type: integer
+      default: 0
+    ref:
+      type: integer
+      default: 0
+    will:
+      type: integer
+      default: 0
     race_id:
       type: integer(8)
       unsigned: 1
@@ -185,3 +209,43 @@ PowerKeyword:
       foreignAlias: PowerKeywords
     Keyword:
       foreignAlias: PowerKeywords
+
+Skill:
+  columns:
+    id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+      unsigned: 1
+    name: string(255)
+    ability:
+      type: enum
+      values: ['Str','Dex','Con','Int','Wis','Cha']
+    trained:
+      type: boolean
+      default: false
+    bonus:
+      type: integer
+      default: 0
+    player_id:
+      type: integer
+      unsigned: 1
+  relations:
+    Player:
+      foreignAlias: Skills
+
+Feat:
+  columns:
+    id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+      unsigned: 1
+    name: string(255)
+    description: clob
+    player_id:
+      type: integer
+      unsigned: 1
+  relations:
+    Player:
+      foreignAlias: Feats

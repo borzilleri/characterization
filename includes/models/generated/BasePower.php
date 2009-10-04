@@ -31,7 +31,7 @@
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
  * @author     ##NAME## <##EMAIL##>
- * @version    SVN: $Id: Builder.php 5845 2009-06-09 07:36:57Z jwage $
+ * @version    SVN: $Id: Builder.php 6401 2009-09-24 16:12:04Z guilhermeblanco $
  */
 abstract class BasePower extends Doctrine_Record
 {
@@ -158,7 +158,8 @@ abstract class BasePower extends Doctrine_Record
 
     public function setUp()
     {
-        $this->hasOne('Player', array(
+        parent::setUp();
+    $this->hasOne('Player', array(
              'local' => 'player_id',
              'foreign' => 'id'));
 

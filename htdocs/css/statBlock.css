@@ -1,85 +1,132 @@
-.contentColumn {
-	width                 : 315px;
+.floatColumn, .leftColumn, .rightColumn {
+	float									: left;
+}
+.statColumn {
+	width									: 240px;
+	margin								: 0 5px;
+}
+.shortStatColumn {
+	width                 : 120px;
 	margin                : 0 5px;
 }
-.leftColumn {
-	float                 : left;
-}
-.rightColumn {
-	float                 : left;
-}
 .notesColumn {
-	margin-left           : 525px;
+	width									: 315px;
+	margin								: 0 5px;
+	margin-left						: 525px;
 }
 .powerColumn {
+	width									: 500px;
+	margin								: 0 5px;
+}
+.skillColumn {
 	width                 : 500px;
 	margin                : 0 5px;
 }
 
 #PlayerNotes textarea {
-	width                 : 100%;
-	height                : 300px;
-	margin                : 0px;
-	font-size             : .75em;
+	width									: 100%;
+	height								: 300px;
+	margin								: 0px;
+	font-size							: .75em;
 }
 
 #notes_dirty {
-	color                : maroon;
-	display              : none;
+	color								 : maroon;
+	display							 : none;
 }
 #updateNotes {
-	font-size            : .75em;
+	font-size						 : .75em;
 }
 
 #StatBlock {
-	font-size            : .75em;
-	line-height          : 1em;
+	font-size						 : .75em;
+	line-height					 : 1em;
 }
 div.statRow {
-	margin               : 3px 0;
+	margin							 : 3px 0;
 }
 div.statRow label.statLabel {
-	font-weight          : bold;
-	text-align           : right;
-	margin               : 0 10px 0 0;
-	width                : 100px;
-	display              : block;
-	float                : left;
+	font-weight					 : bold;
+	text-align					 : right;
+	margin							 : 0 10px 0 0;
+	width								 : 65px;
+	display							 : block;
+	float								 : left;
 }
 
 div.statRow input[type="text"] {
-	font-family           : Courier, monospaced;
-	margin               : 0px;
-	padding              : 0px;
-	border               : 1px solid #777;
+	font-family						: Courier, monospaced;
+	margin							 : 0px;
+	padding							 : 0px;
+	border							 : 1px solid #777;
 }
 div.statRow input[type="submit"] {
-	margin               : 0;
-	padding              : 0;
+	margin							 : 0;
+	padding							 : 0;
 }
 
 .abilityLabel {
-	font-weight           : bold;
+	font-weight						: bold;
 }
 
 .Dead {
-	color                 : #333;
+	color									: #333;
 }
 .Unconscious {
-	color                 : #777;
+	color									: #777;
 }
 .Bloodied {
-  color                 : #F00;
+	color									: #F00;
 }
 
 a.ajaxLink {
-	text-decoration       : none;
-	color                 : #223399;
+	text-decoration				: none;
+	color									: #223399;
 }
 a.ajaxLink:hover {
-	text-decoration       : underline;
+	text-decoration				: underline;
 }
 a.ajaxLink:active {
+	text-decoration				: none;
+	color									: #CCDDEE;
+}
+
+#PlayerTabs {
+	margin								: 5px 0;
+	padding								: 0;
+	border-bottom					: 1px solid #445566;
+}
+#PlayerTabs ul {
+	margin								: 0;
+	margin-top						: 5px;
+	padding								: 0;
+	text-align						: center;
+	margin-bottom         : 1px;
+}
+#PlayerTabs li {
+	list-style-type				: none;
+	display								: inline;
+	border                : 1px solid #999;
+	border-bottom         : none;
+	padding								: 3px 10px 0px 10px;
+	margin								: 0 3px;
+	background-color      : #dfdfdf;
+}
+#PlayerTabs li.selectedTab {
+	background-color      : inherit;
+	border-bottom         : 1px solid #fff;
+}
+#PlayerTabs li a {
 	text-decoration       : none;
-	color                 : #CCDDEE;
+}
+
+#PlayerSkillsFeats {
+	display               : none;
+}
+
+#SkillTable {
+	float                 : left;
+}
+#FeatList {
+	float                 : left;
 }

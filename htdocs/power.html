@@ -16,7 +16,7 @@ $power_list = Doctrine_Query::create()
 $i = 0;
 ?>
 
-<table id="PowerTable">
+<table id="PowerTable" class="rowBorder">
   <tbody>
     <tr class="row<?=$i;$i=($i+1)%2;?>">
       <th><a href="<?=SITE_URL;?>/<?=$char->id;?>/power/new"><img 

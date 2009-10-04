@@ -39,6 +39,9 @@ img.icon {
 td.icon,th.icon {
 	width                 : 20px;
 }
+th, li.header {
+	font-weight           : bold;
+}
 
 /* Clearfix "hack" */
 .clearfix:after {
@@ -68,6 +71,7 @@ td.icon,th.icon {
 .row1 {
 	background-color      : #D8D7C5;
 }
+
 
 /* Header Style */
 #Header {
@@ -286,4 +290,36 @@ li.noCheck div.listLabel {
 }
 #PowerTable tr.Used {
 	opacity               : .5;
+}
+
+#SkillTable {
+	width                 : 175px;
+	margin                : 0 5px;
+	margin                : 0px;
+	border-spacing        : 0;
+}
+#SkillTable tr {
+	margin                : 0;
+	padding               : 0;
+	height                : 20px;
+}
+#SkillTable td.totalBonus {
+	width                 : 20px;
+	padding-right         : 10px;
+	text-align            : right;
+}
+#SkillTable th {
+	text-align            : left;
+}
+#FeatList {
+	width                 : 275px;
+	padding               : 0;
+	margin                : 0 5px;
+}
+#FeatList li {
+	list-style-type       : none;
+	margin                : 0;
+	padding               : 0;
+	padding-left          : 10px;
+	height                : 20px;
 }

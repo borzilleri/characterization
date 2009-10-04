@@ -4,128 +4,218 @@ $js_include = array('playerProcess.js');
 include('autohandler.php');
 
 if( !$char ) {
-  loadPage('/');
+	loadPage('/');
 }
 
 $power_list = Doctrine_Query::create()
-  ->from('Power p')
-  ->where('p.player_id = ?', $char->id)
-  ->orderBy('p.item, p.use_type, p.level, p.name')
-  ->execute();
+	->from('Power p')
+	->where('p.player_id = ?', $char->id)
+	->orderBy('p.item, p.use_type, p.level, p.name')
+	->execute();
 ?>
 <div id="StatBlock">
-  <div class="leftColumn contentColumn">
-    <div class="statRow">
-      <label class="statLabel" for="player_health">Health:</label>
-      <div class="statInfo" id="player_health">
-        <span class="<?=$char->getStatusText();?>" id="health_cur">
-          <?=$char->health_cur;?></span>
-        &nbsp;/&nbsp;
-        <span id="health_max"><?=$char->health_max;?></span>
-        <span id="health_tmp"><?=($char->health_tmp?
-          "({$char->health_tmp})":'');?></span>
-        <span id="health_status" class="<?=$char->getStatusText();?>">
-          <?=($char->getStatusText()?"({$char->getStatusText()})":'');?></span>
-      </div>
-    </div>
-    
-    <div class="statRow">
-      <label class="statLabel" for="player_surges">Surges:</label>
-      <div class="statInfo" id="player_surges">
-        <span id="surges_cur"><?=$char->surges_cur;?></span>
-        &nbsp;/&nbsp;
-        <span id="surges_max"><?=$char->surges_max;?></span>
-        (<span id="surge_value"><?=$char->surge_value;?></span>)
-        <a href="#" id="surgePlus" class="ajaxLink">add</a>&nbsp;/
-        <a href="#" id="surgeMinus" class="ajaxLink">remove</a>        
-      </div>
-    </div>
-    <div class="statRow">
-      <label class="statLabel" for="player_apoints">AP:</label>
-      <div class="statInfo" id="player_apoints">
-        <span id="action_points"><?=$char->action_points;?></span>
-        <a href="#" id="apPlus" class="ajaxLink">add</a>&nbsp;/
-        <a href="#" id="apMinus" class="ajaxLink">remove</a>
-      </div>
-    </div>
+	<div class="statColumn floatColumn">
+		<div class="statRow">
+			<label class="statLabel" for="player_health">Health:</label>
+			<div class="statInfo" id="player_health">
+				<span class="<?=$char->getStatusText();?>" id="health_cur">
+					<?=$char->health_cur;?></span>
+				&nbsp;/&nbsp;
+				<span id="health_max"><?=$char->health_max;?></span>
+				<span id="health_tmp"><?=($char->health_tmp?
+					"({$char->health_tmp})":'');?></span>
+				<span id="health_status" class="<?=$char->getStatusText();?>">
+					<?=($char->getStatusText()?"({$char->getStatusText()})":'');?></span>
+			</div>
+		</div>
+		
+		<div class="statRow">
+			<label class="statLabel" for="player_surges">Surges:</label>
+			<div class="statInfo" id="player_surges">
+				<span id="surges_cur"><?=$char->surges_cur;?></span>
+				&nbsp;/&nbsp;
+				<span id="surges_max"><?=$char->surges_max;?></span>
+				(<span id="surge_value"><?=$char->surge_value;?></span>)
+				<a href="#" id="surgePlus" class="ajaxLink">add</a>&nbsp;/
+				<a href="#" id="surgeMinus" class="ajaxLink">remove</a>				 
+			</div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel" for="player_apoints">AP:</label>
+			<div class="statInfo" id="player_apoints">
+				<span id="action_points"><?=$char->action_points;?></span>
+				<a href="#" id="apPlus" class="ajaxLink">add</a>&nbsp;/
+				<a href="#" id="apMinus" class="ajaxLink">remove</a>
+			</div>
+		</div>
 
-    <div class="statRow">
-      <label class="statLabel" for="player_mi_uses">Item Uses:</label>
-      <div class="statInfo" id="player_mi_uses">
-        <span id="magic_item_uses"><?=$char->magic_item_uses;?></span>
-        <a href="#" id="miPlus" class="ajaxLink">add</a>&nbsp;/
-        <a href="#" id="miMinus" class="ajaxLink">remove</a>
-      </div>
-    </div>
+		<div class="statRow">
+			<label class="statLabel" for="player_mi_uses">Item Uses:</label>
+			<div class="statInfo" id="player_mi_uses">
+				<span id="magic_item_uses"><?=$char->magic_item_uses;?></span>
+				<a href="#" id="miPlus" class="ajaxLink">add</a>&nbsp;/
+				<a href="#" id="miMinus" class="ajaxLink">remove</a>
+			</div>
+		</div>
 
-    <div class="statRow">
-      <label class="statLabel" for="player_rest">Rest:</label>
-      <div class="statInfo" id="player_rest">
-        <a href="#" id="shortRest" class="ajaxLink">short</a>&nbsp;/
-        <a href="#" id="extendedRest" class="ajaxLink">extended</a>
-      </div>
-    </div>
-  </div><!-- end div.leftColumn -->
-  
-  <div class="rightColumn contentColumn">
-    <div class="statRow">
-      <label class="statLabel">Damage:</label>
-      <div class="statInfo">
-        <input type="text" id="damage_value" value="" size="3" maxlength="3" />
-        <a href="#" id="takeDamage" class="ajaxLink">Damage</a>
-      </div>
-    </div>
-    <div class="statRow">
-      <label class="statLabel">Surges:</label>
-      <div class="statInfo">
-        <input type="text" id="surge_bonus" size="3" maxlength="3" value="" />
-        <a href="#" id="spendSurge" class="ajaxLink">Use Surge</a>
-      </div>
-    </div>
-    <div class="statRow">
-      <label class="statLabel">Temp Health:</label>
-      <div class="statInfo">
-        <input type="text" id="health" value="" size="3" maxlength="3" />
-        <a href="#" id="tempHealth" class="ajaxLink">Temp Health</a>
-      </div>
-    </div>
-  </div><!-- end div.rightColumn -->
+		<div class="statRow">
+			<label class="statLabel" for="player_rest">Rest:</label>
+			<div class="statInfo" id="player_rest">
+				<a href="#" id="shortRest" class="ajaxLink">short</a>&nbsp;/
+				<a href="#" id="extendedRest" class="ajaxLink">extended</a>
+			</div>
+		</div>
+	</div><!-- end div.statColumn -->
+	
+	<div class="statColumn floatColumn">
+		<div class="statRow">
+			<label class="statLabel">Damage:</label>
+			<div class="statInfo">
+				<input type="text" id="damage_value" value="" size="3" maxlength="3" />
+				<a href="#" id="takeDamage" class="ajaxLink">Damage</a>
+			</div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">Surges:</label>
+			<div class="statInfo">
+				<input type="text" id="surge_bonus" size="3" maxlength="3" value="" />
+				<a href="#" id="spendSurge" class="ajaxLink">Use Surge</a>
+			</div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">Temp Health:</label>
+			<div class="statInfo">
+				<input type="text" id="health" value="" size="3" maxlength="3" />
+				<a href="#" id="tempHealth" class="ajaxLink">Temp Health</a>
+			</div>
+		</div>
+	</div><!-- end div.statColumn -->
+	
+	<div class="shortStatColumn floatColumn">
+		<div class="statRow">
+			<label class="statLabel">Str:</label>
+			<div class="statInfo">
+				<?=$char->strength;?> (<?=$char->getMod('str',1,1);?>)</div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">Con:</label>
+			<div class="statInfo">
+				<?=$char->constitution;?> (<?=$char->getMod('con',1,1);?>)</div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">Dex:</label>
+			<div class="statInfo">
+				<?=$char->dexterity;?> (<?=$char->getMod('dex',1,1);?>)</div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">AC:</label>
+			<div class="statInfo"><?=$char->getDefense('ac');?></div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">Fort:</label>
+			<div class="statInfo"><?=$char->getDefense('fort');?></div>
+		</div>
+	</div><!-- end div.StatColumn -->
+	
+	<div class="shortStatColumn floatColumn">
+		<div class="statRow">
+			<label class="statLabel">Int:</label>
+			<div class="statInfo">
+				<?=$char->intelligence;?> (<?=$char->getMod('int',1,1);?>)</div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">Wis:</label>
+			<div class="statInfo">
+				<?=$char->wisdom;?> (<?=$char->getMod('wis',1,1);?>)</div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">Cha:</label>
+			<div class="statInfo">
+				<?=$char->charisma;?> (<?=$char->getMod('cha',1,1);?>)</div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">Reflex:</label>
+			<div class="statInfo"><?=$char->getDefense('ref');?></div>
+		</div>
+		<div class="statRow">
+			<label class="statLabel">Will:</label>
+			<div class="statInfo"><?=$char->getDefense('will');?></div>
+		</div>
+	</div><!-- end div.statColumn -->
+	
+	<div class="clear"></div>
 </div><!-- end div#StatBlock -->
 
-<hr class="clear" />
-
-<div id="PlayerPowers" class="powerColumn rightColumn">
-  <table id="PowerTable">
-    <tbody>
-    <? foreach($power_list as $p): ?>
-      <tr id="r<?=$p->id;?>" class="powerRow <?=$p->item?'Item':'';?> 
-        <?=$p->getUseTypeDisplay(true);?>-bg <?=$p->getUsageStatus();?>">
-        <td class="icon">
-        <? if(!$p->isUseType(Power::POWER_ATWILL)): ?>
-            <img class="power_icon icon" title="Use/Refresh" id="u<?=$p->id;?>" 
-              alt="[*]" src="<?=MEDIA_URL.$p->getUsageIcon();?>" />
-        <? endif; ?>
-        </td>
-        <td class="powerName"><?=$p->name;?></td>
-        <td class="powerClass"><?=$p->getClassDisplay();?></td>
-        <td class="powerLevel"><?=$p->level;?></td>
-        <td class="icon"><img id="v<?=$p->id;?>" class="power_view icon"
-          title="View <?=$p->name;?>" alt="[v]"
-          src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png"/></td>
-      </tr>
-    <? endforeach; ?>
-    </tbody>
-  </table>
+<div id="PlayerTabs">
+	<ul>
+		<li id="powerTab" class="selectedTab">
+			<a href="javascript:;" id="powerTabLink">Powers<a/></li>
+		<li id="skillTab">
+			<a href="javascript:;" id="skillTabLink">Skills &amp; Feats</a></li>
+	<? if($char->hasSpellbook()): ?>
+		<li id="sbookTab">
+			<a href="javascript:;" id="sbookTabLink">Spell Book [NYI]</a></li>
+	<? endif; ?>
+	</ul>
 </div>
 
-<div id="PlayerNotes" class="notesColumn contentColumn">
-  <div>
-    <a href="#" id="updateNotes" class="ajaxLink">save notes</a>
-    <span id="notes_dirty" 
-      title="Unsaved changes, click 'save notes' to save">*</span>
-  </div>
-  <textarea name="notes" id="player_notes" 
-    cols="25" rows="5"><?=$char->notes;?></textarea>
+<div id="PlayerPowers" class="powerColumn floatColumn">
+	<table id="PowerTable">
+		<tbody>
+		<? foreach($power_list as $p): ?>
+			<tr id="r<?=$p->id;?>" class="powerRow <?=$p->item?'Item':'';?> 
+				<?=$p->getUseTypeDisplay(true);?>-bg <?=$p->getUsageStatus();?>">
+				<td class="icon">
+				<? if(!$p->isUseType(Power::POWER_ATWILL)): ?>
+						<img class="power_icon icon" title="Use/Refresh" id="u<?=$p->id;?>" 
+							alt="[*]" src="<?=MEDIA_URL.$p->getUsageIcon();?>" />
+				<? endif; ?>
+				</td>
+				<td class="powerName"><?=$p->name;?></td>
+				<td class="powerClass"><?=$p->getClassDisplay();?></td>
+				<td class="powerLevel"><?=$p->level;?></td>
+				<td class="icon"><img id="v<?=$p->id;?>" class="power_view icon"
+					title="View <?=$p->name;?>" alt="[v]"
+					src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png"/></td>
+			</tr>
+		<? endforeach; ?>
+		</tbody>
+	</table>
+</div>
+
+<div id="PlayerSkillsFeats" class="skillColumn floatColumn">
+	<table id="SkillTable" class="rowBorder">
+		<tbody>
+			<tr class="row0">
+				<th colspan="2">Skills</th>
+			</tr>
+		<? $i=1; foreach($char->Skills as $s): ?>
+			<tr id="s<?=$s->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
+				<td class="totalBonus"><?=$s->getMod();?></td>
+				<td class="name"><?=$s->name;?></td>
+			</tr>
+		<? endforeach; ?>
+		</tbody>
+	</table>
+	
+	<ul id="FeatList" class="rowBorder">
+		<li class="row0 header">Feats</li>
+	<? $i=1; foreach($char->Feats as $f): ?>
+		<li id="f<?=$f->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
+			<?=$f->name;?>
+		</li>
+	<? endforeach; ?>
+	</ul>
+</div>
+
+<div id="PlayerNotes" class="notesColumn">
+	<div>
+		<a href="#" id="updateNotes" class="ajaxLink">save notes</a>
+		<span id="notes_dirty" 
+			title="Unsaved changes, click 'save notes' to save">*</span>
+	</div>
+	<textarea name="notes" id="player_notes" 
+		cols="25" rows="5"><?=$char->notes;?></textarea>
 </div>
 
 <?php include('footer.php'); ?>

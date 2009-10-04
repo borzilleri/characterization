@@ -4,36 +4,49 @@ Archetype:
     health_first: 14
     health_level: 6
     surges: 7
+    fort: 1
+    ref: 1
+    will: 1
   class_2:
     name: Cleric
     health_first: 12
     health_level: 5
     surges: 7
+    will: 2
   class_3:
     name: Barbarian
     health_first: 15
     health_level: 6
     surges: 8
+    fort: 2
   class_4:
     name: Bard
     health_first: 12
     health_level: 5
     surges: 7
+    ref: 1
+    will: 1
   class_5:
     name: Druid
     health_first: 12
     health_level: 5
     surges: 7
+    ref: 1
+    will: 1
   class_6:
     name: Fighter
     health_first: 15
     health_level: 6
     surges: 9
+    fort: 2
   class_7:
     name: Invoker
     health_first: 10
     health_level: 4
     surges: 6
+    fort: 1
+    ref: 1
+    will: 1
   class_8:
     name: Monk
     health_first: 12
@@ -44,43 +57,59 @@ Archetype:
     health_first: 15
     health_level: 6
     surges: 10
+    fort: 1
+    ref: 1
+    will: 1
   class_10:
     name: Ranger
     health_first: 12
     health_level: 5
     surges: 6
+    fort: 1
+    ref: 1
   class_11:
     name: Rogue
     health_first: 12
     health_level: 5
     surges: 6
+    ref: 2
   class_12:
     name: Shaman
     health_first: 12
     health_level: 5
     surges: 7
+    fort: 1
+    will: 1
   class_13:
     name: Sorcerer
     health_first: 12
     health_level: 5
     surges: 6
+    will: 2
   class_14:
     name: Warden
     health_first: 17
     health_level: 7
     surges: 9
+    fort: 1
+    will: 1
   class_15:
     name: Warlock
     health_first: 12
     health_level: 5
     surges: 6
+    ref: 1
+    will: 1
   class_16:
     name: Warlord
     health_first: 12
     health_level: 5
     surges: 7
+    fort: 1
+    will: 1
   class_17:
     name: Wizard
     health_first: 10
     health_level: 4
     surges: 6
+    will: 2
