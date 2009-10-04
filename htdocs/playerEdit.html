@@ -72,6 +72,18 @@ if( 'add' == $action ) {
 	</div>
 
 	<div class="formRow optional">
+		<label for="health_bonus"
+			class="<?=$char->hasError('health_bonus',$form_key)?'error':'';?>"
+			>Bonus Health: <span class="help" title="Bonus Health: Optional. If you have an ability that grants additional health (e.g. Toughness), enter the total extra health you get here.">?</span>
+		</label>
+		<div class="field">
+			<input type="text" size="5" maxlength="4" 
+				id="health_bonus" name="health_bonus" 
+				value="<?=$char->getCached('health_bonus', $form_key);?>" />
+		</div>
+	</div>
+
+	<div class="formRow optional">
 		<label for="surges_bonus"
 			class="<?=$char->hasError('surges_bonus',$form_key)?'error':'';?>"
 			>Bonus Surges: <span class="help" title="Bonus Surges: Optional. If you have an ability that grants additional surges, enter the total extra surges you have here.">?</span>
@@ -106,7 +118,21 @@ if( 'add' == $action ) {
 				value="<?=$char->getCached('general_attack',$form_key);?>" />
 		</div>
 	</div>
-	
+
+	<div class="formRow optional">
+		<label for="ac"
+			class="<?=$char->hasError('ac',$form_key)?'error':'';?>"
+			>Armor Class: <span class="help" title="Armor Class: Armor and any other bonuses that apply to your armor class; NOT including level or ability score.">?</span>
+		</label>
+		<div class="field">
+			<input type="text" size="3" maxlength="3" id="ac" name="ac"
+				value="<?=$char->getCached('ac',$form_key);?>" />
+			<label for="ac_heavy">Heavy: <span class="help" title="Heavy Armor: Check this if you are wearing heavy armor.">?</span></label>
+			<input type="checkbox" id="ac_heavy" name="ac_heavy" value="1" 
+				<?=$char->getCached('ac_heavy',$form_key)?'checked="checked"':''?> />			
+		</div>
+	</div>
+		
 </div><!-- end div.leftColumn -->
 
 <div class="formColumn rightColumn">
@@ -168,33 +194,43 @@ if( 'add' == $action ) {
 	</div>
 
 	<div class="formRow optional">
-		<label for="health_bonus"
-			class="<?=$char->hasError('health_bonus',$form_key)?'error':'';?>"
-			>Bonus Health: <span class="help" title="Bonus Health: Optional. If you have an ability that grants additional health (e.g. Toughness), enter the total extra health you get here.">?</span>
+		<label for="fort"
+			class="<?=$char->hasError('fort',$form_key)?'error':'';?>"
+			>Fort: <span class="help" title="Bonus Fortitude: Optional. Any bonuses that apply to your fortitude defense, NOT including level, ability score, or class.">?</span>
 		</label>
 		<div class="field">
 			<input type="text" size="5" maxlength="4" 
-				id="health_bonus" name="health_bonus" 
-				value="<?=$char->getCached('health_bonus', $form_key);?>" />
+				id="fort" name="fort" 
+				value="<?=$char->getCached('fort', $form_key);?>" />
+		</div>
+	</div>
+	
+	<div class="formRow optional">
+		<label for="ref"
+			class="<?=$char->hasError('ref',$form_key)?'error':'';?>"
+			>Ref: <span class="help" title="Bonus Reflex: Optional. Any bonuses that apply to your reflex defense, NOT including level, ability score, or class.">?</span>
+		</label>
+		<div class="field">
+			<input type="text" size="5" maxlength="4" 
+				id="ref" name="ref" 
+				value="<?=$char->getCached('ref', $form_key);?>" />
+		</div>
+	</div>
+	<div class="formRow optional">
+		<label for="will"
+			class="<?=$char->hasError('will',$form_key)?'error':'';?>"
+			>Will: <span class="help" title="Bonus Will: Optional. Any bonuses that apply to your wil defense, NOT including level, ability score, or class.">?</span>
+		</label>
+		<div class="field">
+			<input type="text" size="5" maxlength="4" 
+				id="will" name="will" 
+				value="<?=$char->getCached('will', $form_key);?>" />
 		</div>
 	</div>
 	
 </div><!-- end div.rightColumn -->
 
-<div class="clear"></div>
-
-<!--
-main hand name
-main hand attack/damage bonus
-main hand dice
-
-off hand name
-off hand attack/damage bonus
-off hand dice
-
-implement name
-implement attack/damage bonus
--->
+<hr class="clear"/>
 
 <div class="formColumn leftColumn">
 	

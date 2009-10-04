@@ -380,6 +380,50 @@ class Player extends BasePlayer
 			$this->surge_value_bonus = (int)$_POST['surge_value_bonus'];
 		}
 		
+		// Fortitude
+		$cache['fort'] = $_POST['fort'];
+		if( !is_numeric($_POST['fort']) ) {
+			$msg->add('Fort bonus must be an integer.', Message::WARNING);
+			$cache['error'][] = 'fort';
+		}
+		else {
+			$this->fort = (int)$_POST['fort'];
+		}
+		// Reflex
+		$cache['ref'] = $_POST['ref'];
+		if( !is_numeric($_POST['ref']) ) {
+			$msg->add('Ref bonus must be an integer.', Message::WARNING);
+			$cache['error'][] = 'ref';
+		}
+		else {
+			$this->ref = (int)$_POST['ref'];
+		}
+		// Will
+		$cache['will'] = $_POST['will'];
+		if( !is_numeric($_POST['will']) ) {
+			$msg->add('Will bonus must be an integer.', Message::WARNING);
+			$cache['error'][] = 'will';
+		}
+		else {
+			$this->will = (int)$_POST['will'];
+		}
+		
+		// Armor Class
+		$cache['ac'] = $_POST['ac'];
+		if( !is_numeric($_POST['ac']) ) {
+			$msg->add('Armor Class bonus must be an integer.', Message::WARNING);
+			$cache['error'][] = 'ac';
+		}
+		else {
+			$this->ac = (int)$_POST['ac'];
+		}
+		
+		// Heavy Armor
+		$this->ac_heavy = !empty($_POST['ac_heavy']);
+
+		
+		// End Model Data Updates
+		
 		// Update the form cache in the session if necessary.
 		if( !empty($_POST['form_key']) ) {
 			if( empty($cache['error']) ) {
@@ -569,16 +613,19 @@ class Player extends BasePlayer
 			case 'fort':
 				$result += $this->fort;
 				$result += max($this->getMod('str'),$this->getMod('con'));
+				$result += $this->Archetype->fort;
 				break;
 			case 'reflex':
 			case 'ref':
 				$result += $this->ref;
 				$result += max($this->getMod('dex'),$this->getMod('int'));
+				$result += $this->Archetype->ref;
 				break;
 			case 'willpower':
 			case 'will':
 				$result += $this->will;
 				$result += max($this->getMod('wis'),$this->getMod('cha'));
+				$result += $this->Archetype->will;
 				break;
 			case 'armor class':
 			case 'ac':

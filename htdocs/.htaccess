@@ -19,6 +19,8 @@ RewriteRule ^import$ import.html
 RewriteRule ^upload$ importProcess.php?action=upload
 RewriteRule ^([0-9]+)/delete$ playerEdit.html?action=delete&id=$1
 RewriteRule ^([0-9]+)/edit$ playerEdit.html?action=edit&id=$1
+RewriteRule ^([0-9]+)/skills$ skillEdit.html?id=$1
+RewriteRule ^([0-9]+)/skills$ featEdit.html?id=$1
 RewriteRule ^([0-9]+)/power$ power.html?id=$1
 RewriteRule ^([0-9]+)/power/new$ powerEdit.html?action=add&id=$1
 RewriteRule ^([0-9]+)/power/([0-9]+)/edit$ powerEdit.html?action=edit&id=$1&p_id=$2
