@@ -202,7 +202,8 @@ $power_list = Doctrine_Query::create()
 		<li class="row0 header">Feats</li>
 	<? $i=1; foreach($char->Feats as $f): ?>
 		<li id="f<?=$f->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
-			<?=$f->name;?>
+			<img src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png"
+				class="icon feat_view" title="<?=$f->description;?>" /><?=$f->name;?>
 		</li>
 	<? endforeach; ?>
 	</ul>

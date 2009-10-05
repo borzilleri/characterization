@@ -237,4 +237,20 @@ $(window).load(function() {
 			}
 		}); // End qTip()
 	}); //end each()
+	
+	$('img.feat_view').each(function(i) {
+		$(this).qtip({
+			show: {
+				solo: true,
+				when: {
+					event: 'click'
+				}
+			},
+			hide: {
+				when: {
+					event: 'unfocus'
+				}
+			}
+		});
+	});
 }); //end ready()
