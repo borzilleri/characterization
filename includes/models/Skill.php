@@ -13,17 +13,109 @@
 class Skill extends BaseSkill {
 	const TRAINED_BONUS = 5;
 	
+	public function updateFromForm() {
+		global $msg;
+		$cache = array();
+		$cache['error'] = array();
+		
+		// Skill Name
+		$cache['name'] = $_POST['name'];
+		if( empty($_POST['name']) ) {
+			$msg->add('Skill name may not be blank.', Message::WARNING);
+			$cache['error'][] = 'name';
+		}
+		else {
+			$this->name = $_POST['name'];
+		}
+		
+		// Skill Ability
+		if(empty($_POST['ability']) || !$this->isValidAbility($_POST['ability'])) {
+			$msg->add('Invalid ability score.', Message::WARNING);
+			$cache['error'][] = 'ability';
+		}
+		else {
+			$this->ability = ucwords($_POST['ability']);
+		}
+		
+		// Skill Bonus
+		$cache['bonus'] = $_POST['bonus'];
+		if( !empty($_POST['bonus']) && !is_numeric($_POST['bonus']) ) {
+			$msg->add('Skill Bonus must be an integer.', Message::WARNING);
+			$cache['error'][] = 'bonus';
+		}
+		else {
+			$this->bonus = (int)$_POST['bonus'];
+		}
+		
+		$this->trained = !empty($_POST['trained']);
+		
+		// End Model Data Updates
+		
+		// Update the form cache in the session if necessary.
+		if( !empty($_POST['form_key']) ) {
+			if( empty($cache['error']) ) {
+				unset($_SESSION[$_POST['form_key']]);
+			}
+			else {
+				$cache['form_key'] = $_POST['form_key'];
+				$_SESSION['form_cache'] = $cache;
+			}
+		}
+
+		return empty($cache['error']);
+	}
+	
 	/**
 	 *
 	 */
 	public function getMod($withSign = true) {
-		$mod = $this->Player->getMod($this->ability) +
-			($this->trained ? self::TRAINED_BONUS : 0) +
-			($this->bonus);
+		$mod = $this->Player->getMod($this->ability,1)
+			+ ($this->trained ? self::TRAINED_BONUS : 0)
+			+ ($this->bonus);
 		
 		if( 0 <= $mod && $withSign ) {
 			$mod = '+'.$mod;
 		}
 		return $mod;
+	}
+	
+	public function isValidAbility($abl) {
+		switch(strtolower($abl)) {
+			case 'str':
+			case 'dex':
+			case 'con':
+			case 'int':
+			case 'wis':
+			case 'cha':
+				return true;
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
+	
+	/**
+	 * Retrieve a cached value for a property if one exists. 
+	 *
+	 * If a field is passed in that is not contained in the object,
+	 * we return false.
+	 *
+	 * @param string $field Property name to retrieve
+	 * @param string $form_key Key name for the form cache to check
+	 * @return mixed The cached value, or the internal value if no cached value
+	 */
+	public function getCached($field, $form_key = null) {
+		if( $this->contains($field) ) {
+			if( !empty($form_key) && !empty($_SESSION['form_cache']) &&
+					$_SESSION['form_cache']['form_key'] == $form_key &&
+					array_key_exists($field, $_SESSION['form_cache']) ) {
+				return $_SESSION['form_cache'][$field];
+			}
+			else {
+				return $this->$field;
+			}
+		}
+		return false;
 	}
 }

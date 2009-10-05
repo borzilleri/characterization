@@ -30,7 +30,7 @@ a:active {
 	text-decoration				: none;
 }
 
-img.icon {
+img.icon, input[type="image"].icon {
 	height								: 16px;
 	width									: 16px;
 	border								: 0;
@@ -293,7 +293,6 @@ li.noCheck div.listLabel {
 }
 
 #SkillTable {
-	width									: 175px;
 	margin								: 0 5px;
 	margin								: 0px;
 	border-spacing				: 0;
@@ -303,11 +302,17 @@ li.noCheck div.listLabel {
 	padding								: 0;
 	height								: 20px;
 }
+#SkillTable td {
+	padding               : 0 5px;
+}
 #SkillTable td.totalBonus {
 	width									: 20px;
-	padding-right					: 10px;
 	text-align						: right;
 }
+#SkillTable td.skillBonus, #SkillTable td.skillTrained {
+	text-align            : center;
+}
+
 #SkillTable th {
 	text-align						: left;
 }

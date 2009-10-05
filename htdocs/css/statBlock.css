@@ -125,6 +125,7 @@ a.ajaxLink:active {
 }
 
 #SkillTable {
+	width									: 175px;
 	float									: left;
 }
 #FeatList {
