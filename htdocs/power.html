@@ -16,6 +16,7 @@ $power_list = Doctrine_Query::create()
 $i = 0;
 ?>
 
+<form method="post" action="<?=SITE_URL;?>/<?=$char->id;?>/power/delete">
 <table id="PowerTable" class="rowBorder">
 	<tbody>
 		<tr class="row<?=$i;$i=($i+1)%2;?>">
@@ -31,22 +32,28 @@ $i = 0;
 		</tr>
 	<? foreach($power_list as $p): ?>
 		<tr class="powerRow row<?=$i;$i=($i+1)%2;?>">
-			<td class="icon"><a 
-				href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit"><img 
-				alt="edit" title="Edit Power" class="icon"
-				src="<?=MEDIA_URL;?>/images/icon_gear.png" /></a></td>
+			<td class="icon">
+				<a href="<?=SITE_URL;?>/<?=$char->id;?>/power/<?=$p->id;?>/edit">
+				<img alt="edit" title="Edit Power" class="icon"
+					src="<?=MEDIA_URL;?>/images/icon_gear2.png" /></a>
+			</td>
 			<td class="powerName"><span class="power_name"><?=$p->name;?></span></td>
 			<td class="powerUsage">
 				<span class="use_type <?=$p->getUseTypeDisplay();?>-text"
 				><?=$p->getUseTypeDisplay();?></a></td>
 			<td class="powerLevel"><span class="level"><?=$p->level;?></span></td>
-			<td><img alt="view" title="View Power" 
-				class="power_view icon" id="v<?=$p->id;?>" 
-				src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" /></td>
+			<td><input type="image" alt="delete" title="Delete Power"
+				class="icon powerDelete" name="p_id" value="<?=$p->id;?>"
+				src="<?=MEDIA_URL;?>/images/icon_skull-n-crossbones.png" />
+				<img alt="view" title="View Power"
+					class="power_view icon" id="v<?=$p->id;?>" 
+					src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" />
+			</td>
 		</tr>
 	<? endforeach; ?>
 	</tbody>
 </table>
+</form>
 
 <div id="PowerPreview"></div>
 

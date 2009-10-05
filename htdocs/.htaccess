@@ -27,6 +27,7 @@ RewriteRule ^([0-9]+)/power$ power.html?id=$1
 RewriteRule ^([0-9]+)/power/new$ powerEdit.html?action=add&id=$1
 RewriteRule ^([0-9]+)/power/([0-9]+)/edit$ powerEdit.html?action=edit&id=$1&p_id=$2
 RewriteRule ^([0-9]+)/power/save$ powerEditProcess.php?action=save&id=$1
+RewriteRule ^([0-9]+)/power/delete powerEditProcess.php?action=delete&id=$1
 RewriteRule ^([0-9]+)/?$ player.html?id=$1
 
 

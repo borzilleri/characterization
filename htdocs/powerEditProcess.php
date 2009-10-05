@@ -21,6 +21,16 @@ switch($action) {
 			$target_uri = "/{$char->id}/power";
 		}
 		break;
+	case 'delete':
+		$power = $char->Powers->get(@$_POST['p_id']);
+		if( $power->exists() ) {
+			$power->delete();			
+		}
+		else {
+			$msg->add("Unknown power {$p_id}.", Message::ERROR);
+		}
+		$target_uri = "/{$char->id}/power";
+		break;
 	default:
 		$target_uri = "/{$char->id}/power/new";
 		break;

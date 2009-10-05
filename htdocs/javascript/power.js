@@ -184,6 +184,14 @@ function sortPowerTable(link) {
 }
 
 $(window).load(function() {
+	$('.sort').click(function() { sortPowerTable(this) });
+	$('#PowerTable input.powerDelete').click(function() {
+		var power = $(this).parent().parent().find('span.power_name').text();
+		return confirm('Really delete power "'+power+'"?');
+	});
+
+	
+	//qTip
 	$('img.power_view').each(function(i) {
 		var id = this.id.substring(1);
 		$(this).qtip({
@@ -226,6 +234,4 @@ $(window).load(function() {
 			}
 		}); // End qTip()
 	}); //end each()
-
-	$('.sort').click(function() { sortPowerTable(this) });
 });
