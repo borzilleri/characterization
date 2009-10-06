@@ -1,0 +1,30 @@
+<?php
+$form_key = 'skill_edit_'.(empty($_REQUEST['p_id'])?0:$_REQUEST['p_id']);
+$css_include = array('forms.css');
+include('autohandler.php');
+
+if( !$char || !$char->exists() ) {
+	loadPage('/');
+}
+
+$feat = new Feat();
+?>
+
+<table id="FeatTable" class="rowBorder">
+	<thead>
+		<tr class="row0">
+			<th colspan="2">Feats</th>
+		</tr>
+	</thead>
+	<tbody>
+	<? $i=1; foreach($char->Feats as $f): ?>
+		<tr id="f<?=$f->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
+			<td class="icon">
+				<img title="<?=$f->description;?>" class="icon feat_view"
+					src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" /></td>
+			<td><?=$f->name;?></td>
+		</tr>
+	<? endforeach; ?>
+	</tbody>
+</table>
+<?php include('footer.php'); ?>

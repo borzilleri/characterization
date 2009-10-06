@@ -292,17 +292,17 @@ li.noCheck div.listLabel {
 	opacity								: .5;
 }
 
-#SkillTable {
+#SkillTable, #FeatTable {
 	margin								: 0 5px;
-	margin								: 0px;
+	padding               : 0;
 	border-spacing				: 0;
 }
-#SkillTable tr {
+#SkillTable tr, #FeatTable tr {
 	margin								: 0;
 	padding								: 0;
 	height								: 20px;
 }
-#SkillTable td {
+#SkillTable td, #FeatTable td {
 	padding               : 0 5px;
 }
 #SkillTable td.totalBonus {
@@ -313,17 +313,10 @@ li.noCheck div.listLabel {
 	text-align            : center;
 }
 
-#SkillTable th {
+#SkillTable th, #FeatTable th {
 	text-align						: left;
 }
-#FeatList {
-	padding								: 0;
-	margin								: 0 5px;
-}
-#FeatList li {
-	list-style-type				: none;
-	margin								: 0;
-	padding								: 0;
-	padding-left					: 10px;
-	height								: 20px;
+#SkillTable tbody, #FeatTable tbody {
+	border                : 1px solid #D8D7C5;
+	boder-top             : 0;
 }

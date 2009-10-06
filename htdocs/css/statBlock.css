@@ -128,11 +128,9 @@ a.ajaxLink:active {
 	width									: 175px;
 	float									: left;
 }
-#FeatList {
+#FeatTable {
 	width                 : 315px;
-	float									: left;
 }
-#FeatList .icon {
-	margin-right          : 5px;
+#FeatTable .icon {
 	cursor                : pointer;
 }

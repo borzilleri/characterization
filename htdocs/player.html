@@ -185,10 +185,12 @@ $power_list = Doctrine_Query::create()
 
 <div id="PlayerSkillsFeats" class="skillColumn floatColumn">
 	<table id="SkillTable" class="rowBorder">
-		<tbody>
+		<thead>
 			<tr class="row0">
 				<th colspan="2">Skills</th>
 			</tr>
+		</thead>
+		<tbody>
 		<? $i=1; foreach($char->Skills as $s): ?>
 			<tr id="s<?=$s->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
 				<td class="totalBonus"><?=$s->getMod();?></td>
@@ -198,15 +200,23 @@ $power_list = Doctrine_Query::create()
 		</tbody>
 	</table>
 	
-	<ul id="FeatList" class="rowBorder">
-		<li class="row0 header">Feats</li>
-	<? $i=1; foreach($char->Feats as $f): ?>
-		<li id="f<?=$f->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
-			<img src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png"
-				class="icon feat_view" title="<?=$f->description;?>" /><?=$f->name;?>
-		</li>
-	<? endforeach; ?>
-	</ul>
+	<table id="FeatTable" class="rowBorder">
+		<thead>
+			<tr class="row0">
+				<th colspan="2">Feats</th>
+			</tr>
+		</thead>
+		<tbody>
+		<? $i=1; foreach($char->Feats as $f): ?>
+			<tr id="f<?=$f->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
+				<td class="icon">
+					<img title="<?=$f->description;?>" class="icon feat_view"
+						src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" /></td>
+				<td><?=$f->name;?></td>
+			</tr>
+		<? endforeach; ?>
+		</tbody>
+	</table>
 </div>
 
 <div id="PlayerNotes" class="notesColumn">

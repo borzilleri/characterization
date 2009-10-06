@@ -14,7 +14,7 @@ $skill = new Skill();
 <form method="post" action="<?=SITE_URL;?>/<?=$char->id;?>/skills/save">
 <input type="hidden" name="s_id" id="s_id" value="" />
 <table id="SkillTable">
-	<tbody>
+	<thead>
 		<tr class="row0">
 			<td colspan="2">&nbsp;</td>
 			<th><label for="name">Skill Name</label></th>
@@ -22,7 +22,8 @@ $skill = new Skill();
 			<th><label for="bonus">Misc</label></th>
 			<th colspan="2"><label for="trained">Train</label></th>
 		</tr>
-
+	</thead>
+	<tbody>
 		<tr class="row0" id="blankFormRow">
 			<td class="icon"><input type="image" class="icon" alt="submit"
 				src="<?=MEDIA_URL;?>/images/icon_medical.png" /></td>
