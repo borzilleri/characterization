@@ -149,7 +149,7 @@ $power_list = Doctrine_Query::create()
 <div id="PlayerTabs">
 	<ul>
 		<li id="powerTab" class="selectedTab">
-			<a href="javascript:;" id="powerTabLink">Powers<a/></li>
+			<a href="javascript:;" id="powerTabLink">Powers</a></li>
 		<li id="skillTab">
 			<a href="javascript:;" id="skillTabLink">Skills &amp; Feats</a></li>
 	<? if($char->hasSpellbook()): ?>
@@ -210,7 +210,7 @@ $power_list = Doctrine_Query::create()
 		<? $i=1; foreach($char->Feats as $f): ?>
 			<tr id="f<?=$f->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
 				<td class="icon">
-					<img title="<?=$f->description;?>" class="icon feat_view"
+					<img title="<?=$f->description;?>" class="icon feat_view" alt="view"
 						src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" /></td>
 				<td><?=$f->name;?></td>
 			</tr>
