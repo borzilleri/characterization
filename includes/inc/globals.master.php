@@ -13,6 +13,7 @@
 Doctrine::getTable('Power')->setAttribute(Doctrine::ATTR_COLL_KEY,'id');
 Doctrine::getTable('Keyword')->setAttribute(Doctrine::ATTR_COLL_KEY,'id');
 Doctrine::getTable('Skill')->setAttribute(Doctrine::ATTR_COLL_KEY,'name');
+Doctrine::getTable('Feat')->setAttribute(Doctrine::ATTR_COLL_KEY,'id');
 
 /**#@+
  * Constants

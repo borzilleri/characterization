@@ -1,5 +1,6 @@
 <?php
-$form_key = 'skill_edit_'.(empty($_REQUEST['p_id'])?0:$_REQUEST['p_id']);
+$skill_form_key = 'skill_edit_0';
+$feat_form_key = 'feat_edit_0';
 $css_include = array('forms.css');
 $js_include = array('skills.js');
 include('autohandler.php');
@@ -8,70 +9,133 @@ if( !$char || !$char->exists() ) {
 	loadPage('/');
 }
 
-$skill = new Skill();
 ?>
-
-<form method="post" action="<?=SITE_URL;?>/<?=$char->id;?>/skills/save">
-<input type="hidden" name="s_id" id="s_id" value="" />
-<table id="SkillTable">
-	<thead>
-		<tr class="row0">
-			<td colspan="2">&nbsp;</td>
-			<th><label for="name">Skill Name</label></th>
-			<th><label for="ability">Ability</label></th>
-			<th><label for="bonus">Misc</label></th>
-			<th colspan="2"><label for="trained">Train</label></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr class="row0" id="blankFormRow">
-			<td class="icon"><input type="image" class="icon" alt="submit"
-				src="<?=MEDIA_URL;?>/images/icon_medical.png" /></td>
-			<td class="skillName" colspan="2">
-				<input type="text" id="name" name="name" size="20" maxlength="255" 
-					value=""/>
-			</td>
-			<td class="skillAbility">
-				<select id="ability" name="ability">
-					<option value="Str">Str</option>
-					<option value="Con">Con</option>
-					<option value="Dex">Dex</option>
-					<option value="Int">Int</option>
-					<option value="Wis">Wis</option>
-					<option value="Cha">Cha</option>
-				</select>
-			</td>
-			<td class="skillBonus">
-				<input type="text" id="bonus" name="bonus" size="2" maxlength="3" />
-			</td>
-			<td class="skillTrained">
-				<input type="checkbox" id="trained" name="trained" value="1" /></td>
-			<td>&nbsp;</td>
-		</tr>
+<div id="SkillDiv">
+	<form method="post" id="SkillForm"
+		action="<?=SITE_URL;?>/<?=$char->id;?>/skills/save">
+	<table id="SkillTable">
+		<thead>
+			<tr class="row0">
+				<td colspan="2">&nbsp;</td>
+				<th><label for="name">Skill Name</label></th>
+				<th><label for="ability">Ability</label></th>
+				<th><label for="bonus">Misc</label></th>
+				<th colspan="2"><label for="trained">Train</label></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="row0" id="blankFormRow">
+				<td class="icon">
+					<a id="NewSkillButton" href="javascript:;">
+						<img class="icon" alt="new" title="New Skill"
+							src="<?=MEDIA_URL;?>/images/icon_medical.png" /></a>
+				</td>
+				<td class="skillName" colspan="2">
+					<input type="hidden" name="s_id" id="s_id" value="" />
+					<input type="text" id="name" name="name" size="20" maxlength="255"/>
+				</td>
+				<td class="skillAbility">
+					<select id="ability" name="ability">
+						<option value="Str">Str</option>
+						<option value="Con">Con</option>
+						<option value="Dex">Dex</option>
+						<option value="Int">Int</option>
+						<option value="Wis">Wis</option>
+						<option value="Cha">Cha</option>
+					</select>
+				</td>
+				<td class="skillBonus">
+					<input type="text" id="bonus" name="bonus" size="2" maxlength="3"/>
+				</td>
+				<td class="skillTrained">
+					<input type="checkbox" id="trained" name="trained" value="1" />
+				</td>
+				<td class="icon">
+					<input type="hidden" name="form_key" id="form_key"
+						value="<?=$skill_form_key;?>" />
+					<input type="image" class="icon" alt="submit" title="Save Skill"
+						src="<?=MEDIA_URL;?>/images/icon_target.png" /></td>
+			</tr>
 				
-	<? $i=1; foreach($char->Skills as $s): ?>
-		<tr id="s<?=$s->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
-			<td class="icon">
-				<a href="javascript:;" class="skillEditLink" id="e<?=$s->id;?>">
-				<img src="<?=MEDIA_URL;?>/images/icon_gear2.png" 
-					alt="edit" class="icon" /></a>
-			</td>
-			<td class="totalBonus"><?=$s->getMod();?></td>
-			<td class="skillName"><?=$s->name;?></td>
-			<td class="skillAbility">
-				<span class="skillAbilityName"><?=$s->ability;?></span>
-				(<?=$char->getMod($s->ability,1,1);?>)
-			</td>
-			<td class="skillBonus"><?=$s->bonus?$s->bonus:'';?></td>
-			<td class="skillTrained"><?=$s->trained?Skill::TRAINED_BONUS:'';?></td>
-			<td class="icon"><input type="image" class="icon" name="submit"
-				value="delete_<?=$s->id;?>" 
-				src="<?=MEDIA_URL;?>/images/icon_skull-n-crossbones.png"/>
-			</td>
-		</tr>
-	<? endforeach; ?>
-	</tbody>
-</table>
+		<? $i=1; foreach($char->Skills as $s): ?>
+			<tr id="s<?=$s->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
+				<td class="icon">
+					<a href="javascript:;" class="skillEditLink" id="sedit<?=$s->id;?>">
+					<img src="<?=MEDIA_URL;?>/images/icon_gear2.png" title="Edit Skill"
+						alt="edit" class="icon" /></a>
+				</td>
+				<td class="totalBonus"><?=$s->getMod();?></td>
+				<td class="skillName"><?=$s->name;?></td>
+				<td class="skillAbility">
+					<span class="skillAbilityName"><?=$s->ability;?></span>
+					(<?=$char->getMod($s->ability,1,1);?>)
+				</td>
+				<td class="skillBonus"><?=$s->bonus?$s->bonus:'';?></td>
+				<td class="skillTrained"><?=$s->trained?Skill::TRAINED_BONUS:'';?></td>
+				<td class="icon"><input type="image" class="icon" name="submit"
+					value="delete_<?=$s->id;?>" title="Delete Skill"
+					src="<?=MEDIA_URL;?>/images/icon_skull-n-crossbones.png"/>
+				</td>
+			</tr>
+		<? endforeach; ?>
+		</tbody>
+	</table>
+	</form>
+</div>
+
+<div>
+<form method="post" id="FeatForm"
+	action="<?=SITE_URL;?>/<?=$char->id;?>/feats/save">
+	<div class="formRow">
+		<label for="feat_name">Name:</label>
+		<div class="field">
+			<input type="hidden" name="f_id" id="feat_id" />
+			<input type="text" class="text" name="name" id="feat_name" /></div>
+	</div>
+	<div class="formRow">
+		<label for="feat_description">Description:</label>
+		<div class="field"><textarea name="description" id="feat_description"
+			rows="7" cols="20"></textarea></div>
+	</div>
+	<div class="formRow">
+		<label>&nbsp;</label>
+		<div class="field"><input type="submit" value="Submit" /></div>
+	</div>
 </form>
 
+<form method="post" action="<?=SITE_URL;?>/<?=$char->id;?>/feats/delete">
+	<div id="FeatDiv">
+		<table id="FeatTable" class="rowBorder">
+			<thead>
+				<tr class="row0">
+					<td class="icon"><a id="NewFeatButton" href="javascript:;"
+						title="New Feat"><img class="icon" alt="new" 
+						src="<?=MEDIA_URL;?>/images/icon_medical.png" /></a>
+					</td>
+					<th>Feats</th>
+				</tr>
+			</thead>
+			<tbody>
+			<? $i=1; foreach($char->Feats as $f): ?>
+				<tr id="f<?=$f->id;?>" class="row<?=$i;$i=($i+1)%2;?>">
+					<td class="icon">
+						<a href="javascript:;" class="featEditLink" id="fedit<?=$f->id;?>">
+						<img src="<?=MEDIA_URL;?>/images/icon_gear2.png" 
+							title="Edit Feat" alt="edit" class="icon" /></a>
+					</td>
+					<td class="featName"><?=$f->name;?></td>
+					<td class="icon">
+						<input type="image" class="icon feat_delete" name="submit"
+							value="delete_<?=$f->id;?>" alt="delete" title="Delete Feat" 
+							src="<?=MEDIA_URL;?>/images/icon_skull-n-crossbones.png" /></td>
+					<td class="icon featDescription">
+						<img title="<?=$f->description;?>" class="icon feat_view" alt="view"
+							src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png" />
+					</td>
+				</tr>
+			<? endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+</div>
 <?php include('footer.php'); ?>

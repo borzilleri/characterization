@@ -20,9 +20,8 @@
 			<li class="item"
 				><a href="<?=SITE_URL;?>/<?=$char->id;?>/power">Powers</a></li>
 			<li class="item"
-				><a href="<?=SITE_URL;?>/<?=$char->id;?>/skills">Skills</a></li>
-			<li class="item"
-				><a href="<?=SITE_URL;?>/<?=$char->id;?>/feats">Feats</a></li>
+				><a href="<?=SITE_URL;?>/<?=$char->id;?>/skills"
+					>Skills &amp; Feats</a></li>
 			<li class="item"
 				><a href="<?=SITE_URL;?>/<?=$char->id;?>/delete">Delete</a></li>
 		</ul>

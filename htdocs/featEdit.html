@@ -27,4 +27,30 @@ $feat = new Feat();
 	<? endforeach; ?>
 	</tbody>
 </table>
+
+<input type="hidden" name="id" id="id" />
+<input type="text" name="name" id="name" />
+<textarea name="description" id="description" rows="6" cols="15"></textarea>
+
+
+
+<script type="text/javascript" charset="utf-8">
+$(window).load(function() {
+	$('img.feat_view').each(function(i) {
+		$(this).qtip({
+			show: {
+				solo: true,
+				when: {
+					event: 'click'
+				}
+			},
+			hide: {
+				when: {
+					event: 'unfocus'
+				}
+			}
+		});
+	});
+});
+</script>
 <?php include('footer.php'); ?>

@@ -320,3 +320,14 @@ li.noCheck div.listLabel {
 	border                : 1px solid #D8D7C5;
 	boder-top             : 0;
 }
+
+#SkillTable .icon, #FeatTable .icon {
+	cursor                : pointer;
+}
+
+#SkillDiv {
+	float                 : left;
+}
+#FeatDiv {
+	margin-left: 450px;
+}
