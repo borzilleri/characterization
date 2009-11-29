@@ -135,10 +135,10 @@ function setActivePower(pID, level) {
 	//var powerRow = '#b'+pID;
 	
 	// Add click bindings for all the spells of this level
-	$(spellBookLevelRows).click(function(){ playerProcessRequest('setActivePower', {
-		p_id: this.id.substring(1) }); });
+	$(spellBookLevelRows+' td.powerName').click(function(){ playerProcessRequest('setActivePower', {
+		p_id: $(this).parent().attr('id').substring(1) }); });
 	// Remove the binding for our active power;
-	$(spellBookPowerRow).unbind('click');
+	$(spellBookPowerRow+' td.powerName').unbind('click');
 	
 	$(spellBookLevelRows).fadeTo('fast', .5, function() {
 		$(powerTableLevelRows).hide().addClass('InActive');
@@ -207,8 +207,8 @@ $(window).load(function() {
 		playerProcessRequest('togglePower', {p_id: this.id.substring(1)}) });
 	
 	// Spellbook Power Activation
-	$('.spellBookRow.InActive').click(function(){ playerProcessRequest('setActivePower', {
-		p_id: this.id.substring(1) }); });
+	$('.spellBookRow.InActive td.powerName').click(function(){ playerProcessRequest('setActivePower', {
+		p_id: $(this).parent().attr('id').substring(1) }); });
 	
 	// Tab Show/Hide
 	$('#powerTabLink').click(function() {

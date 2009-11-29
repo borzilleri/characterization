@@ -251,7 +251,7 @@ if( $char->hasSpellbook() ) {
 			<tr id="b<?=$p->id;?>" class="spellBookRow l<?=$l;?>
 				<?=$p->getUseTypeDisplay(true);?>-bg
 				<?=$p->isActive()?'':'InActive';?>">
-				<td><?=$p->name;?></td>
+				<td class="powerName"><?=$p->name;?></td>
 				<td class="icon"><img id="d<?=$p->id;?>" class="power_view icon"
 					title="View <?=$p->name;?>" alt="[v]"
 					src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png"/></td>
@@ -273,7 +273,7 @@ if( $char->hasSpellbook() ) {
 			<tr id="b<?=$p->id;?>" class="spellBookRow l<?=$l;?>
 				<?=$p->getUseTypeDisplay(true);?>-bg
 				<?=$p->isActive()?'':'InActive';?>">
-				<td><?=$p->name;?></td>
+				<td class="powerName"><?=$p->name;?></td>
 				<td class="icon"><img id="u<?=$p->id;?>" class="power_view icon"
 					title="View <?=$p->name;?>" alt="[v]"
 					src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png"/></td>
