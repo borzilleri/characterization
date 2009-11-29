@@ -6,7 +6,7 @@
 	margin								: 0 5px;
 }
 .shortStatColumn {
-	width									: 120px;
+	width									: 130px;
 	margin								: 0 5px;
 }
 .notesColumn {
@@ -14,11 +14,7 @@
 	margin								: 0 5px;
 	margin-left						: 525px;
 }
-.powerColumn {
-	width									: 500px;
-	margin								: 0 5px;
-}
-.skillColumn {
+.powerColumn, .skillColumn, .sbookColumn {
 	width									: 500px;
 	margin								: 0 5px;
 }
@@ -131,3 +127,36 @@ a.ajaxLink:active {
 #FeatTable {
 	width                 : 315px;
 }
+
+#PlayerSpellbook {
+	display               : none;
+}
+
+#SpellbookDailyTable, #SpellbookUtilityTable {
+	margin								: 0 5px;
+	padding               : 0;
+	border-spacing				: 0 1px;
+	width                 : 240px;	
+}
+#SpellbookDailyTable {
+	float: left;	
+}
+#SpellbookUtilityTable {
+}
+
+#SpellbookDailyTable td, #SpellbookUtilityTable td, 
+#SpellbookDailyTable th, #SpellbookUtilityTable th {
+	padding               : 1px 4px;
+}
+
+#SpellbookDailyTable th, #SpellbookUtilityTable th {
+	padding-top           : 5px;
+	text-align            : left;
+}
+
+#SpellbookDailyTable tr.InActive, #SpellbookUtilityTable tr.InActive {
+	opacity               : .5;
+	cursor                : pointer;
+}
+
+

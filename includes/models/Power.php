@@ -11,7 +11,18 @@ class Power extends BasePower
 	const POWER_ENCOUNTER = '2_encounter';
 	const POWER_DAILY = '3_daily';
 	const POWER_SURGE = '4_surge';
-
+	
+	const TYPE_ATTACK = 'attack';
+	const TYPE_UTILITY = 'utility';
+	const TYPE_RACIAL = 'racial';
+	const TYPE_ITEM = 'item';
+	const TYPE_OTHER = 'other';
+	
+	const CHARGE_ENCOUNTER = 'encounter';
+	const CHARGE_DAILY = 'daily';
+	const CHARGE_CONSUMABLE = 'consumable';
+	const CHARGE_NONE = 'none';
+	
 	const STATUS_USED = 'Used';
 	const STATUS_DISABLED = 'Disabled';
 	
@@ -68,6 +79,17 @@ class Power extends BasePower
 		}
 		else {
 			$this->level = (int)$_POST['level'];
+		}
+		
+		// PowerType
+		$cache['power_type'] = $_POST['power_type'];
+		if( empty($_POST['power_type']) ||
+			!$this->isValidPowerType($_POST['power_type']) ) {
+			$msg->add("Invalid power type.", Message::WARNING);
+			$cache['error'][] = 'power_type';
+		}
+		else {
+			$this->power_type = $_POST['power_type'];
 		}
 		
 		// UseType
@@ -138,10 +160,6 @@ class Power extends BasePower
 			$this->sustain = trim(@$_POST['sustain']);
 		}
 		
-		// Magic Item
-		$this->item = !empty($_POST['item'])?1:0;
-		$cache['item'] = !empty($_POST['item']);
-		
 		$this->target = trim(@$_POST['target']);
 		$cache['target'] = $_POST['target'];
 
@@ -160,6 +178,13 @@ class Power extends BasePower
 		$this->notes = trim(@$_POST['notes']);
 		$cache['notes'] = $_POST['notes'];
 		
+		if( !$this->exists() ) {
+			$this->active = !($this->Player->hasSpellbook() && 
+				(self::TYPE_UTILITY == $this->power_type ||
+					(self::TYPE_ATTACK == $this->power_type && 
+					self::POWER_DAILY == $this->use_type)	) );
+		}
+				
 		// Power Keywords
 		if( !empty($_POST['keywords']) && is_array($_POST['keywords']) ) {
 			// First: Iterate through the _POST keyword array
@@ -306,6 +331,21 @@ class Power extends BasePower
 		}
 	}
 	
+	public function isValidPowerType($type) {
+		switch($type) {
+			case self::TYPE_ATTACK:
+			case self::TYPE_UTILITY:
+			case self::TYPE_RACIAL:
+			case self::TYPE_ITEM:
+			case self::TYPE_OTHER:
+				return true;
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
+	
 	/**
 	 * Determines if this power is of the usage type passed in
 	 *
@@ -372,7 +412,8 @@ class Power extends BasePower
 	 * @return bool
 	 */
 	public function usePower($overrideCost = false) {
-		if( !$overrideCost && $this->item &&
+		global $msg;
+		if( !$overrideCost && self::TYPE_ITEM == $this->power_type &&
 				self::POWER_DAILY == $this->use_type ) {
 			// We're a magic item daily ability, 
 			// so on use we must remove a magic item usage
@@ -380,6 +421,9 @@ class Power extends BasePower
 				$this->used = true;
 				return true;
 			}
+		}
+		elseif( !$this->isActive() ) {
+			$msg->add('You can not use inactive powers.', Message::WARNING);
 		}
 		elseif( self::POWER_ATWILL != $this->use_type ) {
 			$this->used = true;
@@ -529,12 +573,43 @@ class Power extends BasePower
 		return implode('/',$bonus_table);
 	}
 	
+	public static function typeDisplay($power_type) {
+		switch($power_type) {
+			case self::TYPE_ITEM:
+				return 'Magic Item';
+				break;
+			case self::TYPE_RACIAL:
+				return 'Racial';
+				break;
+			case self::TYPE_ATTACK:
+				return 'Attack';
+				break;
+			case self::TYPE_UTILITY:
+				return 'Utility';
+				break;
+			default:
+				return 'Other';
+				break;
+		}	
+	}
+	
 	/**
 	 *
 	 */
 	public function getClassDisplay() {
-		if( $this->item ) return 'Magic Item';
-		else return $this->Player->Archetype->name;
+		switch($this->power_type) {
+			case self::TYPE_ITEM:
+				return 'Magic Item';
+				break;
+			case self::TYPE_RACIAL:
+				return $this->Player->Race->name;
+				break;
+			case self::TYPE_ATTACK:
+			case self::TYPE_UTILITY:
+			default:
+				return $this->Player->Archetype->name;
+				break;
+		}
 	}
 	
 	/**
@@ -548,8 +623,22 @@ class Power extends BasePower
 	 *
 	 */
 	public function isDisabled() {
-		return $this->item && $this->use_type == self::POWER_DAILY && 
+		return self::TYPE_ITEM == $this->power_type && 
+			$this->use_type == self::POWER_DAILY && 
 			0 == $this->Player->magic_item_uses;
+	}
+	
+	public function isActive() {
+		if( self::TYPE_UTILITY == $this->power_type ) {
+			return (bool)$this->active;
+		}
+		elseif( self::TYPE_ATTACK == $this->power_type && 
+			self::POWER_DAILY == $this->use_type ) {
+			return (bool)$this->active;
+		}
+		else {
+			return true;
+		}
 	}
 	
 	public function getUsageStatus() {
@@ -572,6 +661,12 @@ class Power extends BasePower
 		else {
 			return self::ICON_USABLE;
 		}
+	}
+	
+	public function isSpellbookPower() {
+		return (self::TYPE_UTILITY == $this->power_type ||
+			(self::TYPE_ATTACK == $this->power_type && 
+			self::POWER_DAILY == $this->use_type));
 	}
 	
 	/**

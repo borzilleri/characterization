@@ -2,6 +2,16 @@ options:
   collate: utf8_unicode_ci
   charset: utf8
 
+User:
+  columns:
+    id:
+      type: integer(8)
+      primary: true
+      autoincrement: true
+      unsigned: 1
+    email: string(255)
+    password: string(255)
+
 Race:
   columns:
     id:
@@ -123,7 +133,12 @@ Player:
       type: integer(8)
       unsigned: 1
     notes: clob
+    user_id:
+      type: integer
+      unsigned: 1
   relations:
+    User:
+      foreignAlias: Characters
     Race:
       foreignAlias: Characters
     Archetype:
@@ -143,6 +158,10 @@ Power:
       # This is to fix sorting by use_type
       values: ['1_atwill','2_encounter','3_daily', '4_surge']
       default: 1_atwill
+    power_type:
+      type: enum
+      values: ['attack', 'utility', 'racial', 'item', 'other']
+      default: attack
     action:
       type: enum
       values: ['standard','move','minor','free','reaction','interrupt','none']
@@ -169,8 +188,22 @@ Power:
       default: none
     sustain: clob
     notes: clob
-    used: boolean
-    item: boolean
+    used:
+      type: boolean
+      default: false
+    active:
+      type: boolean
+      default: true
+    charge_type: 
+      type: enum
+      values: ['encounter', 'daily', 'consumable', 'none']
+      default: none
+    charges_cur:
+      type: integer
+      default: 0
+    charges_max: 
+      type: integer
+      default: 0
     player_id:
       type: integer
       unsigned: 1

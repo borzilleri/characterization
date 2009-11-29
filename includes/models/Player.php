@@ -1003,6 +1003,52 @@ class Player extends BasePlayer
 		}
 	}
 	
+	public function activatePower($pID) {
+		global $msg;
+		if( !$this->hasSpellbook() ) {
+			$msg->add('You do not have a spellbook', Message::WARNING);
+			return false;
+		}
+		$power = $this->Powers->get($pID);
+		if( !$power->exists() ) {
+			$msg->add(sprintf("Unable to find power '%s'.", $pID), Message::ERROR);
+			return false;
+		}
+		
+		if( Power::TYPE_UTILITY == $power->power_type ) {
+			$power_list = Doctrine_Query::create()
+				->from('Power p')->where('p.player_id = ?', $this->id)
+				->andWhere('p.power_type = ?', Power::TYPE_UTILITY)
+				->andWhere('p.level = ?', $power->level)
+				->execute();
+			foreach($power_list as $p) {
+				$p->active = ($p->id == $power->id);
+				$p->save();
+			}
+			return array('pID' => $power->id, 'level' => $power->level);
+		}
+		elseif( Power::TYPE_ATTACK == $power->power_type &&
+			Power::POWER_DAILY == $power->use_type ) {
+			$power_list = Doctrine_Query::create()
+				->from('Power p')->where('p.player_id = ?', $this->id)
+				->andWhere('p.power_type = ?', Power::TYPE_ATTACK)
+				->andWhere('p.use_type = ?', Power::POWER_DAILY)
+				->andWhere('p.level = ?', $power->level)
+				->execute();
+			foreach($power_list as $p) {
+				$p->active = ($p->id == $power->id);
+				$p->save();
+			}
+			return array('pID' => $power->id, 'level' => $power->level);
+		}
+		else {
+			$msg->add(
+				"Only Utility and Daily Attack spells are part of your spellbook.",
+				Message::ERROR);
+			return false;
+		}
+	}
+	
 	/**
 	 * Returns the attack bonus using a given accessory.
 	 *

@@ -17,10 +17,12 @@ function playerProcessRequest(action, args) {
 
 function parseProcessResult(data, textStatus) {
 	$('#surge_bonus,#damage_value,#health').val('');
-	
 	for(var k in data) {
 		var v = data[k];
 		switch(k) {
+			case 'activePower':
+				setActivePower(v.pID, v.level);
+				break;
 			case 'refreshPowers':
 				animatePower('#PowerTable tr.Encounter');
 				if( v ) {
@@ -123,6 +125,30 @@ function animatePower(row, status) {
 	});
 }
 
+function setActivePower(pID, level) {
+	var spellBookLevelRows = '.spellBookRow.l'+level;
+	var spellBookPowerRow = '#b'+pID;
+	var powerTableRow = '#r'+pID;
+	var powerTableLevelRows = '#PowerTable .l'+level;
+
+	//var levelSelect = '.l'+level;
+	//var powerRow = '#b'+pID;
+	
+	// Add click bindings for all the spells of this level
+	$(spellBookLevelRows).click(function(){ playerProcessRequest('setActivePower', {
+		p_id: this.id.substring(1) }); });
+	// Remove the binding for our active power;
+	$(spellBookPowerRow).unbind('click');
+	
+	$(spellBookLevelRows).fadeTo('fast', .5, function() {
+		$(powerTableLevelRows).hide().addClass('InActive');
+		$(powerTableRow).removeClass('InActive').show();
+		
+		$(spellBookLevelRows).addClass('InActive');
+		$(spellBookPowerRow).removeClass('InActive').fadeTo('fast', 1);
+	});
+}
+
 function notesDirtyCheck() {
 	var notes_cur = $('#player_notes').val();
 	if( notes_tmp != notes_cur ) $('#notes_dirty').fadeIn();
@@ -180,18 +206,31 @@ $(window).load(function() {
 	$('#PowerTable img.power_icon').click(function() {
 		playerProcessRequest('togglePower', {p_id: this.id.substring(1)}) });
 	
+	// Spellbook Power Activation
+	$('.spellBookRow.InActive').click(function(){ playerProcessRequest('setActivePower', {
+		p_id: this.id.substring(1) }); });
+	
 	// Tab Show/Hide
 	$('#powerTabLink').click(function() {
 		$('#PlayerPowers').show();
 		$('#PlayerSkillsFeats').hide();
+		$('#PlayerSpellbook').hide();
 		$('#PlayerTabs li.selectedTab').removeClass('selectedTab');
 		$('#powerTab').addClass('selectedTab');
 	});
 	$('#skillTabLink').click(function() {
 		$('#PlayerPowers').hide();
 		$('#PlayerSkillsFeats').show();
+		$('#PlayerSpellbook').hide();
 		$('#PlayerTabs li.selectedTab').removeClass('selectedTab');
 		$('#skillTab').addClass('selectedTab');
+	});
+	$('#sbookTabLink').click(function() {
+		$('#PlayerPowers').hide();
+		$('#PlayerSkillsFeats').hide();
+		$('#PlayerSpellbook').show();
+		$('#PlayerTabs li.selectedTab').removeClass('selectedTab');
+		$('#sbookTab').addClass('selectedTab');
 	});
 	
 	// Power Tooltips

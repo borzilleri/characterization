@@ -43,6 +43,8 @@
  * @property integer $race_id
  * @property integer $archetype_id
  * @property clob $notes
+ * @property integer $user_id
+ * @property User $User
  * @property Race $Race
  * @property Archetype $Archetype
  * @property Doctrine_Collection $Powers
@@ -206,6 +208,10 @@ abstract class BasePlayer extends Doctrine_Record
         $this->hasColumn('notes', 'clob', null, array(
              'type' => 'clob',
              ));
+        $this->hasColumn('user_id', 'integer', null, array(
+             'type' => 'integer',
+             'unsigned' => '1',
+             ));
 
         $this->option('collate', 'utf8_unicode_ci');
         $this->option('charset', 'utf8');
@@ -214,7 +220,11 @@ abstract class BasePlayer extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
-    $this->hasOne('Race', array(
+    $this->hasOne('User', array(
+             'local' => 'user_id',
+             'foreign' => 'id'));
+
+        $this->hasOne('Race', array(
              'local' => 'race_id',
              'foreign' => 'id'));
 

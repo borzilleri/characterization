@@ -161,10 +161,31 @@ $kw_list = Doctrine_Query::create()
 					'selected="selected"':'';?>><?=$i;?></option>
 			<? endfor; ?>
 			</select>&nbsp;&nbsp;
-			<label for="item">Magic Item:</label>
-			<input type="checkbox" name="item" id="item" value="1" 
-				<?=$power->getCached('item',$form_key)?
-				'checked="checked"':'';?> />
+			<label for="item"
+				class="<?=$power->hasError('level',$form_key)?'error':'';?>"
+				>Type:</label>
+			<select name="power_type" id="power_type">
+				<option value="<?=Power::TYPE_ATTACK;?>"
+					<?=Power::TYPE_ATTACK==$power->getCached('power_type',$form_key)?
+					'selected="selected"':'';?>
+					><?=Power::typeDisplay(Power::TYPE_ATTACK);?></option>
+				<option value="<?=Power::TYPE_UTILITY;?>"
+					<?=Power::TYPE_UTILITY==$power->getCached('power_type',$form_key)?
+					'selected="selected"':'';?>
+					><?=Power::typeDisplay(Power::TYPE_UTILITY);?></option>
+				<option value="<?=Power::TYPE_RACIAL;?>"
+					<?=Power::TYPE_RACIAL==$power->getCached('power_type',$form_key)?
+					'selected="selected"':'';?>
+					><?=Power::typeDisplay(Power::TYPE_RACIAL);?></option>
+				<option value="<?=Power::TYPE_ITEM;?>"
+					<?=Power::TYPE_ITEM==$power->getCached('power_type',$form_key)?
+					'selected="selected"':'';?>
+					><?=Power::typeDisplay(Power::TYPE_ITEM);?></option>
+				<option value="<?=Power::TYPE_OTHER;?>"
+					<?=Power::TYPE_OTHER==$power->getCached('power_type',$form_key)?
+					'selected="selected"':'';?>
+					><?=Power::typeDisplay(Power::TYPE_OTHER);?></option>
+			</select>
 		</div>
 	</div>
 	

@@ -9,6 +9,7 @@
  * @property string $name
  * @property integer $level
  * @property enum $use_type
+ * @property enum $power_type
  * @property enum $action
  * @property string $power_range
  * @property string $target
@@ -22,7 +23,10 @@
  * @property clob $sustain
  * @property clob $notes
  * @property boolean $used
- * @property boolean $item
+ * @property boolean $active
+ * @property enum $charge_type
+ * @property integer $charges_cur
+ * @property integer $charges_max
  * @property integer $player_id
  * @property Player $Player
  * @property Doctrine_Collection $Keywords
@@ -62,6 +66,18 @@ abstract class BasePower extends Doctrine_Record
               3 => '4_surge',
              ),
              'default' => '1_atwill',
+             ));
+        $this->hasColumn('power_type', 'enum', null, array(
+             'type' => 'enum',
+             'values' => 
+             array(
+              0 => 'attack',
+              1 => 'utility',
+              2 => 'racial',
+              3 => 'item',
+              4 => 'other',
+             ),
+             'default' => 'attack',
              ));
         $this->hasColumn('action', 'enum', null, array(
              'type' => 'enum',
@@ -143,9 +159,30 @@ abstract class BasePower extends Doctrine_Record
              ));
         $this->hasColumn('used', 'boolean', null, array(
              'type' => 'boolean',
+             'default' => false,
              ));
-        $this->hasColumn('item', 'boolean', null, array(
+        $this->hasColumn('active', 'boolean', null, array(
              'type' => 'boolean',
+             'default' => true,
+             ));
+        $this->hasColumn('charge_type', 'enum', null, array(
+             'type' => 'enum',
+             'values' => 
+             array(
+              0 => 'encounter',
+              1 => 'daily',
+              2 => 'consumable',
+              3 => 'none',
+             ),
+             'default' => 'none',
+             ));
+        $this->hasColumn('charges_cur', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
+             ));
+        $this->hasColumn('charges_max', 'integer', null, array(
+             'type' => 'integer',
+             'default' => 0,
              ));
         $this->hasColumn('player_id', 'integer', null, array(
              'type' => 'integer',

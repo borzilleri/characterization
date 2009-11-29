@@ -10,8 +10,23 @@ if( !$char ) {
 $power_list = Doctrine_Query::create()
 	->from('Power p')
 	->where('p.player_id = ?', $char->id)
-	->orderBy('p.item, p.use_type, p.level, p.name')
+	->orderBy('p.use_type, p.level, p.name')
 	->execute();
+
+if( $char->hasSpellbook() ) {
+	$daily_powers = Doctrine_Query::create()
+		->from('Power p')
+		->where('p.player_id = ?', $char->id)
+		->andWhere('p.use_type = ?', Power::POWER_DAILY)
+		->andWhere('p.power_type = ?', Power::TYPE_ATTACK)
+		->orderBy('p.level, p.name') 
+		->execute();
+	$utility_powers = Doctrine_Query::create()
+		->from('Power p')->where('p.player_id = ?', $char->id)
+		->andWhere('p.power_type = ?', Power::TYPE_UTILITY)
+		->orderBy('p.level, p.name')
+		->execute();
+}
 ?>
 <div id="StatBlock">
 	<div class="statColumn floatColumn">
@@ -154,7 +169,7 @@ $power_list = Doctrine_Query::create()
 			<a href="javascript:;" id="skillTabLink">Skills &amp; Feats</a></li>
 	<? if($char->hasSpellbook()): ?>
 		<li id="sbookTab">
-			<a href="javascript:;" id="sbookTabLink">Spell Book [NYI]</a></li>
+			<a href="javascript:;" id="sbookTabLink">Spell Book</a></li>
 	<? endif; ?>
 	</ul>
 </div>
@@ -163,11 +178,14 @@ $power_list = Doctrine_Query::create()
 	<table id="PowerTable">
 		<tbody>
 		<? foreach($power_list as $p): ?>
-			<tr id="r<?=$p->id;?>" class="powerRow <?=$p->item?'Item':'';?> 
+			<tr id="r<?=$p->id;?>" class="powerRow 
+				<?=$p->isActive()?'':'InActive';?>
+				<?=$p->isSpellbookPower()?'l'.$p->level:'';?> 
+				<?=Power::TYPE_ITEM==$p->power_type?'Item':'';?> 
 				<?=$p->getUseTypeDisplay(true);?>-bg <?=$p->getUsageStatus();?>">
 				<td class="icon">
 				<? if(!$p->isUseType(Power::POWER_ATWILL)): ?>
-						<img class="power_icon icon" title="Use/Refresh" id="u<?=$p->id;?>" 
+						<img class="power_icon icon" title="Use/Refresh" id="t<?=$p->id;?>" 
 							alt="[*]" src="<?=MEDIA_URL.$p->getUsageIcon();?>" />
 				<? endif; ?>
 				</td>
@@ -218,6 +236,54 @@ $power_list = Doctrine_Query::create()
 		</tbody>
 	</table>
 </div>
+
+<? if($char->hasSpellbook()): ?>
+<div id="PlayerSpellbook" class="floatColumn">
+<? if($daily_powers->count() > 0): ?>
+	<table id="SpellbookDailyTable">
+		<tbody>
+		<? $l=0; foreach($daily_powers as $p): ?>
+			<? if($p->level > $l): $l=$p->level; ?>
+			<tr>
+				<th colspan="2">Daily <?=$l;?></th>
+			</tr>
+			<? endif;?>
+			<tr id="b<?=$p->id;?>" class="spellBookRow l<?=$l;?>
+				<?=$p->getUseTypeDisplay(true);?>-bg
+				<?=$p->isActive()?'':'InActive';?>">
+				<td><?=$p->name;?></td>
+				<td class="icon"><img id="d<?=$p->id;?>" class="power_view icon"
+					title="View <?=$p->name;?>" alt="[v]"
+					src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png"/></td>
+			</tr>
+		<? endforeach; ?>
+		</tbody>
+	</table>
+<? endif;?>
+
+<? if($utility_powers->count() > 0): ?>
+	<table id="SpellbookUtilityTable">
+		<tbody>
+		<? $l=0; foreach($utility_powers as $p): ?>
+			<? if($p->level > $l): $l=$p->level; ?>
+			<tr>
+				<th colspan="2">Utility <?=$l;?></th>
+			</tr>
+			<? endif;?>
+			<tr id="b<?=$p->id;?>" class="spellBookRow l<?=$l;?>
+				<?=$p->getUseTypeDisplay(true);?>-bg
+				<?=$p->isActive()?'':'InActive';?>">
+				<td><?=$p->name;?></td>
+				<td class="icon"><img id="u<?=$p->id;?>" class="power_view icon"
+					title="View <?=$p->name;?>" alt="[v]"
+					src="<?=MEDIA_URL;?>/images/icon_magnifying-glass.png"/></td>
+			</tr>
+		<? endforeach; ?>
+		</tbody>
+	</table>
+<? endif; ?>
+</div>
+<? endif; ?>
 
 <div id="PlayerNotes" class="notesColumn">
 	<div>

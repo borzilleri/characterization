@@ -113,3 +113,10 @@ Archetype:
     health_level: 4
     surges: 6
     will: 2
+  class_18:
+    name: Assassin
+    health_first: 10
+    health_level: 4
+    surges: 6
+    fort: 1
+    will: 1

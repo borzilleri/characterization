@@ -291,6 +291,9 @@ li.noCheck div.listLabel {
 #PowerTable tr.Used {
 	opacity								: .5;
 }
+#PowerTable tr.InActive {
+	display               : none;
+}
 
 #SkillTable, #FeatTable {
 	margin								: 0 5px;
@@ -328,6 +331,9 @@ li.noCheck div.listLabel {
 #SkillDiv {
 	float                 : left;
 }
+#FeatForm {
+	margin-left           : 375px;
+}
 #FeatDiv {
-	margin-left: 450px;
+	margin-left           : 450px;
 }

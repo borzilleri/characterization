@@ -17,6 +17,8 @@ class Feat extends BaseFeat {
 		$cache = array();
 		$cache['error'] = array();
 		
+		if( !$this->exists() ) $this->id = null;
+		
 		// Skill Name
 		$cache['name'] = $_POST['name'];
 		if( empty($_POST['name']) ) {

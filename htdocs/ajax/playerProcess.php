@@ -10,7 +10,7 @@ if( !$char || !$char->exists() ) {
 
 $success = true;
 
-$data = empty($_POST['data'])?array():json_decode($_POST['data'],true);
+$data = empty($_REQUEST['data'])?array():json_decode($_REQUEST['data'],true);
 $result = array();
 
 switch($action) {
@@ -85,6 +85,24 @@ switch($action) {
 			$result['magic_item_uses'] = $char->magic_item_uses;
 		if( $surges != $char->surges_cur )
 			$result['surges_cur'] = $char->surges_cur;
+		break;
+	case 'setActivePower':
+		$p = $char->Powers->get($data['p_id']);
+		if( !$char->hasSpellbook() ) {
+			$msg->add("You do not have a spellbook.", Message::ERROR);
+			$success = false;
+		}
+		elseif( !$char->Powers->contains($data['p_id']) ) {
+			$msg->add(
+				sprintf("Unable to find Power '%s'.", $data['p_id']), Message::ERROR);
+			$success = false;
+		}
+		else {
+			$success = $char->activatePower($data['p_id']);
+			if( false !== $success ) {
+				$result['activePower'] = $success;
+			}
+		}
 		break;
 }
 
