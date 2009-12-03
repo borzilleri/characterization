@@ -49,6 +49,24 @@ class Power extends BasePower
 		}
 	}
 
+	public function gethas_charges() {
+		return CHARGE_NONE != $this->charge_type;
+	}
+
+	public function getCharges() {
+		switch($this->charge_type) {
+			case CHARGE_ENCOUNTER:
+			case CHARGE_DAILY:
+				return $this->charges_max;
+				break;
+			case CHARGE_CONSUMABLE:
+				return min(0,$this->charges_cur);
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
 	/**
 	 *
 	 * @global Message
@@ -159,6 +177,19 @@ class Power extends BasePower
 			$this->sustain_action = $_POST['sustain_action'];
 			$this->sustain = trim(@$_POST['sustain']);
 		}
+
+		// Charge type
+		$cache['has_charges'] = !empty($_POST['has_charges']);
+		if( !empty($_POST['has_charges']) ) {
+			// cache charge type
+			// cache charges
+
+		}
+		else {
+			$this->charge_type = CHARGES_NONE;
+			$this->charges_max = 0;
+			$this->charges_cur = 0;
+		}
 		
 		$this->target = trim(@$_POST['target']);
 		$cache['target'] = $_POST['target'];
@@ -225,7 +256,7 @@ class Power extends BasePower
 
 		return empty($cache['error']);
 	}
-	
+
 	/**
 	 * Determines if an action type is valid.
 	 *
@@ -344,6 +375,12 @@ class Power extends BasePower
 				return false;
 				break;
 		}
+	}
+
+	protected function isValidChargeType($type) {
+		switch($type) {
+			case self::CHARGE_ATTACK;
+			case self::CHARGE_DAILY;
 	}
 	
 	/**
