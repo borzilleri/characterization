@@ -4,9 +4,9 @@
  * 
  * @author Jonathan Borzilleri
  */
-class Power extends BasePower
-{
+class Power extends BasePower {
 	private $tmp_keywords = array();
+
 	const POWER_ATWILL = '1_atwill';
 	const POWER_ENCOUNTER = '2_encounter';
 	const POWER_DAILY = '3_daily';
@@ -379,8 +379,16 @@ class Power extends BasePower
 
 	protected function isValidChargeType($type) {
 		switch($type) {
-			case self::CHARGE_ATTACK;
-			case self::CHARGE_DAILY;
+			case self::CHARGE_ENCOUNTER:
+			case self::CHARGE_DAILY:
+			case self::CHARGE_CONSUMABLE:
+			case self::CHARGE_NONE:
+				return true;
+				break;
+			default:
+				return false;
+				break;
+		}
 	}
 	
 	/**
