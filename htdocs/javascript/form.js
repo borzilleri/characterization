@@ -11,3 +11,12 @@ function toggleWeaponOffFields(enable) {
 			attr('disabled','disabled');
 	}
 }
+
+function toggleChargeFields(enable) {
+	if( enable ) {
+		$('#charges,#charge_type').removeAttr('disabled');
+	}
+	else {
+		$('#charges,#charge_type').attr('disabled','disabled');		
+	}
+}

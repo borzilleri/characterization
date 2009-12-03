@@ -1,6 +1,7 @@
 <?php
 $form_key = 'power_edit_'.(empty($_REQUEST['p_id'])?0:$_REQUEST['p_id']);
 $css_include = array('forms.css', 'powerBox.css');
+$js_include = array('form.js');
 include('autohandler.php');
 
 if( !$char || !$char->exists() ) {
@@ -146,6 +147,38 @@ $kw_list = Doctrine_Query::create()
 				'selected="selected"':'';?>>Willpower</option>
 		</select></div>
 	</div>
+	
+	<div class="formRow">
+		<label for="has_charges"
+			class="<?=$power->hasError('charges',$form_key)||
+			$power->hasError('charge_type',$form_key)?'error':'';?>"
+			>Has Charges:</label>
+		<div class="field">
+			<input type="checkbox" name="has_charges" id="has_charges" 
+				value="1" <?=$char->getCached('has_charges',$form_key)?
+				'checked="checked"':'';?> />
+			<input type="text" name="charges" id="charges" class="number"
+				<?=$power->getCached('has_charges',$form_key)?
+				'':'disabled="disabled"';?> size="3" maxlength="3"
+				value="<?=$power->getCached('charges',$form_key);?>" />
+			<select name="charge_type" id="charge_type" 
+				<?=$power->getCached('has_charges',$form_key)?
+				'':'disabled="disabled"';?>>
+				<option value="<?=Power::CHARGE_ENCOUNTER;?>"
+					<?=Power::CHARGE_ENCOUNTER==$power->getCached('charge_type',$form_key)
+					?'selected="selected"':'';?>
+					><?=Power::chargeTypeDisplay(Power::CHARGE_ENCOUNTER);?></option>
+				<option value="<?=Power::CHARGE_DAILY;?>"
+					<?=Power::CHARGE_DAILY==$power->getCached('charge_type',$form_key)
+					?'selected="selected"':'';?>
+					><?=Power::chargeTypeDisplay(Power::CHARGE_DAILY);?></option>
+				<option value="<?=Power::CHARGE_CONSUMABLE;?>"
+					<?=Power::CHARGE_CONSUMABLE==$power->getCached(
+						'charge_type',$form_key)?'selected="selected"':'';?>
+					><?=Power::chargeTypeDisplay(Power::CHARGE_CONSUMABLE);?></option>
+			</select>
+		</div>
+	</div>
 </div><!-- end div.leftColumn -->
 
 <div class="formColumn rightColumn">
@@ -274,5 +307,13 @@ $kw_list = Doctrine_Query::create()
 	<input type="submit" value="Submit" />
 </div>
 </form>
+
+<script type="text/javascript" charset="utf-8">
+	$(window).load(function() {
+		$('#has_charges').change(function() {
+			toggleChargeFields(this.checked);
+		}); 
+	});
+</script>
 
 <?php include('footer.php'); ?>

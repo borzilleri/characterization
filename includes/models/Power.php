@@ -593,6 +593,23 @@ class Power extends BasePower
 		}	
 	}
 	
+	public static function chargeTypeDisplay($charge_type) {
+		switch($charge_type) {
+			case self::CHARGE_ENCOUNTER:
+				return 'per Encounter';
+				break;
+			case self::CHARGE_DAILY:
+				return 'per Day';
+				break;
+			case self::CHARGE_CONSUMABLE:
+				return 'Consumable';
+				break;
+			default:
+				return '';
+				break;
+		}
+	}
+	
 	/**
 	 *
 	 */
