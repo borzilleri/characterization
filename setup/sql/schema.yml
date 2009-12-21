@@ -188,9 +188,6 @@ Power:
       default: none
     sustain: clob
     notes: clob
-    used:
-      type: boolean
-      default: false
     active:
       type: boolean
       default: true
@@ -198,10 +195,10 @@ Power:
       type: enum
       values: ['encounter', 'daily', 'consumable', 'none']
       default: none
-    charges_cur:
+    uses:
       type: integer
       default: 0
-    charges_max: 
+    uses_max: 
       type: integer
       default: 0
     player_id:

@@ -57,16 +57,21 @@ class Power extends BasePower {
 		switch($this->charge_type) {
 			case CHARGE_ENCOUNTER:
 			case CHARGE_DAILY:
-				return $this->charges_max;
+				return $this->uses_max;
 				break;
 			case CHARGE_CONSUMABLE:
-				return min(0,$this->charges_cur);
+				return min(0,$this->uses);
 				break;
 			default:
 				return false;
 				break;
 		}
 	}
+	
+	public function getUsed() {
+		return ($this->used<=0);
+	}
+	
 	/**
 	 *
 	 * @global Message
@@ -181,14 +186,28 @@ class Power extends BasePower {
 		// Charge type
 		$cache['has_charges'] = !empty($_POST['has_charges']);
 		if( !empty($_POST['has_charges']) ) {
-			// cache charge type
-			// cache charges
-
+			$cache['charges'] = @$_POST['charges'];
+			$cache['charge_type'] = @$_POST['charge_type'];
+			if( !$this->isValidChargeType($_POST['charge_type']) ) {
+				$msg->add('Invalid Charge Type', Message::WARNING);
+				$cache['error'][] = 'charge_type';
+			}
+			elseif( empty($_POST['charges']) || !is_numeric($_POST['charges']) ||
+				0 >= (int)$_POST['charges'] ) {
+				$msg->add('Number of charges must be a non-negative integer and cannot be blank.', Message::WARNING);
+				$cache['error'][] = 'charges';
+			}
+			else {
+				$this->charge_type = $_POST['charge_type'];
+				$this->uses = $_POST['charges'];
+				$this->uses_max = ($this->charge_type == self::CHARGE_CONSUMABLE)?
+					0 : $_POST['charges'];
+			}
 		}
 		else {
-			$this->charge_type = CHARGES_NONE;
-			$this->charges_max = 0;
-			$this->charges_cur = 0;
+			$this->charge_type = self::CHARGE_NONE;
+			$this->uses = 1;
+			$this->uses_max = 1;
 		}
 		
 		$this->target = trim(@$_POST['target']);
@@ -436,16 +455,17 @@ class Power extends BasePower {
 	 * @return bool
 	 */ 
 	public function refresh($overrideCost = false) {
-		if( $this->isUseType(Power::POWER_SURGE) && !$overrideCost ) {
-			if( $this->Player->subtractSurge() ) {
-				$this->used = false;
+		if( !self::CHARGE_CONSUMABLE != $this->charge_type ) {
+			$recharge = (!$this->isUseType(self::POWER_SURGE) || $overrideCost) ?
+				true : $this->Player->subtractSurge();
+			
+			if( $recharge ) {
+				$this->uses = $this->uses_max;
 				return true;
 			}
 		}
-		else {
-			$this->used = false;
-			return true;
-		}
+		
+		return false;
 	}
 	
 	/**
@@ -458,23 +478,25 @@ class Power extends BasePower {
 	 */
 	public function usePower($overrideCost = false) {
 		global $msg;
-		if( !$overrideCost && self::TYPE_ITEM == $this->power_type &&
+		if( !$this->isActive() ) {
+			$msg->add('You can not use inactive powers.', Message::WARNING);
+		}
+		elseif( !$overrideCost && self::TYPE_ITEM == $this->power_type &&
 				self::POWER_DAILY == $this->use_type ) {
 			// We're a magic item daily ability, 
 			// so on use we must remove a magic item usage
 			if( $this->Player->subtractMagicItemUse() ) {
-				$this->used = true;
+				$this->uses -= 1;
+				$this->uses = max($this->uses,0);
 				return true;
 			}
 		}
-		elseif( !$this->isActive() ) {
-			$msg->add('You can not use inactive powers.', Message::WARNING);
-		}
-		elseif( self::POWER_ATWILL != $this->use_type ) {
-			$this->used = true;
+		elseif( self::CHARGE_CONSUMABLE == $this->charge_type || 
+			self::POWER_ATWILL != $this->use_type ) {
+			$this->uses -= 1;
+			$this->uses = max($this->uses,0);
 			return true;
 		}
-		
 		return false;
 	}
 	
@@ -487,8 +509,8 @@ class Power extends BasePower {
 	 * @return bool
 	 */
 	public function togglePower($overrideCost = false) {
-		if( $this->used ) return $this->refresh($overrideCost);
-		else return $this->usePower($overrideCost);
+		if( $this->isUsable() ) return $this->usePower($overrideCost);
+		else return $this->refresh($overrideCost);
 	}
 	
 	/**
@@ -678,7 +700,7 @@ class Power extends BasePower {
 	 *
 	 */
 	public function isUsable() {
-		return !$this->used;
+		return ($this->uses > 0);
 	}
 	
 	/**
@@ -704,7 +726,7 @@ class Power extends BasePower {
 	}
 	
 	public function getUsageStatus() {
-		if( $this->used ) {
+		if( $this->uses <= 0 ) {
 			return self::STATUS_USED;
 		}
 		elseif( $this->isDisabled() ) {
@@ -714,7 +736,7 @@ class Power extends BasePower {
 	}
 	
 	public function getUsageIcon() {
-		if( $this->used ) {
+		if( $this->uses <= 0 ) {
 			return self::ICON_USED;
 		}
 		elseif( $this->isDisabled() ) {

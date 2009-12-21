@@ -22,11 +22,10 @@
  * @property enum $sustain_action
  * @property clob $sustain
  * @property clob $notes
- * @property boolean $used
  * @property boolean $active
  * @property enum $charge_type
- * @property integer $charges_cur
- * @property integer $charges_max
+ * @property integer $uses
+ * @property integer $uses_max
  * @property integer $player_id
  * @property Player $Player
  * @property Doctrine_Collection $Keywords
@@ -157,10 +156,6 @@ abstract class BasePower extends Doctrine_Record
         $this->hasColumn('notes', 'clob', null, array(
              'type' => 'clob',
              ));
-        $this->hasColumn('used', 'boolean', null, array(
-             'type' => 'boolean',
-             'default' => false,
-             ));
         $this->hasColumn('active', 'boolean', null, array(
              'type' => 'boolean',
              'default' => true,
@@ -176,11 +171,11 @@ abstract class BasePower extends Doctrine_Record
              ),
              'default' => 'none',
              ));
-        $this->hasColumn('charges_cur', 'integer', null, array(
+        $this->hasColumn('uses', 'integer', null, array(
              'type' => 'integer',
              'default' => 0,
              ));
-        $this->hasColumn('charges_max', 'integer', null, array(
+        $this->hasColumn('uses_max', 'integer', null, array(
              'type' => 'integer',
              'default' => 0,
              ));
