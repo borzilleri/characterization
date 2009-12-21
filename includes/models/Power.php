@@ -1061,4 +1061,3 @@ class Power extends BasePower {
 	}
 }
 ?>
-

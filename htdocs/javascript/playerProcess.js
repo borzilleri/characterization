@@ -26,8 +26,8 @@ function parseProcessResult(data, textStatus) {
 			case 'refreshPowers':
 				animatePower('#PowerTable tr.Encounter-bg');
 				if( v ) {
-					animatePower('#PowerTable tr.Daily');
-					animatePower('#PowerTable tr.Healing-Surge');
+					animatePower('#PowerTable tr.Daily-bg');
+					animatePower('#PowerTable tr.Healing-Surge-bg');
 				}
 				break;
 			case 'power':
