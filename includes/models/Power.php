@@ -53,9 +53,9 @@ class Power extends BasePower {
 		return $this->hasCharges();
 	}
 
-  public function hasCharges() {
+	public function hasCharges() {
 		return self::CHARGE_NONE != $this->charge_type;
-  }
+	}
 
 	public function getCharges() {
 		switch($this->charge_type) {
@@ -495,8 +495,7 @@ class Power extends BasePower {
 				return true;
 			}
 		}
-		elseif( self::CHARGE_CONSUMABLE == $this->charge_type ||
-			self::POWER_ATWILL != $this->use_type ) {
+		elseif( $this->hasCharges() || self::POWER_ATWILL != $this->use_type ) {
 			$this->uses -= 1;
 			$this->uses = max($this->uses,0);
 			return true;
@@ -681,6 +680,33 @@ class Power extends BasePower {
 		}
 	}
 
+	public function getRefreshType() {
+		switch($this->charge_type) {
+			case self::CHARGE_ENCOUNTER:
+				return 'refreshEncounter';
+				break;
+			case self::CHARGE_DAILY:
+				return 'refreshDaily';
+				break;
+			case self::CHARGE_NONE:
+				switch($this->use_type) {
+					case self::POWER_ENCOUNTER:
+						return 'refreshEncounter';
+						break;
+					case self::POWER_DAILY:
+					case self::POWER_SURGE:
+						return 'refreshDaily';
+						break;
+					default:
+						return '';
+				}
+				break;
+			default:
+				return '';
+				break;
+		}
+	}
+
 	/**
 	 *
 	 */
@@ -700,6 +726,13 @@ class Power extends BasePower {
 		}
 	}
 
+	/**
+	 *
+	 */
+  public function canBeUsed() {
+    return $this->isActive() && ($this->hasCharges() ||
+      self::POWER_ATWILL!=$this->use_type);
+  }
 	/**
 	 *
 	 */

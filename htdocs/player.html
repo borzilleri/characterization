@@ -182,11 +182,12 @@ if( $char->hasSpellbook() ) {
 				<?=$p->isActive()?'':'InActive';?>
 				<?=$p->isSpellbookPower()?'l'.$p->level:'';?>
 				<?=Power::TYPE_ITEM==$p->power_type?'Item':'';?>
-				<?=$p->getUseTypeDisplay(true);?>-bg <?=$p->getUsageStatus();?>">
+				<?=$p->getUseTypeDisplay(true);?>-bg <?=$p->getUsageStatus();?>
+				<?=$p->getRefreshType();?>">
 				<td class="icon">
-				<? if(!$p->isUseType(Power::POWER_ATWILL)): ?>
-						<img class="power_icon icon" title="Use/Refresh" id="t<?=$p->id;?>"
-							alt="[*]" src="<?=MEDIA_URL.$p->getUsageIcon();?>" />
+				<? if($p->canBeUsed()): ?>
+				  <img class="power_icon icon" title="Use/Refresh" id="t<?=$p->id;?>"
+				    alt="[*]" src="<?=MEDIA_URL.$p->getUsageIcon();?>" />
 				<? endif; ?>
 				</td>
 				<td class="powerName"><?=$p->name;?>
@@ -301,4 +302,3 @@ if( $char->hasSpellbook() ) {
 </div>
 
 <?php include('footer.php'); ?>
-

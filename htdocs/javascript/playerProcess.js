@@ -24,10 +24,10 @@ function parseProcessResult(data, textStatus) {
 				setActivePower(v.pID, v.level);
 				break;
 			case 'refreshPowers':
-				animatePower('#PowerTable tr.Encounter-bg');
+				animatePower('#PowerTable tr.refreshEncounter');
 				if( v ) {
-					animatePower('#PowerTable tr.Daily-bg');
-					animatePower('#PowerTable tr.Healing-Surge-bg');
+					animatePower('#PowerTable tr.refreshDaily');
+					//animatePower('#PowerTable tr.Healing-Surge-bg');
 				}
 				break;
 			case 'power':
