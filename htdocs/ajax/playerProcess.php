@@ -25,7 +25,7 @@ switch($action) {
 	case 'spendSurge':
 		$success = $char->useSurge((int)@$data['surge_bonus']);
 		$result['surges_cur'] = $char->surges_cur;
-		$result['health_cur'] = $char->health_cur;		
+		$result['health_cur'] = $char->health_cur;
 		break;
 	case 'damage':
 		$success = $char->takeDamage((int)@$data['health']);
@@ -80,8 +80,12 @@ switch($action) {
 		else {
 			$success = $p->togglePower();
 		}
-		$result['power'] = array('pID' => $p->id, 'status' => $p->getUsageStatus());
-		if( $mi_use != $char->magic_item_uses ) 
+		$result['power'] = array(
+		  'pID' => $p->id,
+		  'status' => $p->getUsageStatus(),
+		  'uses' => $p->uses
+		);
+		if( $mi_use != $char->magic_item_uses )
 			$result['magic_item_uses'] = $char->magic_item_uses;
 		if( $surges != $char->surges_cur )
 			$result['surges_cur'] = $char->surges_cur;
@@ -116,3 +120,4 @@ $msg->clear();
 
 print_r(json_encode($result));
 ?>
+
