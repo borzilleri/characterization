@@ -19,7 +19,7 @@ if( $char->hasSpellbook() ) {
 		->where('p.player_id = ?', $char->id)
 		->andWhere('p.use_type = ?', Power::POWER_DAILY)
 		->andWhere('p.power_type = ?', Power::TYPE_ATTACK)
-		->orderBy('p.level, p.name') 
+		->orderBy('p.level, p.name')
 		->execute();
 	$utility_powers = Doctrine_Query::create()
 		->from('Power p')->where('p.player_id = ?', $char->id)
@@ -43,7 +43,7 @@ if( $char->hasSpellbook() ) {
 					<?=($char->getStatusText()?"({$char->getStatusText()})":'');?></span>
 			</div>
 		</div>
-		
+
 		<div class="statRow">
 			<label class="statLabel" for="player_surges">Surges:</label>
 			<div class="statInfo" id="player_surges">
@@ -52,7 +52,7 @@ if( $char->hasSpellbook() ) {
 				<span id="surges_max"><?=$char->surges_max;?></span>
 				(<span id="surge_value"><?=$char->surge_value;?></span>)
 				<a href="#" id="surgePlus" class="ajaxLink">add</a>&nbsp;/
-				<a href="#" id="surgeMinus" class="ajaxLink">remove</a>				 
+				<a href="#" id="surgeMinus" class="ajaxLink">remove</a>
 			</div>
 		</div>
 		<div class="statRow">
@@ -81,7 +81,7 @@ if( $char->hasSpellbook() ) {
 			</div>
 		</div>
 	</div><!-- end div.statColumn -->
-	
+
 	<div class="statColumn floatColumn">
 		<div class="statRow">
 			<label class="statLabel">Damage:</label>
@@ -105,7 +105,7 @@ if( $char->hasSpellbook() ) {
 			</div>
 		</div>
 	</div><!-- end div.statColumn -->
-	
+
 	<div class="shortStatColumn floatColumn">
 		<div class="statRow">
 			<label class="statLabel">Str:</label>
@@ -131,7 +131,7 @@ if( $char->hasSpellbook() ) {
 			<div class="statInfo"><?=$char->getDefense('fort');?></div>
 		</div>
 	</div><!-- end div.StatColumn -->
-	
+
 	<div class="shortStatColumn floatColumn">
 		<div class="statRow">
 			<label class="statLabel">Int:</label>
@@ -157,7 +157,7 @@ if( $char->hasSpellbook() ) {
 			<div class="statInfo"><?=$char->getDefense('will');?></div>
 		</div>
 	</div><!-- end div.statColumn -->
-	
+
 	<div class="clear"></div>
 </div><!-- end div#StatBlock -->
 
@@ -178,18 +178,24 @@ if( $char->hasSpellbook() ) {
 	<table id="PowerTable">
 		<tbody>
 		<? foreach($power_list as $p): ?>
-			<tr id="r<?=$p->id;?>" class="powerRow 
+			<tr id="r<?=$p->id;?>" class="powerRow
 				<?=$p->isActive()?'':'InActive';?>
-				<?=$p->isSpellbookPower()?'l'.$p->level:'';?> 
-				<?=Power::TYPE_ITEM==$p->power_type?'Item':'';?> 
-				<?=$p->getUseTypeDisplay(true);?>-bg <?=$p->getUsageStatus();?>">
+				<?=$p->isSpellbookPower()?'l'.$p->level:'';?>
+				<?=Power::TYPE_ITEM==$p->power_type?'Item':'';?>
+				<?=$p->getUseTypeDisplay(true);?>-bg <?=$p->getUsageStatus();?>
+				<?=$p->getRefreshType();?>">
 				<td class="icon">
-				<? if(!$p->isUseType(Power::POWER_ATWILL)): ?>
-						<img class="power_icon icon" title="Use/Refresh" id="t<?=$p->id;?>" 
-							alt="[*]" src="<?=MEDIA_URL.$p->getUsageIcon();?>" />
+				<? if($p->canBeUsed()): ?>
+				  <img class="power_icon icon" title="Use/Refresh" id="t<?=$p->id;?>"
+				    alt="[*]" src="<?=MEDIA_URL.$p->getUsageIcon();?>" />
 				<? endif; ?>
 				</td>
-				<td class="powerName"><?=$p->name;?></td>
+				<td class="powerName"><?=$p->name;?>
+				  <?if($p->hasCharges()):?>
+				  <span class="powerUses">(<?=$p->uses;?>)</span>
+				  <span class="powerUsesMax"><?=$p->charges;?></span>
+				  <?endif;?>
+				</td>
 				<td class="powerClass"><?=$p->getClassDisplay();?></td>
 				<td class="powerLevel"><?=$p->level;?></td>
 				<td class="icon"><img id="v<?=$p->id;?>" class="power_view icon"
@@ -217,7 +223,7 @@ if( $char->hasSpellbook() ) {
 		<? endforeach; ?>
 		</tbody>
 	</table>
-	
+
 	<table id="FeatTable" class="rowBorder">
 		<thead>
 			<tr class="row0">
@@ -288,10 +294,10 @@ if( $char->hasSpellbook() ) {
 <div id="PlayerNotes" class="notesColumn">
 	<div>
 		<a href="#" id="updateNotes" class="ajaxLink">save notes</a>
-		<span id="notes_dirty" 
+		<span id="notes_dirty"
 			title="Unsaved changes, click 'save notes' to save">*</span>
 	</div>
-	<textarea name="notes" id="player_notes" 
+	<textarea name="notes" id="player_notes"
 		cols="25" rows="5"><?=$char->notes;?></textarea>
 </div>
 

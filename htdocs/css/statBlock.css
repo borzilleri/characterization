@@ -45,9 +45,14 @@ div.statRow label.statLabel {
 	font-weight					 : bold;
 	text-align					 : right;
 	margin							 : 0 10px 0 0;
-	width								 : 70px;
 	display							 : block;
 	float								 : left;
+}
+.statColumn label.statLabel {
+  width                : 85px;
+}
+.shortStatColumn label.statLabel {
+  width                : 55px;
 }
 
 div.statRow input[type="text"] {
@@ -133,18 +138,18 @@ a.ajaxLink:active {
 }
 
 #SpellbookDailyTable, #SpellbookUtilityTable {
-	margin								: 0 5px;
+	margin                : 0 5px;
 	padding               : 0;
 	border-spacing				: 0 1px;
-	width                 : 240px;	
+	width                 : 240px;
 }
 #SpellbookDailyTable {
-	float: left;	
+	float: left;
 }
 #SpellbookUtilityTable {
 }
 
-#SpellbookDailyTable td, #SpellbookUtilityTable td, 
+#SpellbookDailyTable td, #SpellbookUtilityTable td,
 #SpellbookDailyTable th, #SpellbookUtilityTable th {
 	padding               : 1px 4px;
 }
@@ -158,5 +163,4 @@ a.ajaxLink:active {
 	opacity               : .5;
 	cursor                : pointer;
 }
-
 

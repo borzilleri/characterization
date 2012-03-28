@@ -1,7 +1,7 @@
 <?php
 /**
  * Power
- * 
+ *
  * @author Jonathan Borzilleri
  */
 class Power extends BasePower {
@@ -11,21 +11,21 @@ class Power extends BasePower {
 	const POWER_ENCOUNTER = '2_encounter';
 	const POWER_DAILY = '3_daily';
 	const POWER_SURGE = '4_surge';
-	
+
 	const TYPE_ATTACK = 'attack';
 	const TYPE_UTILITY = 'utility';
 	const TYPE_RACIAL = 'racial';
 	const TYPE_ITEM = 'item';
 	const TYPE_OTHER = 'other';
-	
+
 	const CHARGE_ENCOUNTER = 'encounter';
 	const CHARGE_DAILY = 'daily';
 	const CHARGE_CONSUMABLE = 'consumable';
 	const CHARGE_NONE = 'none';
-	
+
 	const STATUS_USED = 'Used';
 	const STATUS_DISABLED = 'Disabled';
-	
+
 	const ICON_USABLE = '/images/icon_zap.png';
 	const ICON_USED = '/images/icon_refresh.png';
 	const ICON_DISABLED = '/images/icon_skull.png';
@@ -36,7 +36,7 @@ class Power extends BasePower {
 	public function preDelete($event) {
 		$this->PowerKeywords->delete();
 	}
-	
+
 	/**
 	 * Post-save handling, update our keywords appropriately.
 	 */
@@ -50,16 +50,20 @@ class Power extends BasePower {
 	}
 
 	public function gethas_charges() {
-		return CHARGE_NONE != $this->charge_type;
+		return $this->hasCharges();
+	}
+
+	public function hasCharges() {
+		return self::CHARGE_NONE != $this->charge_type;
 	}
 
 	public function getCharges() {
 		switch($this->charge_type) {
-			case CHARGE_ENCOUNTER:
-			case CHARGE_DAILY:
+	    case self::CHARGE_ENCOUNTER:
+	    case self::CHARGE_DAILY:
 				return $this->uses_max;
 				break;
-			case CHARGE_CONSUMABLE:
+    	case self::CHARGE_CONSUMABLE:
 				return min(0,$this->uses);
 				break;
 			default:
@@ -67,11 +71,11 @@ class Power extends BasePower {
 				break;
 		}
 	}
-	
+
 	public function getUsed() {
 		return ($this->used<=0);
 	}
-	
+
 	/**
 	 *
 	 * @global Message
@@ -82,7 +86,7 @@ class Power extends BasePower {
 		$cache = array();
 		$cache['keywords'] = array();
 		$cache['error'] = array();
-		
+
 		// Power Name
 		$cache['name'] = $_POST['power_name'];
 		if( empty($_POST['power_name']) ) {
@@ -92,7 +96,7 @@ class Power extends BasePower {
 		else {
 			$this->name = trim($_POST['power_name']);
 		}
-		
+
 		// Level
 		$cache['level'] = $_POST['level'];
 		if( empty($_POST['level']) ||
@@ -103,7 +107,7 @@ class Power extends BasePower {
 		else {
 			$this->level = (int)$_POST['level'];
 		}
-		
+
 		// PowerType
 		$cache['power_type'] = $_POST['power_type'];
 		if( empty($_POST['power_type']) ||
@@ -114,10 +118,10 @@ class Power extends BasePower {
 		else {
 			$this->power_type = $_POST['power_type'];
 		}
-		
+
 		// UseType
 		$cache['use_type'] = $_POST['use_type'];
-		if( empty($_POST['use_type']) || 
+		if( empty($_POST['use_type']) ||
 				!$this->isValidUseType($_POST['use_type']) ) {
 			$msg->add('Usage Type must be "at-will", "encounter", or "daily."',
 				Message::WARNING);
@@ -126,10 +130,10 @@ class Power extends BasePower {
 		else {
 			$this->use_type = $_POST['use_type'];
 		}
-		
+
 		// Action Type
 		$cache['action_type'] = $_POST['action_type'];
-		if( empty($_POST['action_type']) || 
+		if( empty($_POST['action_type']) ||
 				!$this->isValidActionType($_POST['action_type']) ) {
 			$msg->add('Invalid action type.', Message::WARNING);
 			$cache['error'][] = 'action_type';
@@ -137,10 +141,10 @@ class Power extends BasePower {
 		else {
 			$this->action = $_POST['action_type'];
 		}
-		
+
 		// Attack Stat
 		$cache['attack_ability'] = $_POST['attack_ability'];
-		if( empty($_POST['attack_ability']) || 
+		if( empty($_POST['attack_ability']) ||
 				!$this->isValidAttackStat($_POST['attack_ability']) ) {
 			$msg->add('Invalid Attack Stat', Message::WARNING);
 			$cache['error'][] = 'attack_ability';
@@ -148,7 +152,7 @@ class Power extends BasePower {
 		else {
 			$this->attack_ability = $_POST['attack_ability'];
 		}
-		
+
 		// Attack Defense
 		$cache['defense'] = $_POST['defense'];
 		if( empty($_POST['defense']) ||
@@ -169,7 +173,7 @@ class Power extends BasePower {
 		else {
 			$this->attack_bonus = (int)trim(@$_POST['attack_bonus']);
 		}
-		
+
 		// Sustain Action
 		$cache['sustain_action'] = $_POST['sustain_action'];
 		$cache['sustain'] = $_POST['sustain'];
@@ -209,7 +213,7 @@ class Power extends BasePower {
 			$this->uses = 1;
 			$this->uses_max = 1;
 		}
-		
+
 		$this->target = trim(@$_POST['target']);
 		$cache['target'] = $_POST['target'];
 
@@ -218,7 +222,7 @@ class Power extends BasePower {
 
 		$this->hit = trim(@$_POST['hit']);
 		$cache['hit'] = $_POST['hit'];
-		
+
 		$this->miss = trim(@$_POST['miss']);
 		$cache['miss'] = $_POST['miss'];
 
@@ -227,14 +231,14 @@ class Power extends BasePower {
 
 		$this->notes = trim(@$_POST['notes']);
 		$cache['notes'] = $_POST['notes'];
-		
+
 		if( !$this->exists() ) {
-			$this->active = !($this->Player->hasSpellbook() && 
+			$this->active = !($this->Player->hasSpellbook() &&
 				(self::TYPE_UTILITY == $this->power_type ||
-					(self::TYPE_ATTACK == $this->power_type && 
+					(self::TYPE_ATTACK == $this->power_type &&
 					self::POWER_DAILY == $this->use_type)	) );
 		}
-				
+
 		// Power Keywords
 		if( !empty($_POST['keywords']) && is_array($_POST['keywords']) ) {
 			// First: Iterate through the _POST keyword array
@@ -248,7 +252,7 @@ class Power extends BasePower {
 					$this->tmp_keywords[] = $k;
 				}
 			}
-			
+
 			// Second: Iterate through our existing keywords,
 			// Any that DO NOT exist in the _POST array should be unlinked
 			$keywords_to_unlink = array();
@@ -260,7 +264,7 @@ class Power extends BasePower {
 			if( !empty($keywords_to_unlink) ) {
 				$this->unlink('Keywords', $keywords_to_unlink);
 			}
-		}		
+		}
 
 		// Update the form cache in the session if necessary.
 		if( !empty($_POST['form_key']) ) {
@@ -360,7 +364,7 @@ class Power extends BasePower {
 				break;
 		}
 	}
-	
+
 	/**
 	 * Determines if the usage is valid
 	 *
@@ -380,7 +384,7 @@ class Power extends BasePower {
 				break;
 		}
 	}
-	
+
 	public function isValidPowerType($type) {
 		switch($type) {
 			case self::TYPE_ATTACK:
@@ -409,7 +413,7 @@ class Power extends BasePower {
 				break;
 		}
 	}
-	
+
 	/**
 	 * Determines if this power is of the usage type passed in
 	 *
@@ -443,31 +447,31 @@ class Power extends BasePower {
 				$s = 'At-Will';
 				break;
 		}
-		
+
 		if( $noSpace ) $s = str_replace(' ', '-', $s);
 		return $s;
 	}
-	
+
 	/**
 	 * Refresh the power, allowing it to be used again.
 	 *
 	 * @param bool $overrideCost Override any healing surge requirement
 	 * @return bool
-	 */ 
+	 */
 	public function refresh($overrideCost = false) {
 		if( !self::CHARGE_CONSUMABLE != $this->charge_type ) {
 			$recharge = (!$this->isUseType(self::POWER_SURGE) || $overrideCost) ?
 				true : $this->Player->subtractSurge();
-			
+
 			if( $recharge ) {
 				$this->uses = $this->uses_max;
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Use a power, expending it.
 	 *
@@ -483,7 +487,7 @@ class Power extends BasePower {
 		}
 		elseif( !$overrideCost && self::TYPE_ITEM == $this->power_type &&
 				self::POWER_DAILY == $this->use_type ) {
-			// We're a magic item daily ability, 
+			// We're a magic item daily ability,
 			// so on use we must remove a magic item usage
 			if( $this->Player->subtractMagicItemUse() ) {
 				$this->uses -= 1;
@@ -491,20 +495,19 @@ class Power extends BasePower {
 				return true;
 			}
 		}
-		elseif( self::CHARGE_CONSUMABLE == $this->charge_type || 
-			self::POWER_ATWILL != $this->use_type ) {
+		elseif( $this->hasCharges() || self::POWER_ATWILL != $this->use_type ) {
 			$this->uses -= 1;
 			$this->uses = max($this->uses,0);
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Toggle a power's used state.
 	 *
 	 * At-Will Powers cannot be toggled.
-	 * 
+	 *
 	 * @param bool $overrideCost Override any cost for using/refreshing the power
 	 * @return bool
 	 */
@@ -512,7 +515,7 @@ class Power extends BasePower {
 		if( $this->isUsable() ) return $this->usePower($overrideCost);
 		else return $this->refresh($overrideCost);
 	}
-	
+
 	/**
 	 * Return a friendly display string for an action type.
 	 *
@@ -544,7 +547,7 @@ class Power extends BasePower {
 				break;
 		}
 	}
-	
+
 	/**
 	 * Perform post-processing on text fields
 	 *
@@ -554,10 +557,10 @@ class Power extends BasePower {
 	 */
 	public function getTextFieldDisplay($field, $echo = false) {
 		$out = $this->$field;
-		
+
 		$out = htmlentities($out);
 		$out = nl2br($out);
-		
+
 		switch($field) {
 			case 'power_range':
 				$out = preg_replace('/(melee)/i', '<label>$1</label>',$out);
@@ -584,13 +587,13 @@ class Power extends BasePower {
 			default:
 				break;
 		}
-		
+
 		if( $echo ) echo $out;
 		return $out;
 	}
 
 	/**
-	 * Check to see if a power has a given keywords 
+	 * Check to see if a power has a given keywords
 	 *
 	 * @param string $keyword A Keyword string
 	 * @return bool
@@ -599,9 +602,9 @@ class Power extends BasePower {
 		$k = Doctrine::getTable('Keyword')->findOneByName($keyword);
 		return ($k && $k->exists() && $this->Keywords->contains($k->id));
 	}
-	
+
 	/**
-	 * Return an array of attack bonuses for this power. 
+	 * Return an array of attack bonuses for this power.
 	 *
 	 * @uses Player::getMod()
 	 * @uses Player::getAttackBonus()
@@ -610,7 +613,7 @@ class Power extends BasePower {
 	public function getAttackBonusTable() {
 		$power_bonus = $this->attack_bonus;
 		$power_bonus += (int)$this->Player->getMod($this->attack_ability);
-		
+
 		if( $this->hasKeyword('Implement') ) {
 			return $this->Player->getAttackBonus(
 				Player::ATTACK_IMPLEMENT, $power_bonus);
@@ -623,7 +626,7 @@ class Power extends BasePower {
 			return $this->Player->getAttackBonus(null, $power_bonus);
 		}
 	}
-	
+
 	/**
 	 * Generate a friendly attack bonus display
 	 *
@@ -639,7 +642,7 @@ class Power extends BasePower {
 		}
 		return implode('/',$bonus_table);
 	}
-	
+
 	public static function typeDisplay($power_type) {
 		switch($power_type) {
 			case self::TYPE_ITEM:
@@ -657,9 +660,9 @@ class Power extends BasePower {
 			default:
 				return 'Other';
 				break;
-		}	
+		}
 	}
-	
+
 	public static function chargeTypeDisplay($charge_type) {
 		switch($charge_type) {
 			case self::CHARGE_ENCOUNTER:
@@ -676,7 +679,34 @@ class Power extends BasePower {
 				break;
 		}
 	}
-	
+
+	public function getRefreshType() {
+		switch($this->charge_type) {
+			case self::CHARGE_ENCOUNTER:
+				return 'refreshEncounter';
+				break;
+			case self::CHARGE_DAILY:
+				return 'refreshDaily';
+				break;
+			case self::CHARGE_NONE:
+				switch($this->use_type) {
+					case self::POWER_ENCOUNTER:
+						return 'refreshEncounter';
+						break;
+					case self::POWER_DAILY:
+					case self::POWER_SURGE:
+						return 'refreshDaily';
+						break;
+					default:
+						return '';
+				}
+				break;
+			default:
+				return '';
+				break;
+		}
+	}
+
 	/**
 	 *
 	 */
@@ -695,28 +725,35 @@ class Power extends BasePower {
 				break;
 		}
 	}
-	
+
+	/**
+	 *
+	 */
+  public function canBeUsed() {
+    return $this->isActive() && ($this->hasCharges() ||
+      self::POWER_ATWILL!=$this->use_type);
+  }
 	/**
 	 *
 	 */
 	public function isUsable() {
 		return ($this->uses > 0);
 	}
-	
+
 	/**
 	 *
 	 */
 	public function isDisabled() {
-		return self::TYPE_ITEM == $this->power_type && 
-			$this->use_type == self::POWER_DAILY && 
+		return self::TYPE_ITEM == $this->power_type &&
+			$this->use_type == self::POWER_DAILY &&
 			0 == $this->Player->magic_item_uses;
 	}
-	
+
 	public function isActive() {
 		if( self::TYPE_UTILITY == $this->power_type ) {
 			return (bool)$this->active;
 		}
-		elseif( self::TYPE_ATTACK == $this->power_type && 
+		elseif( self::TYPE_ATTACK == $this->power_type &&
 			self::POWER_DAILY == $this->use_type ) {
 			return (bool)$this->active;
 		}
@@ -724,7 +761,7 @@ class Power extends BasePower {
 			return true;
 		}
 	}
-	
+
 	public function getUsageStatus() {
 		if( $this->uses <= 0 ) {
 			return self::STATUS_USED;
@@ -734,7 +771,7 @@ class Power extends BasePower {
 		}
 		return '';
 	}
-	
+
 	public function getUsageIcon() {
 		if( $this->uses <= 0 ) {
 			return self::ICON_USED;
@@ -746,15 +783,15 @@ class Power extends BasePower {
 			return self::ICON_USABLE;
 		}
 	}
-	
+
 	public function isSpellbookPower() {
 		return (self::TYPE_UTILITY == $this->power_type ||
-			(self::TYPE_ATTACK == $this->power_type && 
+			(self::TYPE_ATTACK == $this->power_type &&
 			self::POWER_DAILY == $this->use_type));
 	}
-	
+
 	/**
-	 * Retrieve a cached value for a property if one exists. 
+	 * Retrieve a cached value for a property if one exists.
 	 *
 	 * If a field is passed in that is not contained in the object,
 	 * we return false.
@@ -776,19 +813,19 @@ class Power extends BasePower {
 		}
 		return false;
 	}
-	
+
 	public function hasCachedKeyword($kw_id, $form_key = null) {
 		if( !empty($form_key) && !empty($_SESSION['form_cache']) &&
 				$_SESSION['form_cache']['form_key'] == $form_key ) {
 			return array_key_exists($kw_id, $_SESSION['form_cache']['keywords']);
 		}
-		
+
 		return $this->Keywords->contains($kw_id);
 	}
-	
+
 	public function hasError($field, $form_key = null) {
-		return ( $this->contains($field) && !empty($form_key) && 
-			!empty($_SESSION['form_cache']) && 
+		return ( $this->contains($field) && !empty($form_key) &&
+			!empty($_SESSION['form_cache']) &&
 			$_SESSION['form_cache']['form_key'] == $form_key &&
 			!empty($_SESSION['form_cache']['error']) &&
 			in_array($field, $_SESSION['form_cache']['error']) );
@@ -809,11 +846,11 @@ class Power extends BasePower {
 	 */
 	public function getPowerBoxDisplay($collapseUsed = false, $echo = false) {
 		$box = ""; $i = 0;
-		
+
 		// Outer div
 		$box .= '<div class="powerBox'.($this->isDisabled()?' disabledPower':'')
 			.'" id="powerBox'.$this->id.'">';
-		
+
 		// TitleBar
 		$box .= '<div id="p'.$this->id.'" class="titleBar '.
 			$this->getUseTypeDisplay(true).'-bg">';
@@ -824,21 +861,21 @@ class Power extends BasePower {
 		$box .= '<span class="powerTitle">'.$this->name.'</span>';
 		$box .= '</div><!-- end div.titleBar -->';
 		// End TitleBar
-		
+
 		// Description
 		// Only add the 'usedPower' class if the power is used AND we're
 		// collapsing powers.
 		$box .='<div class="description '.
 			($collapseUsed&&$this->used?'usedPower':'').'">';
-		
-		
+
+
 		// Statblock Row
 		$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'usage">'; $i+=1;
-		
+
 		// Usage/Keywords
 		$box .= '<div>';
 		// Usage
-		$box .= '<span class="usage">'.$this->getUseTypeDisplay().'</span>';		
+		$box .= '<span class="usage">'.$this->getUseTypeDisplay().'</span>';
 		// Keywords
 		if( $this->Keywords->count() ) {
 			$box .= ' &diams; <span class="keywords">';
@@ -851,7 +888,7 @@ class Power extends BasePower {
 		}
 		$box .= '</div>';
 		// End Usage/Keywords
-		
+
 		// Action/Range
 		$box .= '<div>';
 		// Range
@@ -863,23 +900,23 @@ class Power extends BasePower {
 		$box .= '<span class="actionType">'.$this->getActionTypeDisplay().'</span>';
 		$box .= '</div>';
 		// End Action/Range
-		
+
 		// Target
 		if( !empty($this->target) ) {
 			$box .= '<div><label>Target: </label><span>'.
 				$this->getTextFieldDisplay('target').'</span></div>';
 		}
-		
+
 		// Attack
 		if( 'none' != $this->attack_ability ) {
 			$box .= '<div><label>Attack: </label><span>';
 			$box .= $this->getAttackBonusDisplay().' ('.$this->attack_ability.')';
 			$box .= ' vs. '.$this->defense.'</span></div>';
 		}
-		
+
 		// End Statblock Row
 		$box .= '</div>';
-		
+
 		// Hit
 		if( !empty($this->hit) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'hit">'; $i+=1;
@@ -897,7 +934,7 @@ class Power extends BasePower {
 				.$this->scanAndParseText($this->getTextFieldDisplay('miss'))
 				.'</span></div>';
 		}
-		
+
 		// Effect
 		if( !empty($this->effect) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'effect">'; $i+=1;
@@ -915,7 +952,7 @@ class Power extends BasePower {
 				.$this->scanAndParseText($this->getTextFieldDisplay('sustain'))
 				.'</span></div>';
 		}
-		
+
 		// Notes
 		if( !empty($this->notes) ) {
 			$box .= '<div class="row'.($i%2).'" id="p'.$this->id.'notes">'; $i+=1;
@@ -924,17 +961,17 @@ class Power extends BasePower {
 				.$this->scanAndParseText($this->getTextFieldDisplay('notes'))
 				.'</span></div>';
 		}
-		
+
 		// End Description
 		$box .= '</div><!-- end div.description -->';
 		// End Outer Div
 		$box .= '</div><!-- end div#powerBox'.$this->id.' -->';
 		$box .= "\n\n";
-				
+
 		if( $echo ) echo $box;
-		return $box;		
+		return $box;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -992,7 +1029,7 @@ class Power extends BasePower {
 		return $result;
 	}
 
-	
+
 	/**
 	 *
 	 */
@@ -1017,7 +1054,7 @@ class Power extends BasePower {
 				preg_match('/(\d*)(\w*)/i', $textString, $parts);
 				$multiplier = empty($parts[1])?1:$parts[1];
 				$textString = $parts[2];
-				
+
 				// Grab the replaced string
 				if( empty($textString) ) {
 					$temp_result = $multiplier;
@@ -1026,7 +1063,7 @@ class Power extends BasePower {
 					$temp_result = $this->getStringReplacement(
 						$textString, $multiplier);
 				}
-				
+
 				// Integrate this string with the overall tag result
 				// If we're the first one, just set the result
 				if( 0 == $k ) {
@@ -1045,7 +1082,7 @@ class Power extends BasePower {
 		} // endforeach
 		return $result;
 	}
-	
+
 	public function scanAndParseText($text) {
 		$result = $text;
 		if( preg_match_all('/(\[.*?\])/i', $text, $matches) ) {

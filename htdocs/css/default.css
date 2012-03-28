@@ -285,6 +285,9 @@ li.noCheck div.listLabel {
 #PowerTable .powerRow {
 	height								: 20px;
 }
+#PowerTable .powerUsesMax {
+  display               : none;
+}
 
 #PowerTable tr.Disabled {
 }
@@ -337,3 +340,4 @@ li.noCheck div.listLabel {
 #FeatDiv {
 	margin-left           : 450px;
 }
+
