@@ -1,0 +1,10 @@
+require([
+
+	'app'
+],
+function(Char_Collecion, Router) {
+	$(function() {
+		window.app = new Router();
+	});
+});
+

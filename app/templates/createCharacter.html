@@ -1,0 +1,145 @@
+<div class="container">
+	<form class="character-create form-horizontal">
+		<div class="row-fluid">
+			<div class="span6">
+				<fieldset>
+					<legend>Character Info</legend>
+					<div class="control-group">
+						<label class="control-label" for="character-name">Name</label>
+						<div class="controls">
+							<input type="text" id="character-name" class="input" name="name">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-level">Level</label>
+						<div class="controls">
+							<select name="level" id="character-level" class="input-small">
+								<% for(i = 1; i <= 30; i ++) { %>
+								<option value="<%=i %>"><%=i%></option>
+								<% } %>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-race">Race</label>
+						<div class="controls">
+							<input type="text" id="character-race"
+							class="input-medium" name="raceName">
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>Class Info</legend>
+
+					<div class="control-group">
+						<label class="control-label"
+							for="character-class">Class Name</label>
+						<div class="controls">
+							<input type="text" id="character-class" name="className">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label"
+							for="character-surges">Base Surges</label>
+						<div class="controls">
+							<input type="number" class="input-small"
+							id="character-surges" name="classSurges" value="1">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label"
+							for="class-fort-bonus">Fort Bonus</label>
+						<div class="controls">
+							<input type="number" class="input-small" value="0"
+							id="clss-fort-bonus" name="classFortBonus">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label"
+							for="class-ref-bonus">Ref Bonus</label>
+						<div class="controls">
+							<input type="number" class="input-small" value="0"
+							id="clss-ref-bonus" name="classRefBonus">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label"
+							for="class-will-bonus">Will Bonus</label>
+						<div class="controls">
+							<input type="number" class="input-small" value="0"
+							id="calss-will-bonus" name="classWillBonus">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">First Level HP</label>
+						<div class="controls">
+							<div class="input-append">
+								<input type="number" id="class-hp-first" class="input-small"
+								name="classHPFirst" value="1"><span class="add-on">+Con</span>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Per Level HP</label>
+						<div class="controls">
+							<input type="number" id="class-hp-level" class="input-small"
+							name="classHPLevel" value="1">
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="span6">
+				<fieldset>
+					<legend>Ability Scores</legend>
+					<div class="control-group">
+						<label class="control-label" for="character-str">STR</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="str" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-con">CON</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="con" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-dex">DEX</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="dex" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-int">INT</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="int" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-wis">WIS</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="wis" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-cha">CHA</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="cha" value="10">
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary">Submit</button>
+					<span class="error-message label label-important pull-right"
+						style="display:none">
+						There were errors in the form, please correct them and try again.
+					</span>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
