@@ -1,5 +1,5 @@
 /* ============================================================
- * bootstrap-dropdown.js v2.0.2
+ * bootstrap-dropdown.js v2.0.4
  * http://twitter.github.com/bootstrap/javascript.html#dropdowns
  * ============================================================
  * Copyright 2012 Twitter, Inc.
@@ -26,13 +26,13 @@
 		factory( this.jQuery );
 	}
 }(function($) {
-  "use strict"
+  "use strict"; // jshint ;_;
 
  /* DROPDOWN CLASS DEFINITION
   * ========================= */
 
   var toggle = '[data-toggle="dropdown"]'
-    , Dropdown = function ( element ) {
+    , Dropdown = function (element) {
         var $el = $(element).on('click.dropdown.data-api', this.toggle)
         $('html').on('click.dropdown.data-api', function () {
           $el.parent().removeClass('open')
@@ -43,11 +43,15 @@
 
     constructor: Dropdown
 
-  , toggle: function ( e ) {
+  , toggle: function (e) {
       var $this = $(this)
-        , selector = $this.attr('data-target')
         , $parent
+        , selector
         , isActive
+
+      if ($this.is('.disabled, :disabled')) return
+
+      selector = $this.attr('data-target')
 
       if (!selector) {
         selector = $this.attr('href')
@@ -60,7 +64,8 @@
       isActive = $parent.hasClass('open')
 
       clearMenus()
-      !isActive && $parent.toggleClass('open')
+
+      if (!isActive) $parent.toggleClass('open')
 
       return false
     }
@@ -75,7 +80,7 @@
   /* DROPDOWN PLUGIN DEFINITION
    * ========================== */
 
-  $.fn.dropdown = function ( option ) {
+  $.fn.dropdown = function (option) {
     return this.each(function () {
       var $this = $(this)
         , data = $this.data('dropdown')
@@ -92,6 +97,8 @@
 
   $(function () {
     $('html').on('click.dropdown.data-api', clearMenus)
-    $('body').on('click.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    $('body')
+      .on('click.dropdown', '.dropdown form', function (e) { e.stopPropagation() })
+      .on('click.dropdown.data-api', toggle, Dropdown.prototype.toggle)
   })
 }));

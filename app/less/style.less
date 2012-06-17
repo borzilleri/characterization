@@ -1,8 +1,11 @@
-
 @import "bootstrap/bootstrap.less";
+@import "mixins/gradiant.less";
+@import "colors.less";
+
+@baseFontSize: 16px;
+@baseLineHeight: 20px;
 
 .control-label, input, select {
-	font-size: 16px;
 }
 
 .page-content {
@@ -14,3 +17,125 @@
 		margin-bottom: 5px;
 	}
 }
+
+.character-console {
+	.page-header {
+		.btn-group, h1 {
+			display: inline-block;
+		}
+		.btn-group {
+			margin-right: 5px;
+		}
+	}
+}
+
+
+
+.console-center-panel {
+	width: 100%;
+	margin-bottom: 5px;
+	.tab-content {
+		border-style: solid;
+		border-color: #ddd;
+		border-width: 1px;
+	}
+}
+#character-powers {
+	ul.nav {
+		margin-bottom: 0;
+	}
+	.tab-content {
+		border-top-width: 0;
+	}
+}
+
+.power-list {
+	margin: 0;
+	padding: 0;
+
+	list-style-type: none;
+
+	li {
+		color: white;
+		padding: 7px 10px;
+
+		.power-title {
+			font-weight: bold;
+			font-size: larger;
+		}
+
+		.power-row-bottom {
+		}
+
+		.modal {
+			color: @textColor;
+		}
+
+
+	}
+
+}
+.power-atwill {
+	background-color: @power-atwill;
+	&.power-item {
+		.item-gradient(@power-atwill);
+	}
+}
+.power-encounter {
+	background-color: @power-encounter;
+	&.power-item {
+		.item-gradient(@power-encounter);
+	}
+}
+.power-daily {
+	background-color: @power-daily;
+	&.power-item {
+		.item-gradient(@power-daily);
+	}
+}
+
+#character-abilities {
+	.name {
+		font-weight: bold;
+	}
+	.description {
+		font-size:smaller;
+	}
+
+	.ability-description {
+		//white-space: nowrap;
+		//overflow: hidden;
+		//text-overflow: ellipsis;
+	}
+
+	.ritual-list-line div:first-child {
+		.pull-right;
+	}
+	.ritual-list-line:not(:first-child) {
+		font-size: smaller;
+	}
+
+	.inventory.quantity {
+		.pull-right;
+
+		&:before {
+			content: "x";
+		}
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
+	li {
+		padding: 5px 7px;
+		&:nth-child(even) {
+			background-color: @tableBackgroundAccent;
+		}
+		&:hover {
+			background-color: @tableBackgroundHover;
+		}
+	}
+}
+

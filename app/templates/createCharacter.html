@@ -29,6 +29,47 @@
 					</div>
 				</fieldset>
 				<fieldset>
+					<legend>Ability Scores</legend>
+					<div class="control-group">
+						<label class="control-label" for="character-str">STR</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="str" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-con">CON</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="con" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-dex">DEX</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="dex" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-int">INT</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="int" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-wis">WIS</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="wis" value="10">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="character-cha">CHA</label>
+						<div class="controls">
+							<input type="number" class="input-small" name="cha" value="10">
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="span6">
+				<fieldset>
 					<legend>Class Info</legend>
 
 					<div class="control-group">
@@ -42,8 +83,10 @@
 						<label class="control-label"
 							for="character-surges">Base Surges</label>
 						<div class="controls">
-							<input type="number" class="input-small"
-							id="character-surges" name="classSurges" value="1">
+							<div class="input-append">
+								<input type="number" class="input-small" id="character-surges"
+								name="classSurges" value="1"><span class="add-on">+Con Mod</span>
+							</div>
 						</div>
 					</div>
 					<div class="control-group">
@@ -84,47 +127,6 @@
 						<div class="controls">
 							<input type="number" id="class-hp-level" class="input-small"
 							name="classHPLevel" value="1">
-						</div>
-					</div>
-				</fieldset>
-			</div>
-			<div class="span6">
-				<fieldset>
-					<legend>Ability Scores</legend>
-					<div class="control-group">
-						<label class="control-label" for="character-str">STR</label>
-						<div class="controls">
-							<input type="number" class="input-small" name="str" value="10">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="character-con">CON</label>
-						<div class="controls">
-							<input type="number" class="input-small" name="con" value="10">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="character-dex">DEX</label>
-						<div class="controls">
-							<input type="number" class="input-small" name="dex" value="10">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="character-int">INT</label>
-						<div class="controls">
-							<input type="number" class="input-small" name="int" value="10">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="character-wis">WIS</label>
-						<div class="controls">
-							<input type="number" class="input-small" name="wis" value="10">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="character-cha">CHA</label>
-						<div class="controls">
-							<input type="number" class="input-small" name="cha" value="10">
 						</div>
 					</div>
 				</fieldset>

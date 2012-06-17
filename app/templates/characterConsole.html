@@ -1,3 +1,105 @@
-<div class="container">
-	test
+<div class="character-console container-fluid">
+<div class="page-header">
+	<% if( chars.length > 1 ) { %>
+	<div class="btn-group">
+		<button class="btn"><i class="icon-refresh"></i></button>
+		<button class="btn dropdown-toggle" data-toggle="dropdown">
+			<span class="icon-chevron-down"></span></button>
+		<ul class="dropdown-menu">
+			<% _(chars).each(function(c) { if( c.id != data.id ) { %>
+			<li><a href="#character/<%=c.slug%>"><%=c.name%></a>
+			<% }}); %>
+		</ul>
+	</div>
+	<% } %>
+	<h1>
+		<%= data.name %>&nbsp;
+		<small>Level <%= data.level %>&nbsp;
+			<%= data.raceName %> <%= data.className %>
+			<!-- alignment? -->
+		</small>
+	</h1>
+</div>
+	<div class="row-fluid">
+		<div class="span3">
+			<div id="character-stats"></div>
+			<!-- defenses -->
+			<!-- init, speed, saves, resists, passive inisght/percep -->
+			<!-- hp/pp/surges/AP -->
+		</div>
+		<div class="span6">
+			<div id="character-powers" class="console-center-panel"></div>
+
+			<div id="character-abilities" class="console-center-panel">
+				<div class="tab-content">
+					<div class="tab-pane active" id="character-feats">
+						<ul>
+							<li>
+							<div class="name">Orb Expertise</div>
+							<div class="description">When using an orb implement:
+								+1/2/3 (by tier) to attacks. +1 to push, pull, or slide
+								effects you cause.</div>
+							</li>
+							<li><div class="name">Telepathy</div>
+							<div class="description">Communicate telepathically with
+								creatures within 5 squares capable of language.</div>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-pane" id="character-rituals">
+						<ul>
+							<li>
+							<div class="ritual-list-line">
+								<div class="ritual-group">Arcana* / Warding</div>
+								<div class="name">Alarm</div>
+							</div>
+							<div class="description ritual-list-line">
+								<div class="ritual-duration">
+									8 hours, until discharged</div>
+								<div class="ritual-cast">10 minutes</div>
+							</div>
+							<!-- Not shown: component cost, market price, description -->
+							</li>
+						</ul>
+					</div>
+					<div class="tab-pane" id="character-equipment">
+						<ul>
+							<li>
+							<div class="name equipment">Flowform Cloth Armor +1</div>
+							<div class="description equipment gear-slot">Armor</div>
+							</li>
+						</ul>
+						<!-- SLOTS: armor, arms, feet, hands, head, neck, rings (2)
+						tattoo, waist, 	main hand (weapon/implement),
+						off hand (weapon, implement, shield) -->
+					</div>
+					<div class="tab-pane" id="character-inventory">
+						<ul>
+							<li>
+							<div class="inventory quantity">1</div>
+							<div class="name inventory-name">Adventurer's Kit</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="span3">
+			<div id="character-skills"></div>
+			<ul class="nav nav-list" id="bottom-panel-control">
+				<li class="active">
+					<a href="#character-feats" data-toggle="tab">Feats</a>
+				</li>
+				<li>
+					<a href="#character-rituals" data-toggle="tab">Rituals</a>
+				</li>
+				<li>
+					<a href="#character-equipment" data-toggle="tab">Equipment</a>
+				</li>
+				<li>
+					<a href="#character-inventory" data-toggle="tab">Inventory</a>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>

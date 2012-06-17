@@ -8,7 +8,6 @@ function(Character_Model, Page_Tpl, ModelBinding) {
 	return Backbone.View.extend({
 		model: null,
 		collection: null,
-		loading: false,
 		events: {
 			'submit form': 'onSubmit',
 			'blur .controls input': 'doValidate',
@@ -16,7 +15,6 @@ function(Character_Model, Page_Tpl, ModelBinding) {
 		},
 		initialize:function() {
 			_(this).bindAll();
-			this.loading = true;
 			this.collection = this.options.collection;
 			this.model = new Character_Model();
 			this.render();
@@ -27,7 +25,6 @@ function(Character_Model, Page_Tpl, ModelBinding) {
 			Backbone.Validation.bind(this, {
 				forceUpdate: true
 			});
-			this.loading = false;
 			return this;
 		},
 		onSubmit: function(e) {
@@ -43,11 +40,15 @@ function(Character_Model, Page_Tpl, ModelBinding) {
 			this.$('.error-message').hide();
 
 			this.collection.add(this.model);
-			this.model.save({
+			this.model.save(null,{
 				success: function(model,response) {
-					this.navigate('character/'+this.model.get('slug'),{trigger:true});
+					window.app.navigate('character/'+model.get('slug'),{
+						trigger: true,
+						replace: true,
+					});
 				},
 				error: function(model,response) {
+					alert('error: '+response);
 					// TODO: display an error?
 				}
 			});

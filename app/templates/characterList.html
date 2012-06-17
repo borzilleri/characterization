@@ -1,0 +1,11 @@
+<a href="#character/create">New Character</a>
+<br>
+<ul>
+	<% _(chars).each(function(c, key) { %>
+	<li>
+	<a href="#character/<%=c.slug%>"><%=c.name%></a>
+	<button data-id="<%=c.id%>"
+		class="btn btn-small btn-danger delete-character">Delete</button>
+	</li>
+	<% }); %>
+</ul>
