@@ -4263,6 +4263,24 @@ a.badge:hover {
   background: -webkit-linear-gradient(left, #929292 0%, #929292 50%, #d8a436 100%);
   background: linear-gradient(left, #929292 0%, #929292 50%, #d8a436 100%);
 }
+.power-card {
+  width: 400px;
+  margin-top: -350px;
+  margin-left: -200px;
+}
+.power-card .modal-header {
+  color: white;
+}
+.power-card .modal-header h3 {
+  line-height: 20px;
+}
+.power-card .modal-header p {
+  font-size: smaller;
+  margin-bottom: 0;
+}
+.power-card .modal-body {
+  background-color: white;
+}
 #character-abilities .name {
   font-weight: bold;
 }
